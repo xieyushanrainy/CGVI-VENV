@@ -187,7 +187,9 @@ public class RoleManager : MonoBehaviour
         OnReadyChanged?.Invoke(IsLocalReady);
         Debug.Log("[RoleManager] Local player ready.");
 
-        context.SendJson(new NetworkMessage { type = "ready", requesterUuid = room.Me.uuid });
+        try { context.SendJson(new NetworkMessage { type = "ready", requesterUuid = room.Me.uuid }); }
+        catch (Exception e) { Debug.LogWarning($"[RoleManager] SendJson failed (debug mode?): {e.Message}"); }
+
         CheckGameStart();
     }
 
@@ -200,7 +202,8 @@ public class RoleManager : MonoBehaviour
         OnReadyChanged?.Invoke(IsLocalReady);
         Debug.Log("[RoleManager] Local player un-readied.");
 
-        context.SendJson(new NetworkMessage { type = "unready", requesterUuid = room.Me.uuid });
+        try { context.SendJson(new NetworkMessage { type = "unready", requesterUuid = room.Me.uuid }); }
+        catch (Exception e) { Debug.LogWarning($"[RoleManager] SendJson failed (debug mode?): {e.Message}"); }
     }
 
     // ------------------------------------------------------------------ //
@@ -317,4 +320,54 @@ public class RoleManager : MonoBehaviour
             OnGameStart?.Invoke();
         }
     }
+
+    // ------------------------------------------------------------------ //
+    //  Debug / testing helpers  (Editor + Development builds only)
+    // ------------------------------------------------------------------ //
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+
+    [ContextMenu("DEBUG – Simulate Join Room")]
+    public void Debug_SimulateJoinRoom()
+    {
+        rolesAssigned = false;
+        gameStarted   = false;
+        LocalRole     = Role.None;
+        IsLocalReady  = false;
+        IsOpponentReady = false;
+        SwitchesRemaining = MaxSwitches;
+        OnRoleChanged?.Invoke(LocalRole);
+        OnSwitchesChanged?.Invoke(SwitchesRemaining);
+        OnReadyChanged?.Invoke(IsLocalReady);
+        OnOpponentReadyChanged?.Invoke(IsOpponentReady);
+        Debug.Log("[RoleManager][DEBUG] Simulated join room.");
+    }
+
+    [ContextMenu("DEBUG – Simulate Opponent Joined (you=Hammer)")]
+    public void Debug_SimulateOpponentJoined()
+    {
+        rolesAssigned = true;
+        LocalRole     = Role.Hammer;
+        OnRoleChanged?.Invoke(LocalRole);
+        Debug.Log("[RoleManager][DEBUG] Simulated opponent joined – you are Hammer.");
+    }
+
+    [ContextMenu("DEBUG – Toggle Opponent Ready")]
+    public void Debug_ToggleOpponentReady()
+    {
+        IsOpponentReady = !IsOpponentReady;
+        OnOpponentReadyChanged?.Invoke(IsOpponentReady);
+        Debug.Log($"[RoleManager][DEBUG] Opponent ready → {IsOpponentReady}");
+        CheckGameStart();
+    }
+
+    [ContextMenu("DEBUG – Toggle Local Ready")]
+    public void Debug_ToggleLocalReady()
+    {
+        IsLocalReady = !IsLocalReady;
+        OnReadyChanged?.Invoke(IsLocalReady);
+        Debug.Log($"[RoleManager][DEBUG] Local ready → {IsLocalReady}");
+        CheckGameStart();
+    }
+
+#endif
 }

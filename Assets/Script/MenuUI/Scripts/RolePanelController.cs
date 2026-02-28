@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Drives the Role Panel UI: role text, switches remaining, Switch button,
@@ -25,6 +26,10 @@ public class RolePanelController : MonoBehaviour
     [Header("Opponent Status")]
     [Tooltip("Text showing whether the opponent has pressed Ready.")]
     public Text opponentStatusText;
+
+    [Header("Scene Transition")]
+    [Tooltip("Exact name of the game scene to load (must be in Build Settings).")]
+    public string gameSceneName = "GameScene";
 
     [Header("References")]
     [Tooltip("(Optional) RoleManager in the scene. Auto-found if left empty.")]
@@ -143,6 +148,10 @@ public class RolePanelController : MonoBehaviour
         if (switchButton != null) switchButton.interactable = false;
         if (readyButton  != null) readyButton.interactable  = false;
         if (roleText     != null) roleText.text += "\nGame Starting!";
+
+        // Carry role to next scene, then load it
+        GameData.LocalRole = roleManager.LocalRole;
+        SceneManager.LoadScene(gameSceneName);
     }
 
     // ------------------------------------------------------------------ //

@@ -465,6 +465,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8631ef938008b4ff3b9bb973dd545642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoleManager
+--- !u!1 &624640605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2971382021139883573, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
+  m_PrefabInstance: {fileID: 5678707336987471472}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &624640607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624640605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f007949209a8846beb4029f2346bbdda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoleManagerDebugUI
+  toggleKey: 3
 --- !u!4 &991322266 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2218496723442559053, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
@@ -1574,6 +1592,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Menu Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6833627161008461517, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
+      propertyPath: gameSceneName
+      value: SampleScene
+      objectReference: {fileID: 0}
     - target: {fileID: 7047559292430039309, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1649,7 +1671,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2971382021139883573, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 624640607}
   m_SourcePrefab: {fileID: 100100000, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
 --- !u!1 &6080460208321634850
 GameObject:
