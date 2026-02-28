@@ -2,23 +2,35 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Displays role status, remaining switch count, and drives the Switch button.
-/// Wire all fields in the Inspector (see field tooltips).
+/// Drives the Role Panel UI: role text, switches remaining, Switch button,
+/// Ready button, and opponent status text.
+/// Wire all fields in the Inspector (see tooltips).
 /// </summary>
 public class RolePanelController : MonoBehaviour
 {
-    [Tooltip("Text component used to display the current role.")]
+    [Header("Role & Switches")]
+    [Tooltip("Text that displays the current role.")]
     public Text roleText;
 
-    [Tooltip("Text component that shows how many switches are left.")]
+    [Tooltip("Text that shows how many switches are left.")]
     public Text switchesText;
 
-    [Tooltip("The Switch button – enabled only when the player has an active role and switches remaining.")]
+    [Header("Buttons")]
+    [Tooltip("Switch button – disabled when ready or no switches left.")]
     public Button switchButton;
 
-    [Tooltip("(Optional) Drag the RoleManager GameObject here. " +
-             "If empty the script will search the scene automatically.")]
+    [Tooltip("Ready button – toggles between Ready / Un-ready.")]
+    public Button readyButton;
+
+    [Header("Opponent Status")]
+    [Tooltip("Text showing whether the opponent has pressed Ready.")]
+    public Text opponentStatusText;
+
+    [Header("References")]
+    [Tooltip("(Optional) RoleManager in the scene. Auto-found if left empty.")]
     public RoleManager roleManager;
+
+    private Text _readyButtonLabel;
 
     // ------------------------------------------------------------------ //
     //  Unity lifecycle
@@ -35,23 +47,37 @@ public class RolePanelController : MonoBehaviour
             return;
         }
 
-        roleManager.OnRoleChanged    += HandleRoleChanged;
-        roleManager.OnSwitchesChanged += HandleSwitchesChanged;
+        roleManager.OnRoleChanged          += HandleRoleChanged;
+        roleManager.OnSwitchesChanged      += HandleSwitchesChanged;
+        roleManager.OnReadyChanged         += HandleReadyChanged;
+        roleManager.OnOpponentReadyChanged += HandleOpponentReadyChanged;
+        roleManager.OnGameStart            += HandleGameStart;
 
         if (switchButton != null)
             switchButton.onClick.AddListener(OnSwitchClicked);
 
+        if (readyButton != null)
+        {
+            readyButton.onClick.AddListener(OnReadyClicked);
+            _readyButtonLabel = readyButton.GetComponentInChildren<Text>();
+        }
+
         // Reflect current states immediately
         HandleRoleChanged(roleManager.LocalRole);
         HandleSwitchesChanged(roleManager.SwitchesRemaining);
+        HandleReadyChanged(roleManager.IsLocalReady);
+        HandleOpponentReadyChanged(roleManager.IsOpponentReady);
     }
 
     private void OnDestroy()
     {
         if (roleManager != null)
         {
-            roleManager.OnRoleChanged    -= HandleRoleChanged;
-            roleManager.OnSwitchesChanged -= HandleSwitchesChanged;
+            roleManager.OnRoleChanged          -= HandleRoleChanged;
+            roleManager.OnSwitchesChanged      -= HandleSwitchesChanged;
+            roleManager.OnReadyChanged         -= HandleReadyChanged;
+            roleManager.OnOpponentReadyChanged -= HandleOpponentReadyChanged;
+            roleManager.OnGameStart            -= HandleGameStart;
         }
     }
 
@@ -83,7 +109,7 @@ public class RolePanelController : MonoBehaviour
                 break;
         }
 
-        RefreshSwitchButton();
+        RefreshButtons();
     }
 
     private void HandleSwitchesChanged(int remaining)
@@ -91,20 +117,69 @@ public class RolePanelController : MonoBehaviour
         if (switchesText != null)
             switchesText.text = $"Switches left: {remaining}";
 
-        RefreshSwitchButton();
+        RefreshButtons();
     }
 
-    private void RefreshSwitchButton()
+    private void HandleReadyChanged(bool isReady)
     {
-        if (switchButton == null || roleManager == null) return;
+        if (_readyButtonLabel != null)
+            _readyButtonLabel.text = isReady ? "Un-ready" : "Ready";
+
+        RefreshButtons();
+    }
+
+    private void HandleOpponentReadyChanged(bool opponentReady)
+    {
+        if (opponentStatusText != null)
+            opponentStatusText.text = opponentReady ? "Opponent: Ready ✓" : "Opponent: Not Ready";
+    }
+
+    private void HandleGameStart()
+    {
+        // Lock lobby UI when the game begins
+        if (switchButton != null) switchButton.interactable = false;
+        if (readyButton  != null) readyButton.interactable  = false;
+        if (roleText     != null) roleText.text += "\nGame Starting!";
+    }
+
+    // ------------------------------------------------------------------ //
+    //  Button state
+    // ------------------------------------------------------------------ //
+
+    private void RefreshButtons()
+    {
+        if (roleManager == null) return;
 
         bool hasRole = roleManager.LocalRole == RoleManager.Role.Hammer ||
                        roleManager.LocalRole == RoleManager.Role.Mole;
-        switchButton.interactable = hasRole && roleManager.SwitchesRemaining > 0;
+
+        // Switch: needs a role, switches remaining, AND must not be ready
+        if (switchButton != null)
+            switchButton.interactable = hasRole &&
+                                        roleManager.SwitchesRemaining > 0 &&
+                                        !roleManager.IsLocalReady;
+
+        // Ready toggle: needs a role (can always un-ready once ready)
+        if (readyButton != null)
+            readyButton.interactable = hasRole;
     }
+
+    // ------------------------------------------------------------------ //
+    //  Button callbacks
+    // ------------------------------------------------------------------ //
 
     private void OnSwitchClicked()
     {
         roleManager?.RequestSwitch();
+    }
+
+    private void OnReadyClicked()
+    {
+        if (roleManager == null) return;
+
+        if (roleManager.IsLocalReady)
+            roleManager.RequestUnready();
+        else
+            roleManager.RequestReady();
     }
 }

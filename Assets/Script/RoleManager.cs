@@ -19,20 +19,33 @@ public class RoleManager : MonoBehaviour
     private NetworkContext context;
     private RoomClient room;
 
-    public Role LocalRole { get; private set; } = Role.NotInRoom;
-    public int SwitchesRemaining { get; private set; } = MaxSwitches;
+    public Role LocalRole       { get; private set; } = Role.NotInRoom;
+    public int  SwitchesRemaining { get; private set; } = MaxSwitches;
+    public bool IsLocalReady    { get; private set; } = false;
+    public bool IsOpponentReady { get; private set; } = false;
+
+    private bool rolesAssigned = false;
+    private bool gameStarted   = false;
 
     /// <summary>Fires whenever the local role changes.</summary>
     public event Action<Role> OnRoleChanged;
 
-    /// <summary>Fires whenever SwitchesRemaining changes, passing the new count.</summary>
+    /// <summary>Fires whenever SwitchesRemaining changes.</summary>
     public event Action<int> OnSwitchesChanged;
 
-    private bool rolesAssigned = false;
+    /// <summary>Fires whenever the local ready state changes.</summary>
+    public event Action<bool> OnReadyChanged;
 
-    // Single message struct used for all network traffic.
-    // type: "role"   -> hammerId / moleId populated
-    // type: "switch" -> requesterUuid populated
+    /// <summary>Fires whenever the opponent ready state changes.</summary>
+    public event Action<bool> OnOpponentReadyChanged;
+
+    /// <summary>Fires once when both players are ready.</summary>
+    public event Action OnGameStart;
+
+    // type: "role"    -> hammerId / moleId populated
+    // type: "switch"  -> requesterUuid populated
+    // type: "ready"   -> requesterUuid populated
+    // type: "unready" -> requesterUuid populated
     [Serializable]
     struct NetworkMessage
     {
@@ -59,6 +72,8 @@ public class RoleManager : MonoBehaviour
         // Notify UI of initial states
         OnRoleChanged?.Invoke(LocalRole);
         OnSwitchesChanged?.Invoke(SwitchesRemaining);
+        OnReadyChanged?.Invoke(IsLocalReady);
+        OnOpponentReadyChanged?.Invoke(IsOpponentReady);
     }
 
     // ------------------------------------------------------------------ //
@@ -122,8 +137,8 @@ public class RoleManager : MonoBehaviour
     // ------------------------------------------------------------------ //
 
     /// <summary>
-    /// Called by the UI Switch button. Spends one switch token, swaps both
-    /// players' roles, and notifies the remote peer.
+    /// Called by the UI Switch button. Only allowed when not ready.
+    /// Spends one switch token, resets both ready states, swaps roles.
     /// </summary>
     public void RequestSwitch()
     {
@@ -137,13 +152,55 @@ public class RoleManager : MonoBehaviour
             Debug.Log("[RoleManager] Cannot switch: no active role.");
             return;
         }
+        if (IsLocalReady)
+        {
+            Debug.Log("[RoleManager] Cannot switch while ready — un-ready first.");
+            return;
+        }
 
         SwitchesRemaining--;
         OnSwitchesChanged?.Invoke(SwitchesRemaining);
 
+        // Switching always resets both ready states
+        ResetBothReadyStates();
+
         var msg = new NetworkMessage { type = "switch", requesterUuid = room.Me.uuid };
         context.SendJson(msg);
         ApplySwitch();
+    }
+
+    // ------------------------------------------------------------------ //
+    //  Ready
+    // ------------------------------------------------------------------ //
+
+    /// <summary>Mark the local player as ready. Triggers game start if opponent is also ready.</summary>
+    public void RequestReady()
+    {
+        if (LocalRole != Role.Hammer && LocalRole != Role.Mole)
+        {
+            Debug.Log("[RoleManager] Cannot ready: no active role.");
+            return;
+        }
+        if (IsLocalReady) return;
+
+        IsLocalReady = true;
+        OnReadyChanged?.Invoke(IsLocalReady);
+        Debug.Log("[RoleManager] Local player ready.");
+
+        context.SendJson(new NetworkMessage { type = "ready", requesterUuid = room.Me.uuid });
+        CheckGameStart();
+    }
+
+    /// <summary>Cancel the local player's ready state.</summary>
+    public void RequestUnready()
+    {
+        if (!IsLocalReady) return;
+
+        IsLocalReady = false;
+        OnReadyChanged?.Invoke(IsLocalReady);
+        Debug.Log("[RoleManager] Local player un-readied.");
+
+        context.SendJson(new NetworkMessage { type = "unready", requesterUuid = room.Me.uuid });
     }
 
     // ------------------------------------------------------------------ //
@@ -154,18 +211,39 @@ public class RoleManager : MonoBehaviour
     {
         var netMsg = msg.FromJson<NetworkMessage>();
 
-        if (netMsg.type == "role")
+        switch (netMsg.type)
         {
-            ApplyRoles(netMsg.hammerId, netMsg.moleId);
-        }
-        else if (netMsg.type == "switch")
-        {
-            // The requester already applied the switch locally; only the
-            // remote peer needs to react here.
-            if (netMsg.requesterUuid != room.Me.uuid)
-            {
-                ApplySwitch();
-            }
+            case "role":
+                ApplyRoles(netMsg.hammerId, netMsg.moleId);
+                break;
+
+            case "switch":
+                if (netMsg.requesterUuid != room.Me.uuid)
+                {
+                    // Opponent switched: reset both ready states, then swap our role
+                    ResetBothReadyStates();
+                    ApplySwitch();
+                }
+                break;
+
+            case "ready":
+                if (netMsg.requesterUuid != room.Me.uuid)
+                {
+                    IsOpponentReady = true;
+                    OnOpponentReadyChanged?.Invoke(IsOpponentReady);
+                    Debug.Log("[RoleManager] Opponent is ready.");
+                    CheckGameStart();
+                }
+                break;
+
+            case "unready":
+                if (netMsg.requesterUuid != room.Me.uuid)
+                {
+                    IsOpponentReady = false;
+                    OnOpponentReadyChanged?.Invoke(IsOpponentReady);
+                    Debug.Log("[RoleManager] Opponent un-readied.");
+                }
+                break;
         }
     }
 
@@ -207,5 +285,36 @@ public class RoleManager : MonoBehaviour
         }
 
         OnRoleChanged?.Invoke(LocalRole);
+    }
+
+    /// <summary>
+    /// Resets both local and opponent ready states. Called whenever a switch occurs,
+    /// since a switch invalidates whatever both players previously agreed to.
+    /// </summary>
+    void ResetBothReadyStates()
+    {
+        if (IsLocalReady)
+        {
+            IsLocalReady = false;
+            OnReadyChanged?.Invoke(IsLocalReady);
+            Debug.Log("[RoleManager] Local ready reset due to role switch.");
+        }
+        if (IsOpponentReady)
+        {
+            IsOpponentReady = false;
+            OnOpponentReadyChanged?.Invoke(IsOpponentReady);
+            Debug.Log("[RoleManager] Opponent ready reset due to role switch.");
+        }
+    }
+
+    void CheckGameStart()
+    {
+        if (gameStarted) return;
+        if (IsLocalReady && IsOpponentReady)
+        {
+            gameStarted = true;
+            Debug.Log("[RoleManager] Both players ready — game starting!");
+            OnGameStart?.Invoke();
+        }
     }
 }
