@@ -8,6 +8,7 @@ public class RoleManager : MonoBehaviour
 {
     public enum Role
     {
+        NotInRoom,
         None,
         Hammer,
         Mole
@@ -16,7 +17,10 @@ public class RoleManager : MonoBehaviour
     private NetworkContext context;
     private RoomClient room;
 
-    public Role LocalRole { get; private set; } = Role.None;
+    public Role LocalRole { get; private set; } = Role.NotInRoom;
+
+    // Fires whenever the local role changes (including the initial None state)
+    public event Action<Role> OnRoleChanged;
 
     private bool rolesAssigned = false;
 
@@ -37,6 +41,19 @@ public class RoleManager : MonoBehaviour
         //context += OnMessage;
         room.OnPeerAdded.AddListener(OnPeerChanged);
         room.OnPeerRemoved.AddListener(OnPeerChanged);
+        room.OnJoinedRoom.AddListener(OnJoinedRoom);
+
+        // Notify UI of initial pending state
+        OnRoleChanged?.Invoke(LocalRole);
+    }
+
+    void OnJoinedRoom(IRoom joinedRoom)
+    {
+        if (LocalRole == Role.NotInRoom)
+        {
+            LocalRole = Role.None;
+            OnRoleChanged?.Invoke(LocalRole);
+        }
     }
 
     void OnPeerChanged(IPeer peer)
@@ -113,8 +130,6 @@ public class RoleManager : MonoBehaviour
             LocalRole = Role.None;
         }
 
-        // TODO:
-        // Trigger UI update here
-        // e.g. OnRoleAssigned?.Invoke(LocalRole);
+        OnRoleChanged?.Invoke(LocalRole);
     }
 }
