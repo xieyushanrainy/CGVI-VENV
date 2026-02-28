@@ -93,6 +93,9 @@ public class RolePanelController : MonoBehaviour
             return;
         }
 
+        bool hasRole = role == RoleManager.Role.Hammer || role == RoleManager.Role.Mole;
+        SetLobbyElementsVisible(hasRole);
+
         switch (role)
         {
             case RoleManager.Role.Hammer:
@@ -140,6 +143,18 @@ public class RolePanelController : MonoBehaviour
         if (switchButton != null) switchButton.interactable = false;
         if (readyButton  != null) readyButton.interactable  = false;
         if (roleText     != null) roleText.text += "\nGame Starting!";
+    }
+
+    // ------------------------------------------------------------------ //
+    //  Visibility helpers
+    // ------------------------------------------------------------------ //
+
+    private void SetLobbyElementsVisible(bool visible)
+    {
+        if (switchesText      != null) switchesText.gameObject.SetActive(visible);
+        if (switchButton      != null) switchButton.gameObject.SetActive(visible);
+        if (readyButton       != null) readyButton.gameObject.SetActive(visible);
+        if (opponentStatusText != null) opponentStatusText.gameObject.SetActive(visible);
     }
 
     // ------------------------------------------------------------------ //
