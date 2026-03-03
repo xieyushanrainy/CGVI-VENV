@@ -12,6 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/waack_mole.unity
     guid: 45b200402d9ff5d469f557456feaa582
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 55c8f9c5528e94f8e9e9597cc099fb4e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b72fb59db78944342869a5dd3c9b972c, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 076bcc350a1344d6a929c803ab1202d2, type: 2}
   m_UseUCBPForAssetBundles: 0
