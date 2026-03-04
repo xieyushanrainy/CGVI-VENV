@@ -236,6 +236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Origin Hands (XR Rig)
       objectReference: {fileID: 0}
+    - target: {fileID: 2218496723442559054, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6398742847350777855, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1594,7 +1598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6833627161008461517, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
       propertyPath: gameSceneName
-      value: SampleScene
+      value: waack_mole
       objectReference: {fileID: 0}
     - target: {fileID: 7047559292430039309, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
       propertyPath: m_AnchorMax.y
