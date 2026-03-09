@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EnterRoomScene.unity
     guid: 2de505d34345ab340bdde30d419b24eb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/waack_mole.unity
     guid: 45b200402d9ff5d469f557456feaa582
+  - enabled: 1
+    path: Assets/Scenes/MotionTest.unity
+    guid: 7ea7e3552d5b81343a5b8b3948fb8f95
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 55c8f9c5528e94f8e9e9597cc099fb4e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
