@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Ubiq.Avatars;
 
 /// <summary>
 /// Drives the Role Panel UI: role text, switches remaining, Switch button,
@@ -151,6 +152,18 @@ public class RolePanelController : MonoBehaviour
 
         // Carry role to next scene, then load it
         GameData.LocalRole = roleManager.LocalRole;
+
+        // Clear lobby avatars: AvatarManager.UpdateLocalAvatar will despawn them
+        // when avatarPrefab is null, preventing them from appearing in the arena.
+        var avatarManager = FindFirstObjectByType<Ubiq.Avatars.AvatarManager>();
+        if (avatarManager != null)
+            avatarManager.avatarPrefab = null;
+
+        // Hide the lobby menu so it doesn't carry over into the arena scene.
+        var socialMenu = FindFirstObjectByType<Ubiq.Samples.SocialMenu>();
+        if (socialMenu != null)
+            socialMenu.gameObject.SetActive(false);
+
         SceneManager.LoadScene(gameSceneName);
     }
 
