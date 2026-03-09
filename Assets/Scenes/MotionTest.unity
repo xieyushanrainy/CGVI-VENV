@@ -1174,13 +1174,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1692333543}
     - target: {fileID: 5369586552978483574, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      propertyPath: offlineMockMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5369586552978483574, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: moleBoxTransform
       value: 
       objectReference: {fileID: 1018158279}
     - target: {fileID: 5369586552978483574, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: xrCameraTransform
       value: 
-      objectReference: {fileID: 828917925}
+      objectReference: {fileID: 828917924}
     - target: {fileID: 5369586552978483574, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: rightHandTransform
       value: 
@@ -1191,7 +1195,7 @@ PrefabInstance:
       objectReference: {fileID: 882975537}
     - target: {fileID: 6876902601617752928, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: moleBoxTransform
@@ -1948,7 +1952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4579180173848180515, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
