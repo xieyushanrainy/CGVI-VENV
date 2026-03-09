@@ -20,10 +20,6 @@ public class RoleBasedSpawner : MonoBehaviour
     [SerializeField] private GameObject hammerObject;
     [SerializeField] private GameObject moleObject;
 
-    [Header("Opponent Role-Specific Objects")]
-    [SerializeField] private GameObject opponentHammerObject;
-    [SerializeField] private GameObject opponentMoleObject;
-
     /// <summary>
     /// Exposed publicly so the role can be overridden in the Inspector during
     /// development / testing. At runtime this is overwritten from GameData.
@@ -65,19 +61,18 @@ public class RoleBasedSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Enables the object that matches the player's role and disables the other.
-    /// Also enables the opponent's matching object and disables the other.
+    /// Enables the local object that matches the player's role and disables the other.
+    /// Opponent objects (OpponentHammer, OpponentMole) are intentionally NOT touched here.
+    /// Their activation is owned entirely by RemoteRolePoseReceiver, which sets them
+    /// based on the authoritative role message received from the remote player over Ubiq.
+    /// Duplicating that logic here would cause a race between the two scripts at Start.
     /// </summary>
     private void ApplyRoleObjects()
     {
         bool isHammer = playerRole == RoleManager.Role.Hammer;
 
-        SetActive(hammerObject,         isHammer,  "hammerObject");
-        SetActive(moleObject,           !isHammer, "moleObject");
-
-        // Opponent is always the opposite role.
-        SetActive(opponentHammerObject, !isHammer, "opponentHammerObject");
-        SetActive(opponentMoleObject,   isHammer,  "opponentMoleObject");
+        SetActive(hammerObject, isHammer,  "hammerObject");
+        SetActive(moleObject,   !isHammer, "moleObject");
     }
 
     /// <summary>
