@@ -1965,6 +1965,11 @@ Transform:
   - {fileID: 1855779451}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &607027584 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 202364688, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1769828698}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &756837583
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,14 +2714,14 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!4 &970486351 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1767192434, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1769828698}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1003077002 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1680501586, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1769828698}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1003077003 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1680501587, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 1769828698}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1003077004
@@ -2731,8 +2736,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db66c94594e82c34fa19f7774813c335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Raiser
-  headCamera: {fileID: 970486351}
-  yMultiplier: 80
+  controller: {fileID: 607027584}
+  cameraOffset: {fileID: 1003077003}
+  triggerAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Trigger
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 8f108998-ff7c-4382-a462-1cb05cdc02dd
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 1159612554}
+  sensitivity: 2
 --- !u!1 &1108298538
 GameObject:
   m_ObjectHideFlags: 0
@@ -2966,6 +2984,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156002756}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1159612554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Left Interaction/Activate
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 5ef0ada88d17780448f0b4b4b7a1ea3e, type: 3}
+  m_ActionId: 0c0991c5-d329-4afc-8892-1076b440477c
 --- !u!1 &1398077242
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,7 +3874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 2.85
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_LocalPosition.z
