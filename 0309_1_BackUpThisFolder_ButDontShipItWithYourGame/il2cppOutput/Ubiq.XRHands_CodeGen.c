@@ -1,0 +1,120 @@
+﻿#include "pch-c.h"
+
+
+#include "codegen/il2cpp-codegen-metadata.h"
+
+
+
+
+
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mDA046F13F8DC18EE79900BA060EF5ABCC5FAFE30 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mF108D4FAFC1E2DF468DACEC442DDA6E52B34858C (void);
+extern void HandSkeletonAvatarInputXRHands_Start_m0F98731E80C1CAB457C5CD2C5288B6F8D0D352E7 (void);
+extern void HandSkeletonAvatarInputXRHands_Update_m5E3D9A45909732B87B9A3FA71EE8CCFC7931D07D (void);
+extern void HandSkeletonAvatarInputXRHands_OnDestroy_m4A03499F05728B59A2D2E390A6886A8E1EA3A8D1 (void);
+extern void HandSkeletonAvatarInputXRHands_Left_m556484AA8711981D24CB8BD453E6996F8FECC92F (void);
+extern void HandSkeletonAvatarInputXRHands_Right_m983CA75C5B71FF248FE3DF2DE9CBA4966D8A7087 (void);
+extern void HandSkeletonAvatarInputXRHands_Require_m389C24C228AF812975CF2D7A67DA24B1CF582B70 (void);
+extern void HandSkeletonAvatarInputXRHands_SetSubsystem_m60B945081FA44530DC1E83E14C34E6FAF5F7DF98 (void);
+extern void HandSkeletonAvatarInputXRHands_ClearSubsystem_mF99728558509D85408300CF986D4212859195818 (void);
+extern void HandSkeletonAvatarInputXRHands_Subsystem_Updated_m3A5CF6231387DA8A25228B91531CC79796970849 (void);
+extern void HandSkeletonAvatarInputXRHands_Subsystem_Changed_mFA7003C131EDF8508340BB90CF9BB395D1C7729B (void);
+extern void HandSkeletonAvatarInputXRHands_ToUnityJointID_mAFC9E0A60C23186DDF39C1EAB60F7C5B8619298F (void);
+extern void HandSkeletonAvatarInputXRHands_PollLeft_mAFEC328AF3EBB44B3D293F928AC3EFDA9CC88A4D (void);
+extern void HandSkeletonAvatarInputXRHands_PollRight_m510B00BC2EE0B08451492D7FBA5966FE5F450C29 (void);
+extern void HandSkeletonAvatarInputXRHands_GetHandLeft_mFE8720A8637F4F2ED8446B7B6D7E5505DC45FBF3 (void);
+extern void HandSkeletonAvatarInputXRHands_GetHandRight_m7CA4C27B0EAF8CAA6544B3021DE853B4C16A3929 (void);
+extern void HandSkeletonAvatarInputXRHands_Poll_m9195F2162A979F212C888800A91DC818F9081DA2 (void);
+extern void HandSkeletonAvatarInputXRHands_Invalidate_mB5424D4F09E1154A76720F58DCFC96A7118051F5 (void);
+extern void HandSkeletonAvatarInputXRHands_SetDirty_m2563776536642021356B6FC37211096FB83F99A3 (void);
+extern void HandSkeletonAvatarInputXRHands__ctor_m75123EC8FCEA2A4BE230C7884319CF23A6232CDD (void);
+extern void HandSkeletonAvatarInputXRHands__cctor_m6AE4C39CA815886797519D1E15E4F1D443E35A4B (void);
+extern void HandSkeletonInput_get_priority_m0E5C27D2DABD8D6A26EC08860FF767580FC11A81 (void);
+extern void HandSkeletonInput_get_active_m789DE8185ABCC01ABC5F7106DD3088B953BA72D6 (void);
+extern void HandSkeletonInput_get_leftHandSkeleton_m05DCC303943FE33F49AB249889C8BFCDB7B7C2B1 (void);
+extern void HandSkeletonInput_get_rightHandSkeleton_mDD80934A6D1C5FC849D45CEB6CC538ADB6FDD69B (void);
+extern void HandSkeletonInput__ctor_m919D2E876E8FCE8DF59488DF6256F742057F5FD7 (void);
+extern void WritableSkeleton__ctor_m882EE362DCF5C9DFCEAAFFDE5BEA541B6452059F (void);
+static Il2CppMethodPointer s_methodPointers[28] = 
+{
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mDA046F13F8DC18EE79900BA060EF5ABCC5FAFE30,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mF108D4FAFC1E2DF468DACEC442DDA6E52B34858C,
+	HandSkeletonAvatarInputXRHands_Start_m0F98731E80C1CAB457C5CD2C5288B6F8D0D352E7,
+	HandSkeletonAvatarInputXRHands_Update_m5E3D9A45909732B87B9A3FA71EE8CCFC7931D07D,
+	HandSkeletonAvatarInputXRHands_OnDestroy_m4A03499F05728B59A2D2E390A6886A8E1EA3A8D1,
+	HandSkeletonAvatarInputXRHands_Left_m556484AA8711981D24CB8BD453E6996F8FECC92F,
+	HandSkeletonAvatarInputXRHands_Right_m983CA75C5B71FF248FE3DF2DE9CBA4966D8A7087,
+	HandSkeletonAvatarInputXRHands_Require_m389C24C228AF812975CF2D7A67DA24B1CF582B70,
+	HandSkeletonAvatarInputXRHands_SetSubsystem_m60B945081FA44530DC1E83E14C34E6FAF5F7DF98,
+	HandSkeletonAvatarInputXRHands_ClearSubsystem_mF99728558509D85408300CF986D4212859195818,
+	HandSkeletonAvatarInputXRHands_Subsystem_Updated_m3A5CF6231387DA8A25228B91531CC79796970849,
+	HandSkeletonAvatarInputXRHands_Subsystem_Changed_mFA7003C131EDF8508340BB90CF9BB395D1C7729B,
+	HandSkeletonAvatarInputXRHands_ToUnityJointID_mAFC9E0A60C23186DDF39C1EAB60F7C5B8619298F,
+	HandSkeletonAvatarInputXRHands_PollLeft_mAFEC328AF3EBB44B3D293F928AC3EFDA9CC88A4D,
+	HandSkeletonAvatarInputXRHands_PollRight_m510B00BC2EE0B08451492D7FBA5966FE5F450C29,
+	HandSkeletonAvatarInputXRHands_GetHandLeft_mFE8720A8637F4F2ED8446B7B6D7E5505DC45FBF3,
+	HandSkeletonAvatarInputXRHands_GetHandRight_m7CA4C27B0EAF8CAA6544B3021DE853B4C16A3929,
+	HandSkeletonAvatarInputXRHands_Poll_m9195F2162A979F212C888800A91DC818F9081DA2,
+	HandSkeletonAvatarInputXRHands_Invalidate_mB5424D4F09E1154A76720F58DCFC96A7118051F5,
+	HandSkeletonAvatarInputXRHands_SetDirty_m2563776536642021356B6FC37211096FB83F99A3,
+	HandSkeletonAvatarInputXRHands__ctor_m75123EC8FCEA2A4BE230C7884319CF23A6232CDD,
+	HandSkeletonAvatarInputXRHands__cctor_m6AE4C39CA815886797519D1E15E4F1D443E35A4B,
+	HandSkeletonInput_get_priority_m0E5C27D2DABD8D6A26EC08860FF767580FC11A81,
+	HandSkeletonInput_get_active_m789DE8185ABCC01ABC5F7106DD3088B953BA72D6,
+	HandSkeletonInput_get_leftHandSkeleton_m05DCC303943FE33F49AB249889C8BFCDB7B7C2B1,
+	HandSkeletonInput_get_rightHandSkeleton_mDD80934A6D1C5FC849D45CEB6CC538ADB6FDD69B,
+	HandSkeletonInput__ctor_m919D2E876E8FCE8DF59488DF6256F742057F5FD7,
+	WritableSkeleton__ctor_m882EE362DCF5C9DFCEAAFFDE5BEA541B6452059F,
+};
+static const int32_t s_InvokerIndices[28] = 
+{
+	32694,
+	19386,
+	19386,
+	19386,
+	19386,
+	19026,
+	19026,
+	6128,
+	14755,
+	19386,
+	3242,
+	14996,
+	30539,
+	19386,
+	19386,
+	19405,
+	19405,
+	7514,
+	31222,
+	27869,
+	19386,
+	32630,
+	19068,
+	18919,
+	19026,
+	19026,
+	14755,
+	19386,
+};
+IL2CPP_EXTERN_C const Il2CppCodeGenModule g_Ubiq_XRHands_CodeGenModule;
+const Il2CppCodeGenModule g_Ubiq_XRHands_CodeGenModule = 
+{
+	"Ubiq.XRHands.dll",
+	28,
+	s_methodPointers,
+	0,
+	NULL,
+	s_InvokerIndices,
+	0,
+	NULL,
+	0,
+	NULL,
+	0,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
