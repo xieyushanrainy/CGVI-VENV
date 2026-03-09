@@ -1598,7 +1598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6833627161008461517, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
       propertyPath: gameSceneName
-      value: waack_mole
+      value: MotionTest
       objectReference: {fileID: 0}
     - target: {fileID: 7047559292430039309, guid: 773f55445d3b24e5b92f7483a75ef2ca, type: 3}
       propertyPath: m_AnchorMax.y
