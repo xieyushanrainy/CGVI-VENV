@@ -17,9 +17,10 @@ public class hammerScore : MonoBehaviour
         scoreText.text = $"{score}";
     }
 
-    public void hit()
+    public int hit()
     {
         score = score + updateScore;
-        scoreText.text = $"{score}";
+        //scoreText.text = $"{score}";
+        return score;
     }
 }
