@@ -71,6 +71,11 @@ public class RemoteRolePoseReceiver : MonoBehaviour
              "Recommended range: 10–20 for a responsive XR feel.")]
     [SerializeField] private float positionLerpSpeed = 15f;
 
+    [Tooltip("Euler angle offset applied to the OpponentMole to preserve the " +
+             "model's baked-in rotation (e.g. 90° around Z). " +
+             "Must match the modelRotationOffset set on MoleFollow.")]
+    [SerializeField] private Vector3 moleModelRotationOffset = new Vector3(0f, 0f, 90f);
+
     // -------------------------------------------------------------------------
     //  Private state
     // -------------------------------------------------------------------------
@@ -108,7 +113,7 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 // Only interpolate while the mole is actually visible on screen.
                 if (remoteVisible)
                 {
-                    LerpToTarget(opponentMole);
+                    LerpToTarget(opponentMole, isMole: true);
                 }
                 else
                 {
@@ -167,6 +172,7 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 if (remoteVisible && moleWasHidden && opponentMole != null)
                 {
                     opponentMole.transform.position = targetPosition;
+                    opponentMole.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
                     Debug.Log($"[RemoteRolePoseReceiver] OpponentMole SNAPPED to {targetPosition:F2} (was hidden)");
                 }
 
@@ -182,13 +188,15 @@ public class RemoteRolePoseReceiver : MonoBehaviour
     //  Helpers
     // -------------------------------------------------------------------------
 
-    private void LerpToTarget(GameObject obj)
+    private void LerpToTarget(GameObject obj, bool isMole = false)
     {
         if (obj == null) return;
         obj.transform.position = Vector3.Lerp(
             obj.transform.position,
             targetPosition,
             positionLerpSpeed * Time.deltaTime);
+        if (isMole)
+            obj.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
     }
 
     private void SetActive(GameObject obj, bool active, string label)

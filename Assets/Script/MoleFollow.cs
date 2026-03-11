@@ -27,6 +27,10 @@ public class MoleFollow : MonoBehaviour
              "When false the Mole keeps a fixed world rotation.")]
     [SerializeField] private bool matchYaw = true;
 
+    [Tooltip("Euler angle offset applied on top of the yaw rotation to preserve " +
+             "the model's initial baked-in rotation (e.g. 90° around Z).")]
+    [SerializeField] private Vector3 modelRotationOffset = new Vector3(0f, 0f, 90f);
+
     // -------------------------------------------------------------------------
 
     private void Start()
@@ -69,11 +73,11 @@ public class MoleFollow : MonoBehaviour
         if (matchYaw)
         {
             float yaw = cameraTransform.eulerAngles.y;
-            transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+            transform.rotation = Quaternion.Euler(modelRotationOffset.x, yaw + modelRotationOffset.y, modelRotationOffset.z);
         }
         else
         {
-            transform.rotation = Quaternion.identity;
+            transform.rotation = Quaternion.Euler(modelRotationOffset);
         }
     }
 }
