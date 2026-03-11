@@ -576,6 +576,7 @@ GameObject:
   - component: {fileID: 297051198}
   - component: {fileID: 297051197}
   - component: {fileID: 297051201}
+  - component: {fileID: 297051202}
   m_Layer: 0
   m_Name: Anchor1
   m_TagString: Untagged
@@ -773,6 +774,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorIdMarker
   id: 0
+--- !u!114 &297051202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297051195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07027a2d0847a4d718f8f2fc9444064a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportPointGlow
+  normalMaterial: {fileID: 2100000, guid: 6a4563e560d405d43bf2565c1cb0fa71, type: 2}
+  glowMaterial: {fileID: 2100000, guid: e2fc4d75622471f49b309b0e9f20e25c, type: 2}
 --- !u!1 &303530847
 GameObject:
   m_ObjectHideFlags: 0
@@ -1282,6 +1297,7 @@ GameObject:
   - component: {fileID: 529927029}
   - component: {fileID: 529927028}
   - component: {fileID: 529927032}
+  - component: {fileID: 529927033}
   m_Layer: 0
   m_Name: Anchor4
   m_TagString: Untagged
@@ -1479,6 +1495,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorIdMarker
   id: 3
+--- !u!114 &529927033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529927026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07027a2d0847a4d718f8f2fc9444064a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportPointGlow
+  normalMaterial: {fileID: 2100000, guid: 6a4563e560d405d43bf2565c1cb0fa71, type: 2}
+  glowMaterial: {fileID: 2100000, guid: e2fc4d75622471f49b309b0e9f20e25c, type: 2}
 --- !u!1 &540335248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1993,6 +2023,7 @@ GameObject:
   - component: {fileID: 715268231}
   - component: {fileID: 715268230}
   - component: {fileID: 715268234}
+  - component: {fileID: 715268235}
   m_Layer: 0
   m_Name: Anchor2
   m_TagString: Untagged
@@ -2190,6 +2221,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorIdMarker
   id: 1
+--- !u!114 &715268235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715268228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07027a2d0847a4d718f8f2fc9444064a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportPointGlow
+  normalMaterial: {fileID: 2100000, guid: 6a4563e560d405d43bf2565c1cb0fa71, type: 2}
+  glowMaterial: {fileID: 2100000, guid: e2fc4d75622471f49b309b0e9f20e25c, type: 2}
 --- !u!4 &751268098 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 454640276783855465, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
@@ -2358,6 +2403,7 @@ GameObject:
   - component: {fileID: 915545342}
   - component: {fileID: 915545341}
   - component: {fileID: 915545345}
+  - component: {fileID: 915545346}
   m_Layer: 0
   m_Name: Anchor5
   m_TagString: Untagged
@@ -2555,6 +2601,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorIdMarker
   id: 4
+--- !u!114 &915545346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915545339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07027a2d0847a4d718f8f2fc9444064a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportPointGlow
+  normalMaterial: {fileID: 2100000, guid: 6a4563e560d405d43bf2565c1cb0fa71, type: 2}
+  glowMaterial: {fileID: 2100000, guid: e2fc4d75622471f49b309b0e9f20e25c, type: 2}
 --- !u!1001 &976339857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2905,6 +2965,7 @@ GameObject:
   - component: {fileID: 1362302630}
   - component: {fileID: 1362302629}
   - component: {fileID: 1362302633}
+  - component: {fileID: 1362302634}
   m_Layer: 0
   m_Name: Anchor3
   m_TagString: Untagged
@@ -3102,6 +3163,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorIdMarker
   id: 2
+--- !u!114 &1362302634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362302627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07027a2d0847a4d718f8f2fc9444064a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportPointGlow
+  normalMaterial: {fileID: 2100000, guid: 6a4563e560d405d43bf2565c1cb0fa71, type: 2}
+  glowMaterial: {fileID: 2100000, guid: e2fc4d75622471f49b309b0e9f20e25c, type: 2}
 --- !u!43 &1378304190
 Mesh:
   m_ObjectHideFlags: 0
