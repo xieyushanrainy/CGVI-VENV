@@ -3,7 +3,7 @@ using UnityEngine;
 public class ScaledHandMovement : MonoBehaviour
 {
     public Transform trackedController;
-    public float movementScale = 8f;
+    public float movementScale = 3f;
 
     [Tooltip("Euler angle offset applied on top of the controller rotation to preserve " +
              "the mesh's baked-in initial rotation (e.g. 90° around X).")]

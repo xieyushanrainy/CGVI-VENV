@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class Raiser : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class Raiser : MonoBehaviour
 
             if (!controlling)
             {
-                // 第一次按下trigger，记录当前位置
                 lastY = currentY;
                 controlling = true;
                 return;
@@ -38,6 +38,7 @@ public class Raiser : MonoBehaviour
 
             Vector3 pos = cameraOffset.localPosition;
             pos.y += delta * sensitivity;
+            pos.y = Math.Clamp(pos.y, 0.07f, 3.64f);
 
             cameraOffset.localPosition = pos;
 
