@@ -12,18 +12,34 @@ public class Timer : MonoBehaviour
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] float remainingTime;
     int lastDisplayedSecond = -1;
+    bool startTimer = false;
+
+    bool warning = false;
     // Update is called once per frame
     void Update()
-    {   
-        timerUpdate();
+    {   if (startTimer)
+            timerUpdate();
+    }
+    public void startGame()
+    {
+        startTimer = true;
     }
     public void timerUpdate()
     {
         if (remainingTime <= 0)
         {
             remainingTime = 0;
-            return;
-            // GameOver();
+            startTimer = false;
+            FindObjectOfType<canvasControl>().End();
+            return;         
+        }
+
+        if (remainingTime < 10.0 && warning == false)
+        {
+            timerText.color = Color.red;
+            timerText.fontStyle = FontStyles.Bold;
+            timerText.fontSize = 55;
+            warning = true;
         }
 
         remainingTime -= Time.deltaTime;

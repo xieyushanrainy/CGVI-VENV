@@ -28,7 +28,7 @@ public struct ScoreUpdateMessage
     /// Accumulated mole exposure score this round (seconds × molePointsPerSecond).
     /// Tracks how long / bravely the mole player has been exposed.
     /// </summary>
-    public float moleScore;
+    public int moleScore;
 
     /// <summary>
     /// Active hole id (0–4) at the time this message was sent.

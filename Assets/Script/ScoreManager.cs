@@ -82,7 +82,7 @@ public class ScoreManager : MonoBehaviour
     [Tooltip("Score points added to the Mole player per second of exposure.\n" +
              "Accumulated continuously in Update() while isVisible == true.\n" +
              "Set to 0 if you only want hit-count vs. survival-time comparison.")]
-    [SerializeField] private float molePointsPerSecond = 1f;
+    [SerializeField] private int molePointsPerSecond = 1;
 
     [Header("Hit Validation")]
     [Tooltip("Maximum distance (metres) the reported hammer position may be\n" +
@@ -110,7 +110,7 @@ public class ScoreManager : MonoBehaviour
     public int   HammerScore { get; private set; }
 
     /// <summary>Total mole exposure score (seconds × molePointsPerSecond).</summary>
-    public float MoleScore   { get; private set; }
+    public int   MoleScore   { get; private set; }
 
     // -------------------------------------------------------------------------
     //  Events
@@ -210,8 +210,11 @@ public class ScoreManager : MonoBehaviour
         // ── Accumulate mole exposure score while visible ───────────────────────
         // This runs every frame so the mole score grows smoothly in real time.
         if (currentMoleState.isVisible)
-            MoleScore += molePointsPerSecond * Time.deltaTime;
-
+            MoleScore = FindObjectOfType<moleScore>().addScore(molePointsPerSecond);// += molePointsPerSecond * Time.deltaTime;
+        else
+        {
+            FindObjectOfType<moleScore>().clear();
+        }
         // ── Periodic re-broadcast ──────────────────────────────────────────────
         broadcastTimer -= Time.deltaTime;
         if (broadcastTimer <= 0f)
@@ -261,7 +264,7 @@ public class ScoreManager : MonoBehaviour
         // when the mole hides (rather than waiting for the next interval tick).
         if (!msg.isVisible && wasPreviouslyVisible)
         {
-            Debug.Log($"[ScoreManager] Mole hidden | moleScore={MoleScore:F2}");
+            Debug.Log($"[ScoreManager] Mole hidden | moleScore={MoleScore}");
             BroadcastScore();
         }
     }
@@ -322,9 +325,11 @@ public class ScoreManager : MonoBehaviour
         }
 
         // ── Valid hit — award hammer score and lock this exposure ──────────────
-        HammerScore                   += hammerPointsPerHit;
+        HammerScore                    = FindObjectOfType<hammerScore>().hit(); // += hammerPointsPerHit;
         currentExposureHit             = true;
         lastScoredExposureSequence     = currentMoleState.exposureSequence;
+        
+        FindObjectOfType<moleScore>().hit();
 
         Debug.Log($"[ScoreManager] *** HIT SCORED *** hammerScore={HammerScore} | " +
                   $"holeId={msg.holeId} seq={currentMoleState.exposureSequence}");
@@ -385,7 +390,7 @@ public class ScoreManager : MonoBehaviour
         MoleScore   = update.moleScore;
 
         Debug.Log($"[ScoreManager] Score synced from authority | " +
-                  $"hammer={HammerScore} mole={MoleScore:F2}");
+                  $"hammer={HammerScore} mole={MoleScore}");
 
         OnScoreUpdated?.Invoke(update);
     }

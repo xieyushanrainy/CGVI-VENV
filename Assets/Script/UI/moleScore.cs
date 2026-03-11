@@ -25,8 +25,13 @@ public class moleScore : MonoBehaviour
     {
         updateScore = baseScore;
     }
+    public void clear()
+    {
+        upTime = 0;
+        updateScore = 0;
+    }
 
-    void addScore()
+    public int addScore(int molePointsPerSecond)
     {
         upTime += Time.deltaTime;
 
@@ -36,7 +41,7 @@ public class moleScore : MonoBehaviour
         {
             lastSecond = totalSeconds;
             score = score + updateScore;
-            scoreText.text = $"{score}";
+            //scoreText.text = $"{score}";
             
             if (totalSeconds % 3 == 0)
             {
@@ -44,7 +49,7 @@ public class moleScore : MonoBehaviour
             }
 
         }
-        
+        return score;   
     }
     void Update()
     {   
@@ -52,9 +57,15 @@ public class moleScore : MonoBehaviour
     }
     public void hit()
     {
-        score --;
-        upTime = 0;
-        updateScore = 0;
-        FindObjectOfType<damageEffect>().FlashDamage();
+        // score --;
+        clear();
+        if (GameData.LocalRole == RoleManager.Role.Mole)
+        {
+            FindObjectOfType<damageEffect>().FlashDamage();
+        }
+    }
+    public void updateText(int curScore)
+    {
+        scoreText.text = $"{curScore}";
     }
 }
