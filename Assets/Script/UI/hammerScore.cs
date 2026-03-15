@@ -23,4 +23,8 @@ public class hammerScore : MonoBehaviour
         //scoreText.text = $"{score}";
         return score;
     }
+    public void updateText(int curScore)
+    {
+        scoreText.text = $"{curScore}";
+    }
 }
