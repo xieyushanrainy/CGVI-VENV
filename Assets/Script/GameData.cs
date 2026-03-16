@@ -4,5 +4,5 @@
 /// </summary>
 public static class GameData
 {
-    public static RoleManager.Role LocalRole = RoleManager.Role.Hammer;// { get; set; }
+    public static RoleManager.Role LocalRole { get; set; }
 }
