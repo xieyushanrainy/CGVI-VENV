@@ -143,6 +143,10 @@ public class ScoreManager : MonoBehaviour
     // Periodic broadcast timer.
     private float broadcastTimer;
 
+    // Cached UI score components.
+    private moleScore   moleScoreUI;
+    private hammerScore hammerScoreUI;
+
     // -------------------------------------------------------------------------
     //  Unity lifecycle
     // -------------------------------------------------------------------------
@@ -189,6 +193,20 @@ public class ScoreManager : MonoBehaviour
                                  "Drag it into the Inspector slot.", this);
         }
 
+        // ── Cache UI score components ─────────────────────────────────────────
+        moleScoreUI   = FindFirstObjectByType<moleScore>();
+        hammerScoreUI = FindFirstObjectByType<hammerScore>();
+
+        // ── Wire HUD updates — fires on both authority and non-authority ──────
+        // OnScoreUpdated is invoked by BroadcastScore() (authority) and
+        // ProcessMessage() (non-authority), so both clients update their UI
+        // through the same single path.
+        OnScoreUpdated += msg =>
+        {
+            if (moleScoreUI   != null) moleScoreUI.updateText(msg.moleScore);
+            if (hammerScoreUI != null) hammerScoreUI.updateText(msg.hammerScore);
+        };
+
         // ── Subscribe to events ───────────────────────────────────────────────
         if (moleTracker  != null) moleTracker.OnMoleStateUpdate  += HandleMoleState;
         if (hammerSender != null) hammerSender.OnHitAttemptEvent += HandleHitAttempt;
@@ -210,10 +228,9 @@ public class ScoreManager : MonoBehaviour
         // ── Accumulate mole exposure score while visible ───────────────────────
         // This runs every frame so the mole score grows smoothly in real time.
         if (currentMoleState.isVisible)
-            MoleScore = FindObjectOfType<moleScore>().addScore(molePointsPerSecond);// += molePointsPerSecond * Time.deltaTime;
-        else
         {
-            FindObjectOfType<moleScore>().clear();
+            if (moleScoreUI != null)
+                MoleScore = moleScoreUI.addScore(molePointsPerSecond);
         }
         // ── Periodic re-broadcast ──────────────────────────────────────────────
         broadcastTimer -= Time.deltaTime;
@@ -325,11 +342,11 @@ public class ScoreManager : MonoBehaviour
         }
 
         // ── Valid hit — award hammer score and lock this exposure ──────────────
-        HammerScore                    = FindObjectOfType<hammerScore>().hit(); // += hammerPointsPerHit;
+        HammerScore                    = (hammerScoreUI != null) ? hammerScoreUI.hit() : HammerScore + hammerPointsPerHit;
         currentExposureHit             = true;
         lastScoredExposureSequence     = currentMoleState.exposureSequence;
-        
-        FindObjectOfType<moleScore>().hit();
+
+        if (moleScoreUI != null) moleScoreUI.hit();
 
         Debug.Log($"[ScoreManager] *** HIT SCORED *** hammerScore={HammerScore} | " +
                   $"holeId={msg.holeId} seq={currentMoleState.exposureSequence}");

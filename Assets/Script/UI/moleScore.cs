@@ -28,7 +28,8 @@ public class moleScore : MonoBehaviour
     public void clear()
     {
         upTime = 0;
-        updateScore = 0;
+        lastSecond = -1;
+        updateScore = baseScore;
     }
 
     public int addScore(int molePointsPerSecond)
