@@ -490,7 +490,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timerText: {fileID: 96019958}
-  remainingTime: 10
 --- !u!114 &96019958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3339,7 +3338,7 @@ PrefabInstance:
       objectReference: {fileID: 7727797396231838765}
     - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: exposureThreshold
-      value: 0.4
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: xrCameraTransform
@@ -4640,7 +4639,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timerText: {fileID: 835802905}
-  remainingTime: 10
 --- !u!114 &835802905
 MonoBehaviour:
   m_ObjectHideFlags: 0
