@@ -4,6 +4,7 @@ using TMPro;
 public class canvasControl : MonoBehaviour
 {
     private ScoreManager scoreManager;
+    private TutorialReadyManager tutorialReadyManager;
     public GameObject playUI;
     public GameObject endGameUI;
     public GameObject moleReady;
@@ -32,12 +33,19 @@ public class canvasControl : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
         if (scoreManager != null)
             scoreManager.OnGameOver += HandleGameOver;
+
+        tutorialReadyManager = FindObjectOfType<TutorialReadyManager>();
+        if (tutorialReadyManager != null)
+            tutorialReadyManager.OnBothReady += StartGame;
     }
 
     private void OnDestroy()
     {
         if (scoreManager != null)
             scoreManager.OnGameOver -= HandleGameOver;
+
+        if (tutorialReadyManager != null)
+            tutorialReadyManager.OnBothReady -= StartGame;
     }
 
     private void HandleGameOver(ScoreUpdateMessage final)
