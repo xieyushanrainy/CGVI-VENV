@@ -136,7 +136,7 @@ public class HammerHitAttemptSender : MonoBehaviour
         // Track hammer velocity each frame so it is available the moment
         // OnTriggerEnter fires (which may occur in the same frame).
         float dt = Time.deltaTime;
-        if (dt > 0f)
+        if (dt > 0.1f)
             currentSwingSpeed = Vector3.Distance(transform.position, prevPosition) / dt;
         prevPosition = transform.position;
     }
