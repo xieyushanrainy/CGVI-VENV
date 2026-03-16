@@ -45,6 +45,7 @@ public class canvasControl : MonoBehaviour
     public void StartGame()
     {
         // Play UIs are already visible; no layout change needed when game starts.
+        if (scoreManager != null) scoreManager.BeginGame();
         FindObjectOfType<Timer>().startGame();
     }
 

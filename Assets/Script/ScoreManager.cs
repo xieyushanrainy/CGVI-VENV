@@ -153,6 +153,9 @@ public class ScoreManager : MonoBehaviour
     // Latched once the authority calls BroadcastGameOver — stops all further scoring.
     private bool gameOver;
 
+    // Set to true by BeginGame() when both players are ready and gameplay starts.
+    private bool gameStarted;
+
     // Cached UI score components.
     private moleScore   moleScoreUI;
     private hammerScore hammerScoreUI;
@@ -233,6 +236,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
+        if (!gameStarted)    return;
         if (!IsAuthority()) return;
         if (gameOver)        return;
 
@@ -250,6 +254,20 @@ public class ScoreManager : MonoBehaviour
             broadcastTimer = broadcastInterval;
             BroadcastScore();
         }
+    }
+
+    // -------------------------------------------------------------------------
+    //  Game start gate
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Call this when both players are ready and gameplay officially begins.
+    /// Scoring is suppressed until this is called.
+    /// </summary>
+    public void BeginGame()
+    {
+        gameStarted = true;
+        Debug.Log("[ScoreManager] Game started — scoring enabled.");
     }
 
     // -------------------------------------------------------------------------
@@ -316,6 +334,7 @@ public class ScoreManager : MonoBehaviour
 
         currentMoleState = msg;
 
+        if (!gameStarted)    return;
         if (!IsAuthority()) return;
 
         // ── New exposure begins: reset per-exposure hit guard  ─────────────────
@@ -352,6 +371,7 @@ public class ScoreManager : MonoBehaviour
 
     private void HandleHitAttempt(HitAttemptMessage msg)
     {
+        if (!gameStarted)    return;
         if (!IsAuthority()) return;
 
         // ── Validation 1: mole must currently be visible ──────────────────────
