@@ -21,9 +21,13 @@ public class ScaledHandMovement : MonoBehaviour
     Vector3 startAnchorPos;
     Vector3 startOffset;
 
+    bool initialized = false;
+
     void Start()
     {
-        Invoke(nameof(Init), 0.2f);
+        startControllerPos = trackedController.position;
+        startAnchorPos = transform.position;
+        startOffset = transform.position - startControllerPos;
     }
 
     void Init()
@@ -35,6 +39,16 @@ public class ScaledHandMovement : MonoBehaviour
 
     void Update()
     {
+        if (!initialized)
+        {
+            if (trackedController.position.y > 0.5f)
+            {
+                Init();
+                initialized = true;
+            }
+            return;
+        }
+
         if (recallAction.action.WasPressedThisFrame())
         {
             Recall();
