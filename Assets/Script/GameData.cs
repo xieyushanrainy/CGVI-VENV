@@ -4,7 +4,7 @@
 /// </summary>
 public static class GameData
 {
-    public static RoleManager.Role LocalRole { get; set; }
+    public static RoleManager.Role LocalRole { get; set; } // = RoleManager.Role.Hammer;//
     public static int MoleScore = 0;
     public static int HammerScore = 0;
     public static string GetWinner()
