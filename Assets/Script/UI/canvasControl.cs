@@ -71,5 +71,6 @@ public class canvasControl : MonoBehaviour
         moleReady.SetActive(false);
         hammerReady.SetActive(false);
         FindObjectOfType<FireworkSpawner>().PlayMultipleFireworksWithDelay();
+        // tab
     }
 }

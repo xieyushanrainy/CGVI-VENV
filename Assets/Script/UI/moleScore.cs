@@ -24,6 +24,9 @@ public class moleScore : MonoBehaviour
     void Start()
     {
         updateScore = baseScore;
+        score = 0;
+        lastSecond = -1;
+        upTime = 0;
     }
     public void clear()
     {
