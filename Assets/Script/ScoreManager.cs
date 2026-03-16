@@ -102,6 +102,10 @@ public class ScoreManager : MonoBehaviour
              "score to keep late-joining or desynced peers in sync.")]
     [SerializeField] private float broadcastInterval = 2f;
 
+    [Header("Debug")]
+    [Tooltip("Log every scoring decision: visibility checks, score accumulation, hit validation, and gate states.")]
+    [SerializeField] private bool verboseLogging = false;
+
     // -------------------------------------------------------------------------
     //  Public read-only score state
     // -------------------------------------------------------------------------
@@ -236,7 +240,12 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        if (!gameStarted)    return;
+        if (!gameStarted)
+        {
+            if (verboseLogging && currentMoleState.isVisible)
+                Debug.Log("[ScoreManager][VERBOSE] Mole visible but gameStarted=false — scoring suppressed.");
+            return;
+        }
         if (!IsAuthority()) return;
         if (gameOver)        return;
 
@@ -244,6 +253,9 @@ public class ScoreManager : MonoBehaviour
         // This runs every frame so the mole score grows smoothly in real time.
         if (currentMoleState.isVisible)
         {
+            if (verboseLogging)
+                Debug.Log($"[ScoreManager][VERBOSE] Accumulating mole score | current={MoleScore} " +
+                          $"boxTopY={moleTracker?.BoxTopY:F3} currentMoleStateIsVisible={currentMoleState.isVisible}");
             if (moleScoreUI != null)
                 MoleScore = moleScoreUI.addScore(molePointsPerSecond);
         }
@@ -328,13 +340,21 @@ public class ScoreManager : MonoBehaviour
         // Both authority and non-authority receive this event.  Only the
         // authority makes scoring decisions; non-authority stores the state
         // as a defensive measure in case it later becomes authority mid-session.
+
+        if (!gameStarted)
+        {
+            if (verboseLogging)
+                Debug.Log($"[ScoreManager][VERBOSE] MoleState received but gameStarted=false — state NOT stored | " +
+                          $"isVisible={msg.isVisible} holeId={msg.activeHoleId} seq={msg.exposureSequence}");
+            return;
+        }
+
         bool wasPreviouslyVisible = currentMoleState.isVisible;
         bool newExposureBegun     = msg.exposureSequence != currentMoleState.exposureSequence
                                     && msg.isVisible;
 
         currentMoleState = msg;
 
-        if (!gameStarted)    return;
         if (!IsAuthority()) return;
 
         // ── New exposure begins: reset per-exposure hit guard  ─────────────────
@@ -352,6 +372,10 @@ public class ScoreManager : MonoBehaviour
             currentExposureHit = false;
             Debug.Log($"[ScoreManager] Mole became visible | " +
                       $"holeId={msg.activeHoleId} seq={msg.exposureSequence}");
+            if (verboseLogging)
+                Debug.Log($"[ScoreManager][VERBOSE] Visibility ON | " +
+                          $"molePos={msg.molePosition} boxTopY={moleTracker?.BoxTopY:F3} " +
+                          $"msgIsVisible={msg.isVisible} gameStarted={gameStarted}");
         }
 
         // ── Transition: visible → hidden  ─────────────────────────────────────
@@ -371,13 +395,21 @@ public class ScoreManager : MonoBehaviour
 
     private void HandleHitAttempt(HitAttemptMessage msg)
     {
-        if (!gameStarted)    return;
+        if (!gameStarted)
+        {
+            if (verboseLogging)
+                Debug.Log($"[ScoreManager][VERBOSE] HitAttempt received but gameStarted=false | holeId={msg.holeId}");
+            return;
+        }
         if (!IsAuthority()) return;
 
         // ── Validation 1: mole must currently be visible ──────────────────────
         if (!currentMoleState.isVisible)
         {
-            Debug.Log($"[ScoreManager] Rejected — mole not visible | holeId={msg.holeId}");
+            if (verboseLogging)
+                Debug.Log($"[ScoreManager][VERBOSE] Rejected hit — mole not visible | holeId={msg.holeId}");
+            else
+                Debug.Log($"[ScoreManager] Rejected — mole not visible | holeId={msg.holeId}");
             return;
         }
 

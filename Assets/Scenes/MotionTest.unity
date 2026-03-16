@@ -3250,6 +3250,14 @@ PrefabInstance:
       propertyPath: hammerSender
       value: 
       objectReference: {fileID: 163818205}
+    - target: {fileID: 1130512549507339621, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      propertyPath: forceAuthority
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130512549507339621, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      propertyPath: verboseLogging
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2280267851227638483, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: xrOrigin
       value: 
@@ -3323,9 +3331,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      propertyPath: moleBoxTopY
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: moleBoxTransform
       value: 
-      objectReference: {fileID: 8868677866735428169}
+      objectReference: {fileID: 7727797396231838765}
+    - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      propertyPath: exposureThreshold
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 7588552878565787679, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: xrCameraTransform
       value: 
