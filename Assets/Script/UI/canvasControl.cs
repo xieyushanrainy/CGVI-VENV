@@ -5,31 +5,17 @@ public class canvasControl : MonoBehaviour
 {
     private ScoreManager scoreManager;
     private TutorialReadyManager tutorialReadyManager;
-    public GameObject playUI;
+    public GameObject molePlayUI;
+    public GameObject hammerPlayUI;
     public GameObject endGameUI;
-    public GameObject moleReady;
-    public GameObject hammerReady;
-    [SerializeField] TextMeshProUGUI readyText_mole;
-    [SerializeField] TextMeshProUGUI readyText_hammer;
     [SerializeField] TextMeshProUGUI winner;
 
     void Start()
     {
-        playUI.SetActive(false);
         endGameUI.SetActive(false);
-        if (GameData.LocalRole == RoleManager.Role.Mole)
-        {
-            moleReady.SetActive(true);
-            hammerReady.SetActive(false);
-        } else
-        {
-            moleReady.SetActive(false);
-            hammerReady.SetActive(true);
-        }
+        molePlayUI.SetActive(GameData.LocalRole == RoleManager.Role.Mole);
+        hammerPlayUI.SetActive(GameData.LocalRole != RoleManager.Role.Mole);
 
-        // Subscribe to the authoritative game-over event so End() is called on
-        // BOTH clients from the same Ubiq-synced trigger, not from each client's
-        // independent timer expiry.
         scoreManager = FindObjectOfType<ScoreManager>();
         if (scoreManager != null)
             scoreManager.OnGameOver += HandleGameOver;
@@ -53,29 +39,12 @@ public class canvasControl : MonoBehaviour
         End();
     }
 
-    public void moleClicked()
-    {
-        SetTextTransparency(readyText_mole, 1f);
-    }
-
-    public void hammerClicked()
-    {
-        SetTextTransparency(readyText_hammer, 1f);
-    }
-
-    private void SetTextTransparency(TextMeshProUGUI text, float alpha)
-    {
-        Color c = text.color;
-        c.a = alpha;
-        text.color = c;
-    }
+    public void moleClicked() { }
+    public void hammerClicked() { }
 
     public void StartGame()
     {
-        playUI.SetActive(true);
-        endGameUI.SetActive(false);
-        moleReady.SetActive(false);
-        hammerReady.SetActive(false);
+        // Play UIs are already visible; no layout change needed when game starts.
         FindObjectOfType<Timer>().startGame();
     }
 
@@ -92,10 +61,9 @@ public class canvasControl : MonoBehaviour
             winner.text = $"The winner is {text}!";
         }
         
-        playUI.SetActive(false);
+        molePlayUI.SetActive(false);
+        hammerPlayUI.SetActive(false);
         endGameUI.SetActive(true);
-        moleReady.SetActive(false);
-        hammerReady.SetActive(false);
         FindObjectOfType<FireworkSpawner>().PlayMultipleFireworksWithDelay();
         // tab
     }

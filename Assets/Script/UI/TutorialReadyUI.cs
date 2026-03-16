@@ -1,32 +1,31 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 // =============================================================================
 //  TutorialReadyUI.cs
 //
 //  Drives the Tutorial Ready panel UI:
-//    • Ready / Un-ready toggle button
-//    • Opponent status text
-//    • Hides (or disables) the panel once both players are ready
+//    • Local and opponent ready state text (no button — ready is triggered via
+//      the XR right-hand activate action wired in TutorialReadyManager)
+//    • Hides the panel once both players are ready
 //
 //  SETUP
 //  -----
 //  1. Attach this component to any GameObject in the arena scene
 //     (e.g. the root of your Tutorial Ready canvas panel).
 //  2. Wire the Inspector fields:
-//       readyManager      → TutorialReadyManager in the scene (auto-found if empty)
-//       readyButton       → Your existing Ready Button
-//       readyButtonLabel  → Text child of the Ready Button (shows "Ready"/"Un-ready")
-//       opponentStatusText→ Text showing the opponent's ready state (optional)
-//       tutorialPanel     → Root GameObject of the whole panel (optional — hides on start)
-//  3. No further code changes needed — the button is wired automatically.
+//       readyManager       → TutorialReadyManager in the scene (auto-found if empty)
+//       localStatusText    → Text showing the local player's ready state
+//       opponentStatusText → Text showing the opponent's ready state (optional)
+//       tutorialPanel      → Root GameObject of the whole panel (optional — hides on both ready)
+//  3. No further code changes needed.
 // =============================================================================
 
 /// <summary>
 /// UI controller for the tutorial exploration ready-check.
 /// Subscribes to <see cref="TutorialReadyManager"/> events and updates
-/// the ready button label, opponent status text, and panel visibility.
+/// local/opponent status texts and panel visibility.
+/// Ready state is driven externally by the XR right-hand activate action.
 /// </summary>
 public class TutorialReadyUI : MonoBehaviour
 {
@@ -39,15 +38,8 @@ public class TutorialReadyUI : MonoBehaviour
     public TutorialReadyManager readyManager;
 
     [Header("UI Elements")]
-    [Tooltip("The Ready / Un-ready toggle button (your existing UI button).")]
-    public Button readyButton;
-
-    [Tooltip("Text label INSIDE the ready button. " +
-             "Switches between 'Ready' and 'Un-ready'.")]
-    public TextMeshProUGUI readyButtonLabel;
-
-    [Tooltip("(Optional) Text that shows the opponent's current ready state.")]
-    public TextMeshProUGUI opponentStatusText;
+    [Tooltip("Text label showing both local and opponent ready states on two lines.")]
+    public TextMeshProUGUI statusText;
 
     [Tooltip("(Optional) Root panel GameObject. " +
              "Hidden automatically after a short delay once both players are ready.")]
@@ -82,15 +74,11 @@ public class TutorialReadyUI : MonoBehaviour
         // Subscribe
         readyManager.OnLocalReadyChanged    += HandleLocalReadyChanged;
         readyManager.OnOpponentReadyChanged += HandleOpponentReadyChanged;
+        readyManager.OnCountdownTick        += HandleCountdownTick;
         readyManager.OnBothReady            += HandleBothReady;
 
-        // Wire button
-        if (readyButton != null)
-            readyButton.onClick.AddListener(OnReadyClicked);
-
         // Reflect whatever state already exists (e.g. after a scene reload)
-        HandleLocalReadyChanged(readyManager.IsLocalReady);
-        HandleOpponentReadyChanged(readyManager.IsOpponentReady);
+        UpdateStatusText(readyManager.IsLocalReady, readyManager.IsOpponentReady);
     }
 
     private void OnDestroy()
@@ -99,6 +87,7 @@ public class TutorialReadyUI : MonoBehaviour
 
         readyManager.OnLocalReadyChanged    -= HandleLocalReadyChanged;
         readyManager.OnOpponentReadyChanged -= HandleOpponentReadyChanged;
+        readyManager.OnCountdownTick        -= HandleCountdownTick;
         readyManager.OnBothReady            -= HandleBothReady;
     }
 
@@ -108,29 +97,34 @@ public class TutorialReadyUI : MonoBehaviour
 
     private void HandleLocalReadyChanged(bool isReady)
     {
-        // Toggle button label
-        if (readyButtonLabel != null)
-            readyButtonLabel.text = isReady ? "Un-ready" : "Ready";
+        UpdateStatusText(isReady, readyManager.IsOpponentReady);
     }
 
     private void HandleOpponentReadyChanged(bool opponentReady)
     {
-        if (opponentStatusText != null)
-            opponentStatusText.text = opponentReady
-                ? "Opponent: Ready \u2713"
-                : "Opponent: Not Ready";
+        UpdateStatusText(readyManager.IsLocalReady, opponentReady);
+    }
+
+    private void UpdateStatusText(bool localReady, bool opponentReady)
+    {
+        if (statusText == null) return;
+        string localLine    = localReady    ? "You: Ready \u2713"       : "You: Not Ready — press trigger to ready up";
+        string opponentLine = opponentReady ? "Opponent: Ready \u2713" : "Opponent: Not Ready";
+        statusText.text = localLine + "\n" + opponentLine;
+    }
+
+    private void HandleCountdownTick(int secondsRemaining)
+    {
+        if (statusText != null)
+            statusText.text = $"Both ready!\nStarting in {secondsRemaining}...";
     }
 
     private void HandleBothReady()
     {
-        // Disable the button — no un-readying once the game starts
-        if (readyButton != null)
-            readyButton.interactable = false;
+        if (statusText != null)
+            statusText.text = "Go!";
 
-        if (readyButtonLabel != null)
-            readyButtonLabel.text = "Starting...";
-
-        // Auto-hide the panel after a short delay so players can see the state
+        // Hide the panel after a short delay so players can read "Go!"
         if (tutorialPanel != null)
             Invoke(nameof(HidePanel), hideDelay);
     }
@@ -139,19 +133,5 @@ public class TutorialReadyUI : MonoBehaviour
     {
         if (tutorialPanel != null)
             tutorialPanel.SetActive(false);
-    }
-
-    // -------------------------------------------------------------------------
-    //  Button callback
-    // -------------------------------------------------------------------------
-
-    private void OnReadyClicked()
-    {
-        if (readyManager == null) return;
-
-        if (readyManager.IsLocalReady)
-            readyManager.RequestUnready();
-        else
-            readyManager.RequestReady();
     }
 }

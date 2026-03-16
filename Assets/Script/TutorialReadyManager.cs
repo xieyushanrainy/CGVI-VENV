@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -59,6 +60,9 @@ public class TutorialReadyManager : MonoBehaviour
     /// <summary>Fires once when both players are ready. Start gameplay here.</summary>
     public event Action OnBothReady;
 
+    /// <summary>Fires each second during the pre-game countdown with seconds remaining (5 down to 1).</summary>
+    public event Action<int> OnCountdownTick;
+
     // -------------------------------------------------------------------------
     //  XR Input
     // -------------------------------------------------------------------------
@@ -66,6 +70,10 @@ public class TutorialReadyManager : MonoBehaviour
     [Header("XR Input")]
     [Tooltip("Assign the XRI RightHand/Activate action here (e.g. from the XRI Default Input Actions asset).")]
     [SerializeField] private InputActionReference rightHandActivate;
+
+    [Header("Countdown")]
+    [Tooltip("Seconds to count down after both players are ready before the game starts.")]
+    [SerializeField] private int countdownSeconds = 5;
 
     // -------------------------------------------------------------------------
     //  Ubiq internals
@@ -229,7 +237,18 @@ public class TutorialReadyManager : MonoBehaviour
         if (!IsLocalReady || !IsOpponentReady) return;
 
         BothReady = true;
-        Debug.Log("[TutorialReadyManager] Both players ready — starting game!");
+        Debug.Log("[TutorialReadyManager] Both players ready — starting countdown!");
+        StartCoroutine(StartCountdown());
+    }
+
+    private IEnumerator StartCountdown()
+    {
+        for (int i = countdownSeconds; i > 0; i--)
+        {
+            OnCountdownTick?.Invoke(i);
+            yield return new WaitForSeconds(1f);
+        }
+        Debug.Log("[TutorialReadyManager] Countdown complete — starting game!");
         OnBothReady?.Invoke();
     }
 
