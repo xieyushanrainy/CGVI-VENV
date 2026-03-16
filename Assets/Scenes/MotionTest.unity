@@ -2042,7 +2042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &469022886
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4679,7 +4679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &897467182
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9914,6 +9914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d91af4145b04d94bfd73d539719f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialReadyManager
+  rightHandActivate: {fileID: 1948626925}
   showDebugPanel: 1
 --- !u!1 &1935340298
 GameObject:
@@ -10103,6 +10104,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1948626925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Right Interaction/Activate
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 5ef0ada88d17780448f0b4b4b7a1ea3e, type: 3}
+  m_ActionId: 41976d89-60de-4deb-bff9-16b4af96b290
 --- !u!1 &1969696739
 GameObject:
   m_ObjectHideFlags: 0

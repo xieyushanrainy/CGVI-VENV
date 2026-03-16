@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Ubiq.Messaging;
 using Ubiq.Rooms;
 
@@ -59,6 +60,14 @@ public class TutorialReadyManager : MonoBehaviour
     public event Action OnBothReady;
 
     // -------------------------------------------------------------------------
+    //  XR Input
+    // -------------------------------------------------------------------------
+
+    [Header("XR Input")]
+    [Tooltip("Assign the XRI RightHand/Activate action here (e.g. from the XRI Default Input Actions asset).")]
+    [SerializeField] private InputActionReference rightHandActivate;
+
+    // -------------------------------------------------------------------------
     //  Ubiq internals
     // -------------------------------------------------------------------------
 
@@ -80,6 +89,26 @@ public class TutorialReadyManager : MonoBehaviour
 
     /// <summary>True when Ubiq networking is available in this scene.</summary>
     public bool IsNetworked { get; private set; }
+
+    private void OnEnable()
+    {
+        if (rightHandActivate != null)
+        {
+            rightHandActivate.action.performed += OnRightHandActivate;
+            rightHandActivate.action.Enable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (rightHandActivate != null)
+            rightHandActivate.action.performed -= OnRightHandActivate;
+    }
+
+    private void OnRightHandActivate(InputAction.CallbackContext ctx)
+    {
+        RequestReady();
+    }
 
     private void Start()
     {
