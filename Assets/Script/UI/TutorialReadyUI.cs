@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 // =============================================================================
 //  TutorialReadyUI.cs
@@ -43,10 +44,10 @@ public class TutorialReadyUI : MonoBehaviour
 
     [Tooltip("Text label INSIDE the ready button. " +
              "Switches between 'Ready' and 'Un-ready'.")]
-    public Text readyButtonLabel;
+    public TextMeshProUGUI readyButtonLabel;
 
     [Tooltip("(Optional) Text that shows the opponent's current ready state.")]
-    public Text opponentStatusText;
+    public TextMeshProUGUI opponentStatusText;
 
     [Tooltip("(Optional) Root panel GameObject. " +
              "Hidden automatically after a short delay once both players are ready.")]

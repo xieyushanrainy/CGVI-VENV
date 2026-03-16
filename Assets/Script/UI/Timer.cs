@@ -30,7 +30,10 @@ public class Timer : MonoBehaviour
         {
             remainingTime = 0;
             startTimer = false;
-            FindObjectOfType<canvasControl>().End();
+            // Notify the authority ScoreManager — it will stop scoring and
+            // broadcast a game-over message. Both clients then call End() via
+            // ScoreManager.OnGameOver (wired in canvasControl.Start()).
+            FindFirstObjectByType<ScoreManager>().NotifyTimerExpired();
             return;         
         }
 

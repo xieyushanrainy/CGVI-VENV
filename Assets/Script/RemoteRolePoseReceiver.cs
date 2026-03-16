@@ -115,14 +115,6 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 {
                     LerpToTarget(opponentMole, isMole: true);
                 }
-                else
-                {
-                    // Lerp is skipped because remoteVisible = false.
-                    // OpponentMole is disabled — check that xrCamera Y is above
-                    // moleBoxTopY + exposureThreshold in LocalRolePosePublisher.
-                    Debug.Log("[RemoteRolePoseReceiver] Lerp SKIPPED — remoteVisible is false. " +
-                              "OpponentMole is hidden. Raise the camera or lower moleBoxTopY.");
-                }
                 break;
         }
     }
@@ -140,9 +132,6 @@ public class RemoteRolePoseReceiver : MonoBehaviour
         remoteRole     = msg.role;
         targetPosition = msg.position;
         remoteVisible  = msg.isVisible;
-
-        Debug.Log($"[RemoteRolePoseReceiver] RECEIVED | role={msg.role} " +
-                  $"targetPos={msg.position:F2} visible={msg.isVisible} seq={msg.sequence}");
 
         ApplyVisibility();
         hasReceivedFirstMessage = true;
@@ -173,7 +162,6 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 {
                     opponentMole.transform.position = targetPosition;
                     opponentMole.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
-                    Debug.Log($"[RemoteRolePoseReceiver] OpponentMole SNAPPED to {targetPosition:F2} (was hidden)");
                 }
 
                 if (remoteVisible != !moleWasHidden)

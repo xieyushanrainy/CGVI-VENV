@@ -5,7 +5,7 @@ using Ubiq.Messaging;
 // =============================================================================
 //  LocalRolePosePublisher.cs
 //
-//  Reads the local player's pose every send tick and broadcasts an
+//  Reads the local player's pose every send tick and broadcasts anF
 //  OpponentPoseMessage over Ubiq so the remote peer can drive its
 //  OpponentSimulator.
 //
@@ -259,8 +259,6 @@ public class LocalRolePosePublisher : MonoBehaviour
         {
             // Offline mock: bypass Ubiq entirely and drive the local receiver
             // directly so you can preview opponent visualisation in the Editor.
-            Debug.Log($"[LocalRolePosePublisher] MOCK SEND | role={msg.role} " +
-                      $"pos={msg.position:F2} visible={msg.isVisible} seq={msg.sequence}");
             if (remoteReceiver != null)
                 remoteReceiver.OnRemotePoseReceived(msg);
         }
@@ -269,8 +267,6 @@ public class LocalRolePosePublisher : MonoBehaviour
             try
             {
                 context.SendJson(msg);
-                Debug.Log($"[LocalRolePosePublisher] SENT | role={msg.role} " +
-                          $"pos={msg.position:F2} visible={msg.isVisible} seq={msg.sequence}");
             }
             catch (Exception e)
             {

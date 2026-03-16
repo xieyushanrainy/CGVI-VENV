@@ -122,6 +122,13 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public event Action<ScoreUpdateMessage> OnScoreUpdated;
 
+    /// <summary>
+    /// Fired on ALL clients when the authority broadcasts game-over.
+    /// The payload contains the definitive final scores.
+    /// Subscribe from <see cref="canvasControl"/> to show the end screen.
+    /// </summary>
+    public event Action<ScoreUpdateMessage> OnGameOver;
+
     // -------------------------------------------------------------------------
     //  Private state
     // -------------------------------------------------------------------------
@@ -142,6 +149,9 @@ public class ScoreManager : MonoBehaviour
 
     // Periodic broadcast timer.
     private float broadcastTimer;
+
+    // Latched once the authority calls BroadcastGameOver — stops all further scoring.
+    private bool gameOver;
 
     // Cached UI score components.
     private moleScore   moleScoreUI;
@@ -224,6 +234,7 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         if (!IsAuthority()) return;
+        if (gameOver)        return;
 
         // ── Accumulate mole exposure score while visible ───────────────────────
         // This runs every frame so the mole score grows smoothly in real time.
@@ -238,6 +249,55 @@ public class ScoreManager : MonoBehaviour
         {
             broadcastTimer = broadcastInterval;
             BroadcastScore();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    //  Game-over  (called by Timer when time runs out)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Called by <see cref="Timer"/> when the countdown reaches zero.
+    /// Only has effect on the authority client; the non-authority client ends
+    /// via the Ubiq game-over message received in <see cref="ProcessMessage"/>.
+    /// </summary>
+    public void NotifyTimerExpired()
+    {
+        if (!IsAuthority()) return;
+        if (gameOver)        return;
+
+        BroadcastGameOver();
+    }
+
+    /// <summary>
+    /// Stops all further scoring and broadcasts the definitive final scores to
+    /// every peer.  Fires <see cref="OnGameOver"/> locally so the authority's
+    /// UI updates without waiting for a round-trip.
+    /// </summary>
+    private void BroadcastGameOver()
+    {
+        gameOver = true;
+
+        var final = new ScoreUpdateMessage
+        {
+            hammerScore  = HammerScore,
+            moleScore    = MoleScore,
+            activeHoleId = currentMoleState.activeHoleId,
+            moleVisible  = false,
+            isGameOver   = true
+        };
+
+        Debug.Log($"[ScoreManager] Game over — hammer={HammerScore} mole={MoleScore}. Broadcasting.");
+
+        // Update authority's own UI first.
+        OnGameOver?.Invoke(final);
+
+        if (!networkAvailable) return;
+
+        try { context.SendJson(final); }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[ScoreManager] BroadcastGameOver SendJson failed: {e.Message}");
         }
     }
 
@@ -405,6 +465,18 @@ public class ScoreManager : MonoBehaviour
         var update = message.FromJson<ScoreUpdateMessage>();
         HammerScore = update.hammerScore;
         MoleScore   = update.moleScore;
+
+        if (update.isGameOver)
+        {
+            if (gameOver) return; // guard against duplicate messages
+            gameOver = true;
+
+            Debug.Log($"[ScoreManager] Game-over received from authority | " +
+                      $"hammer={HammerScore} mole={MoleScore}");
+
+            OnGameOver?.Invoke(update);
+            return;
+        }
 
         Debug.Log($"[ScoreManager] Score synced from authority | " +
                   $"hammer={HammerScore} mole={MoleScore}");

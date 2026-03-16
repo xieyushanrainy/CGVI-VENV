@@ -38,4 +38,10 @@ public struct ScoreUpdateMessage
 
     /// <summary>Whether the mole was visible at the time this message was sent.</summary>
     public bool moleVisible;
+
+    /// <summary>
+    /// When true this message carries definitive final scores and signals that
+    /// the round is over.  All clients must end the game on receipt.
+    /// </summary>
+    public bool isGameOver;
 }
