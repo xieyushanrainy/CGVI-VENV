@@ -3417,7 +3417,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hammerScore
   updateScore: 3
-  scoreText: {fileID: 795469976}
+  scoreTexts:
+  - {fileID: 1628025885}
+  - {fileID: 795469976}
+  - {fileID: 2034465170}
 --- !u!114 &675436082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3431,7 +3434,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::moleScore
   baseScore: 1
-  scoreText: {fileID: 1827580309}
+  scoreTexts:
+  - {fileID: 1827580309}
+  - {fileID: 1287833}
+  - {fileID: 938635714}
 --- !u!4 &700382293 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4106440369711868773, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
@@ -3714,7 +3720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::moleScore
   baseScore: 1
-  scoreText: {fileID: 1827580309}
+  scoreTexts: []
 --- !u!114 &734592900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3728,7 +3734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hammer_score
   updateScore: 2
-  scoreText: {fileID: 795469976}
+  scoreTexts: []
 --- !u!114 &734592901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3831,7 +3837,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialReadyUI
   readyManager: {fileID: 1887874631}
   statusText: {fileID: 2038778507}
-  tutorialPanel: {fileID: 0}
   hideDelay: 1.5
 --- !u!1 &745240741
 GameObject:
@@ -3909,7 +3914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::moleScore
   baseScore: 1
-  scoreText: {fileID: 1287833}
+  scoreTexts: []
 --- !u!114 &745240745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3923,7 +3928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hammer_score
   updateScore: 2
-  scoreText: {fileID: 1628025885}
+  scoreTexts: []
 --- !u!114 &745240746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4001,7 +4006,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialReadyUI
   readyManager: {fileID: 1887874631}
   statusText: {fileID: 490979009}
-  tutorialPanel: {fileID: 0}
   hideDelay: 1.5
 --- !u!4 &751268098 stripped
 Transform:

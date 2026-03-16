@@ -1,19 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 
 public class moleScore : MonoBehaviour
 {
-    //public static moleScore instance;
     int score = 0;
     float upTime = 0;
 
     int lastSecond = -1;
 
-    
     [SerializeField] int baseScore;
-    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] List<TextMeshProUGUI> scoreTexts;
 
     int updateScore;
     // private void Awake()
@@ -27,6 +24,7 @@ public class moleScore : MonoBehaviour
         score = 0;
         lastSecond = -1;
         upTime = 0;
+        updateText(0);
     }
     public void clear()
     {
@@ -70,6 +68,7 @@ public class moleScore : MonoBehaviour
     }
     public void updateText(int curScore)
     {
-        scoreText.text = $"{curScore}";
+        foreach (var t in scoreTexts)
+            if (t != null) t.text = $"{curScore}";
     }
 }

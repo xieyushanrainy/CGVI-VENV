@@ -1,11 +1,10 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 public class hammerScore : MonoBehaviour
 {
-    //public static hammerScore instance;
     [SerializeField] int updateScore;
-    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] List<TextMeshProUGUI> scoreTexts;
     private int score = 0;
 
     // private void Awake()
@@ -14,8 +13,8 @@ public class hammerScore : MonoBehaviour
     // }
     void Start()
     {
-        scoreText.text = $"{score}";
         score = 0;
+        updateText(0);
     }
 
     public int hit()
@@ -26,6 +25,7 @@ public class hammerScore : MonoBehaviour
     }
     public void updateText(int curScore)
     {
-        scoreText.text = $"{curScore}";
+        foreach (var t in scoreTexts)
+            if (t != null) t.text = $"{curScore}";
     }
 }

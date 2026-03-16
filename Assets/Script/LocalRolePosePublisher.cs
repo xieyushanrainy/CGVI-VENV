@@ -215,20 +215,21 @@ public class LocalRolePosePublisher : MonoBehaviour
             return;
         }
 
-        // ── Body position (published to remote) ──────────────────────────────
-        // XZ follows the player's camera; Y is pinned to the box top surface
-        // (read from MoleVisibilityTracker, already computed for the visibility
-        // check above).  Matches MoleStateMessage.molePosition exactly — no
-        // separate offset tunable that could drift between the two messages.
-        float   boxTopY = moleVisibilityTracker != null ? moleVisibilityTracker.BoxTopY : 0f;
-        Vector3 bodyPos = new Vector3(xrCameraTransform.position.x, boxTopY, xrCameraTransform.position.z);
-
         // ── Exposure (visibility) ─────────────────────────────────────────────
         // Delegated to MoleVisibilityTracker so that pose sync and scoring
         // always use the exact same box-top + threshold calculation.
         bool isVisible = moleVisibilityTracker != null
             ? moleVisibilityTracker.IsVisible
             : false;
+
+        // ── Body position (published to remote) ──────────────────────────────
+        // When visible (popped up), use the actual camera Y so the opponent
+        // sees the mole at the correct height.
+        // When hidden (inside the box), pin Y to the box top so the opponent
+        // simulator sits flush at the rim rather than floating at head height.
+        float   boxTopY = moleVisibilityTracker != null ? moleVisibilityTracker.BoxTopY : 0f;
+        float   posY    = isVisible ? xrCameraTransform.position.y : boxTopY;
+        Vector3 bodyPos = new Vector3(xrCameraTransform.position.x, posY, xrCameraTransform.position.z);
 
         // In mock mode always send so the receiver stays live in the Editor.
         if (!offlineMockMode && !firstSend && !PositionChanged(bodyPos) && lastSentVisibility == isVisible)
