@@ -4,9 +4,9 @@
 /// </summary>
 public static class GameData
 {
-    public static RoleManager.Role LocalRole = RoleManager.Role.Mole;// { get; set; }
-    public static int moleScore = 0;
-    public static int hammerScore = 0;
+    public static RoleManager.Role LocalRole { get; set; }
+    public static int MoleScore = 0;
+    public static int HammerScore = 0;
     public static string GetWinner()
     {
         if (HammerScore > MoleScore) return "Hammer";
