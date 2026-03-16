@@ -77,14 +77,6 @@ public class MoleVisibilityTracker : MonoBehaviour
              "Only used when moleBoxTransform is not assigned.")]
     [SerializeField] private float moleBoxTopY = 0.5f;
 
-    [Header("Mole Body Pivot")]
-    [Tooltip("Metres BELOW the XR camera (eye/head) where the published mole\n" +
-             "body position is placed:\n" +
-             "  bodyPos   = xrCamera.position\n" +
-             "  bodyPos.y -= headToPivotOffsetY\n" +
-             "Default 1.2 m ≈ (1 − 1/3) × 1.8 m (standard body ratio).")]
-    [SerializeField] private float headToPivotOffsetY = 1.2f;
-
     [Header("Exposure")]
     [Tooltip("Metres the XR camera must be ABOVE the box top to count as visible.\n" +
              "0 = any peek above the rim counts.\n" +
@@ -115,6 +107,22 @@ public class MoleVisibilityTracker : MonoBehaviour
 
     /// <summary>Current active hole id (0–4, or -1 if unset).</summary>
     public int ActiveHoleId => activeHoleId;
+
+    /// <summary>
+    /// Whether the mole is currently considered visible (eye above box top +
+    /// threshold).  Updated every send tick on the Mole player's machine.
+    /// Read by <see cref="LocalRolePosePublisher"/> so both pose sync and
+    /// scoring use the exact same visibility result.
+    /// </summary>
+    public bool IsVisible { get; private set; }
+
+    /// <summary>
+    /// World-space Y of the mole box top surface, recomputed each send tick.
+    /// Read by <see cref="LocalRolePosePublisher"/> to pin the published mole
+    /// position to the box rim — the natural pop-up origin, with no separate
+    /// tunable offset that could drift out of sync.
+    /// </summary>
+    public float BoxTopY { get; private set; }
 
     /// <summary>
     /// Call this when the mole moves to a new hole.
@@ -204,12 +212,19 @@ public class MoleVisibilityTracker : MonoBehaviour
         // ── Visibility ────────────────────────────────────────────────────────
         float boxTopY   = ResolveBoxTopY();
         bool  isVisible = xrCameraTransform.position.y > boxTopY + exposureThreshold;
+        IsVisible = isVisible; // expose to LocalRolePosePublisher
+        BoxTopY   = boxTopY;   // expose to LocalRolePosePublisher
 
         // ── Body position ─────────────────────────────────────────────────────
-        // Always derived from the XR camera.  The PlayerMole mesh is a local
-        // visual only and its transform is intentionally not read here.
-        Vector3 bodyPos = xrCameraTransform.position;
-        bodyPos.y      -= headToPivotOffsetY;
+        // Pin Y to the box top surface — the natural pop-up origin for a
+        // whack-a-mole avatar.  XZ follows the player's camera so the position
+        // tracks movement inside the box.  No head-to-body offset needed:
+        // boxTopY is already computed above for the visibility check, so this
+        // costs nothing extra and has no separate tunable that could drift.
+        Vector3 bodyPos = new Vector3(
+            xrCameraTransform.position.x,
+            boxTopY,
+            xrCameraTransform.position.z);
 
         // ── Exposure sequence ─────────────────────────────────────────────────
         // Increment each time the mole transitions from hidden → visible so that

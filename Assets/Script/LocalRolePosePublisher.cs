@@ -34,17 +34,13 @@ using Ubiq.Messaging;
 //  rightHandTransform   → XR Origin / Right Controller
 //  playerMoleTransform  → PlayerMole (optional; driven by MoleFollow.cs for
 //                          local visuals — NOT used to derive published position)
-//  moleBoxTransform     → Mole box   (optional; auto-reads top Y from bounds)
-//  moleBoxTopY          → Fallback explicit world-space Y of the box's top
 //  localRole            → Populated from GameData.LocalRole at Start
-//  headToPivotOffsetY   → Metres below the XR camera to place the body pivot.
-//                          Published Mole position = camera.pos with Y -= this.
-//                          Default 1.2 = (1 - 1/3) * 1.8  (standard body ratio)
-//  exposureThreshold    → Metres the eye/camera must be ABOVE the box top
-//                          to be considered exposed (default 0 = any peek counts)
 //  sendRate             → Max messages per second (default 15 Hz)
 //  positionThreshold    → Min position change (metres) to trigger a send
 //  remoteReceiver       → RemoteRolePoseReceiver on OpponentSimulator
+//  moleVisibilityTracker→ MoleVisibilityTracker on the same GameObject.
+//                          Provides IsVisible so pose sync and scoring share
+//                          the exact same box-top + threshold calculation.
 // =============================================================================
 
 /// <summary>
@@ -74,20 +70,15 @@ public class LocalRolePosePublisher : MonoBehaviour
              "this field is assigned.")]
     [SerializeField] private Transform playerMoleTransform;
 
-    [Header("Mole Box")]
-    [Tooltip("Optional: drag the Mole box here to auto-derive its top Y from its scale.\n" +
-             "Assumes the pivot is at the object's centre. " +
-             "If not assigned, moleBoxTopY is used instead.")]
-    [SerializeField] private Transform moleBoxTransform;
-
-    [Tooltip("World-space Y of the Mole box's top surface.\n" +
-             "Only used when moleBoxTransform is not assigned.")]
-    [SerializeField] private float moleBoxTopY = 0.5f;
-
     [Header("Receiver")]
     [Tooltip("Drag the RemoteRolePoseReceiver on OpponentSimulator here.\n" +
              "This component forwards incoming remote pose messages to it.")]
     [SerializeField] private RemoteRolePoseReceiver remoteReceiver;
+
+    [Tooltip("MoleVisibilityTracker on the same GameManager.\n" +
+             "Its IsVisible property (reusing the same box-top + threshold maths) is\n" +
+             "used for pose sync so that visibility is never computed twice.")]
+    [SerializeField] private MoleVisibilityTracker moleVisibilityTracker;
 
     // -------------------------------------------------------------------------
     //  Inspector fields — Role
@@ -97,36 +88,6 @@ public class LocalRolePosePublisher : MonoBehaviour
     [Tooltip("Overwritten at Start from GameData.LocalRole.\n" +
              "Can be set manually in the Editor for testing.")]
     public RoleManager.Role localRole = RoleManager.Role.Hammer;
-
-    // -------------------------------------------------------------------------
-    //  Inspector fields — Mole body pivot
-    // -------------------------------------------------------------------------
-
-    [Header("Mole Body Pivot")]
-    [Tooltip("How many metres BELOW the XR camera (eye/head) the PlayerMole pivot sits.\n" +
-             "This is the only value used to compute the published body position:\n" +
-             "  bodyPos   = xrCamera.position\n" +
-             "  bodyPos.y -= headToPivotOffsetY\n" +
-             "\n" +
-             "PlayerMole (the local mesh) is a visual-only object driven by MoleFollow.cs.\n" +
-             "Its transform is NOT read here; this field makes the offset explicit\n" +
-             "and tunable in the Inspector.\n" +
-             "\n" +
-             "Default 1.2 m is derived from the standard body ratio:\n" +
-             "  headToPivotOffsetY = (1 - eyeOffsetRatio) * bodyHeight\n" +
-             "  e.g. (1 - 1/3) * 1.8 = 1.2 m")]
-    [SerializeField] private float headToPivotOffsetY = 1.2f;
-
-    // -------------------------------------------------------------------------
-    //  Inspector fields — Exposure
-    // -------------------------------------------------------------------------
-
-    [Header("Mole Exposure")]
-    [Tooltip("The eye/camera must be at least this many metres ABOVE the box\n" +
-             "top to be considered exposed (isVisible = true).\n" +
-             "0 = any amount above the box counts.\n" +
-             "Negative = the eye can be slightly below the top and still count.")]
-    [SerializeField] private float exposureThreshold = 0f;
 
     // -------------------------------------------------------------------------
     //  Inspector fields — Send settings
@@ -255,21 +216,19 @@ public class LocalRolePosePublisher : MonoBehaviour
         }
 
         // ── Body position (published to remote) ──────────────────────────────
-        // Always derived from the XR camera using headToPivotOffsetY.
-        // PlayerMole (the local mesh object) is a visual-only representation
-        // driven by MoleFollow.cs — its transform is intentionally NOT read
-        // here, so the networked position is always authoritative and consistent
-        // regardless of whether the local PlayerMole GameObject is active.
-        Vector3 bodyPos   = xrCameraTransform.position;
-        bodyPos.y        -= headToPivotOffsetY;
+        // XZ follows the player's camera; Y is pinned to the box top surface
+        // (read from MoleVisibilityTracker, already computed for the visibility
+        // check above).  Matches MoleStateMessage.molePosition exactly — no
+        // separate offset tunable that could drift between the two messages.
+        float   boxTopY = moleVisibilityTracker != null ? moleVisibilityTracker.BoxTopY : 0f;
+        Vector3 bodyPos = new Vector3(xrCameraTransform.position.x, boxTopY, xrCameraTransform.position.z);
 
         // ── Exposure (visibility) ─────────────────────────────────────────────
-        // Determined purely by the XR camera (eye/head) Y compared to the
-        // top surface of the Mole box — NOT by the fake body mesh position.
-        // Using the head means: as soon as the player peeks above the rim,
-        // their avatar becomes visible to the Hammer player.
-        float boxTopY   = ResolveBoxTopY();
-        bool  isVisible = xrCameraTransform.position.y > boxTopY + exposureThreshold;
+        // Delegated to MoleVisibilityTracker so that pose sync and scoring
+        // always use the exact same box-top + threshold calculation.
+        bool isVisible = moleVisibilityTracker != null
+            ? moleVisibilityTracker.IsVisible
+            : false;
 
         // In mock mode always send so the receiver stays live in the Editor.
         if (!offlineMockMode && !firstSend && !PositionChanged(bodyPos) && lastSentVisibility == isVisible)
@@ -281,16 +240,6 @@ public class LocalRolePosePublisher : MonoBehaviour
     // -------------------------------------------------------------------------
     //  Helpers
     // -------------------------------------------------------------------------
-
-    private float ResolveBoxTopY()
-    {
-        if (moleBoxTransform != null)
-        {
-            // Assumes pivot is at the object centre (standard Unity cube).
-            return moleBoxTransform.position.y + moleBoxTransform.lossyScale.y * 0.5f;
-        }
-        return moleBoxTopY;
-    }
 
     private bool PositionChanged(Vector3 current)
         => Vector3.Distance(current, lastSentPosition) > positionThreshold;
