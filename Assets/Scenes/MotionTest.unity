@@ -2708,6 +2708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   flashDuration: 0.5
   fadeSpeed: 2
+  debugForceEnable: 0
 --- !u!114 &542244566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3702,8 +3703,6 @@ GameObject:
   - component: {fileID: 734592903}
   - component: {fileID: 734592902}
   - component: {fileID: 734592901}
-  - component: {fileID: 734592900}
-  - component: {fileID: 734592899}
   - component: {fileID: 734592898}
   - component: {fileID: 734592905}
   m_Layer: 5
@@ -3727,34 +3726,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
---- !u!114 &734592899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734592897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1885d47166fc8834fbed2a3d46e61f9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::moleScore
-  baseScore: 1
-  scoreTexts: []
---- !u!114 &734592900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734592897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dd33c5407ab24f49aa78451733aae1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::hammer_score
-  updateScore: 2
-  scoreTexts: []
+  debugForceEnable: 0
 --- !u!114 &734592901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3870,8 +3842,6 @@ GameObject:
   - component: {fileID: 745240748}
   - component: {fileID: 745240747}
   - component: {fileID: 745240746}
-  - component: {fileID: 745240745}
-  - component: {fileID: 745240744}
   - component: {fileID: 745240743}
   - component: {fileID: 745240749}
   m_Layer: 5
@@ -3920,34 +3890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
---- !u!114 &745240744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745240741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1885d47166fc8834fbed2a3d46e61f9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::moleScore
-  baseScore: 1
-  scoreTexts: []
---- !u!114 &745240745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745240741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dd33c5407ab24f49aa78451733aae1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::hammer_score
-  updateScore: 2
-  scoreTexts: []
+  debugForceEnable: 0
 --- !u!114 &745240746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8862,6 +8805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   flashDuration: 0.5
   fadeSpeed: 2
+  debugForceEnable: 0
 --- !u!222 &1626372801
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9838,6 +9782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
+  debugForceEnable: 0
 --- !u!1 &1827580308
 GameObject:
   m_ObjectHideFlags: 0

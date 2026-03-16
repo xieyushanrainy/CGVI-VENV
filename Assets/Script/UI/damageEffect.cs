@@ -14,15 +14,22 @@ public class damageEffect : MonoBehaviour
     [SerializeField] private float flashDuration = 0.5f; // seconds the red holds before fading
     [SerializeField] private float fadeSpeed     = 2f;   // alpha units drained per second
 
-    private Image        damageOverlay;
-    private Coroutine    currentFlash;
-    private ScoreManager scoreManager;
-    private int          lastHammerScore;
+    [Header("Debug")]
+    [Tooltip("Force-enable the effect regardless of local role. " +
+             "Use in the Editor when GameData.LocalRole is not set via the lobby.")]
+    [SerializeField] private bool debugForceEnable = false;
+
+    private Image               damageOverlay;
+    private Coroutine           currentFlash;
+    private ScoreManager        scoreManager;
+    private MoleVisibilityTracker moleTracker;
+    private int                 lastHammerScore;
 
     private void Start()
     {
         // Only the Mole player sees the hit flash.
-        if (GameData.LocalRole != RoleManager.Role.Mole)
+        // debugForceEnable bypasses the check for Editor testing.
+        if (!debugForceEnable && GameData.LocalRole != RoleManager.Role.Mole)
         {
             enabled = false;
             return;
@@ -30,17 +37,28 @@ public class damageEffect : MonoBehaviour
 
         CreateOverlay();
 
+        // ── Visibility events — fires immediately on both clients ──────────────
+        // Subscribing here (rather than OnScoreUpdated) is critical because
+        // ScoreManager never calls BroadcastScore() on the hidden→visible
+        // transition, so OnScoreUpdated would arrive with up to a 2s delay.
+        moleTracker = FindFirstObjectByType<MoleVisibilityTracker>();
+        if (moleTracker != null)
+            moleTracker.OnMoleStateUpdate += HandleMoleState;
+        else
+            Debug.LogWarning("[damageEffect] MoleVisibilityTracker not found.", this);
+
+        // ── Hit events — fires when the authority validates a hit ──────────────
         scoreManager = FindFirstObjectByType<ScoreManager>();
         if (scoreManager != null)
             scoreManager.OnScoreUpdated += HandleScoreUpdated;
         else
-            Debug.LogWarning("[damageEffect] ScoreManager not found — effect disabled.", this);
+            Debug.LogWarning("[damageEffect] ScoreManager not found — hit flash disabled.", this);
     }
 
     private void OnDestroy()
     {
-        if (scoreManager != null)
-            scoreManager.OnScoreUpdated -= HandleScoreUpdated;
+        if (moleTracker  != null) moleTracker.OnMoleStateUpdate  -= HandleMoleState;
+        if (scoreManager != null) scoreManager.OnScoreUpdated    -= HandleScoreUpdated;
     }
 
     // -------------------------------------------------------------------------
@@ -49,51 +67,56 @@ public class damageEffect : MonoBehaviour
 
     private void CreateOverlay()
     {
-        // Canvas
         var canvasGO = new GameObject("DamageFlashCanvas");
-        DontDestroyOnLoad(canvasGO); // survives scene reloads if needed
+        DontDestroyOnLoad(canvasGO);
 
         var canvas = canvasGO.AddComponent<Canvas>();
-        canvas.renderMode  = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 999; // render on top of everything
+        canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 999;
 
-        canvasGO.AddComponent<CanvasScaler>();   // keeps the overlay resolution-independent
-        canvasGO.AddComponent<GraphicRaycaster>(); // required for a valid Canvas hierarchy
+        canvasGO.AddComponent<CanvasScaler>();
+        canvasGO.AddComponent<GraphicRaycaster>();
 
-        // Full-screen Image
         var imageGO = new GameObject("RedOverlay");
         imageGO.transform.SetParent(canvasGO.transform, false);
 
         damageOverlay = imageGO.AddComponent<Image>();
-        damageOverlay.color = new Color(0.8f, 0f, 0f, 0f); // start fully transparent
+        damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
 
-        // Stretch to fill the entire Canvas
         var rt = damageOverlay.rectTransform;
         rt.anchorMin = Vector2.zero;
         rt.anchorMax = Vector2.one;
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;
 
-        // Prevent the overlay from blocking UI interactions
         damageOverlay.raycastTarget = false;
     }
 
     // -------------------------------------------------------------------------
-    //  Score event handler
+    //  Event handlers
     // -------------------------------------------------------------------------
 
+    /// <summary>
+    /// Fires on both clients via MoleVisibilityTracker — immediate and reliable
+    /// for both the show and hide transitions.
+    /// </summary>
+    private void HandleMoleState(MoleStateMessage msg)
+    {
+        if (msg.isVisible)
+            FlashDamage();   // DEBUG: flash as soon as mole pops up
+        else
+            CancelFlash();   // mole hid — clear instantly
+    }
+
+    /// <summary>
+    /// Listen for confirmed hits from the authority ScoreManager.
+    /// Kept separate from visibility so it can trigger an additional flash
+    /// (or a different effect) specifically on a validated hit.
+    /// </summary>
     private void HandleScoreUpdated(ScoreUpdateMessage msg)
     {
-        // Mole went back into hiding → immediately clear any active flash.
-        if (!msg.moleVisible)
-        {
-            CancelFlash();
-        }
-        // Hammer score increased → a validated hit just landed.
-        else if (msg.hammerScore > lastHammerScore)
-        {
+        if (msg.hammerScore > lastHammerScore)
             FlashDamage();
-        }
 
         lastHammerScore = msg.hammerScore;
     }
@@ -110,7 +133,6 @@ public class damageEffect : MonoBehaviour
         currentFlash = StartCoroutine(FlashCoroutine());
     }
 
-    /// <summary>Immediately clears the red overlay (e.g. when the mole hides).</summary>
     public void CancelFlash()
     {
         if (currentFlash != null)
