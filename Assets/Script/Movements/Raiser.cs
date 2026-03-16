@@ -10,6 +10,8 @@ public class Raiser : MonoBehaviour
     public InputActionProperty triggerAction;
 
     public float sensitivity = 2f;
+    public float yMin = 0.07f;
+    public float yMax = 4.5f;
 
     float lastY;
     bool controlling = false;
@@ -38,7 +40,7 @@ public class Raiser : MonoBehaviour
 
             Vector3 pos = cameraOffset.localPosition;
             pos.y += delta * sensitivity;
-            pos.y = Math.Clamp(pos.y, 0.07f, 3.64f);
+            pos.y = Math.Clamp(pos.y, yMin, yMax);
 
             cameraOffset.localPosition = pos;
 
