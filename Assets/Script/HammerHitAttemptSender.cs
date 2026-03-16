@@ -160,12 +160,12 @@ public class HammerHitAttemptSender : MonoBehaviour
         if (marker == null) return; // Not a hole hit zone — ignore.
 
         // ── Swing speed threshold ─────────────────────────────────────────────
-        if (currentSwingSpeed < minSwingSpeed)
-        {
-            Debug.Log($"[HammerHitAttemptSender] Swing too slow ({currentSwingSpeed:F2} m/s < " +
-                      $"{minSwingSpeed:F2} m/s) — hit not sent.");
-            return;
-        }
+        // if (currentSwingSpeed < minSwingSpeed)
+        // {
+        //     Debug.Log($"[HammerHitAttemptSender] Swing too slow ({currentSwingSpeed:F2} m/s < " +
+        //               $"{minSwingSpeed:F2} m/s) — hit not sent.");
+        //     return;
+        // }
 
         SendHitAttempt(marker.HoleId);
     }
