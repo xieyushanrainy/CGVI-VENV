@@ -2707,7 +2707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdb57ffb84aa3b46b85a299c78b6815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damageOverlay: {fileID: 0}
   flashDuration: 0.5
   fadeSpeed: 2
 --- !u!114 &542244566
@@ -3385,6 +3384,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 454640276783855465, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 675436080}
+    - targetCorrespondingSourceObject: {fileID: 454640276783855465, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1825849480}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
 --- !u!1 &675436079
@@ -3720,7 +3722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdb57ffb84aa3b46b85a299c78b6815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
-  damageOverlay: {fileID: 1626372799}
   flashDuration: 0.5
   fadeSpeed: 2
 --- !u!114 &734592899
@@ -3914,7 +3915,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdb57ffb84aa3b46b85a299c78b6815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
-  damageOverlay: {fileID: 542244566}
   flashDuration: 0.5
   fadeSpeed: 2
 --- !u!114 &745240744
@@ -6164,7 +6164,7 @@ GameObject:
   - component: {fileID: 1093465533}
   - component: {fileID: 1093465532}
   m_Layer: 5
-  m_Name: Mole Ready
+  m_Name: ReduceBlood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8838,7 +8838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bdb57ffb84aa3b46b85a299c78b6815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damageOverlay: {fileID: 0}
   flashDuration: 0.5
   fadeSpeed: 2
 --- !u!222 &1626372801
@@ -9771,6 +9770,52 @@ MonoBehaviour:
   sensitivity: 6
   yMin: 0.07
   yMax: 4.5
+--- !u!1 &1825849479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1825849480}
+  - component: {fileID: 1825849481}
+  m_Layer: 0
+  m_Name: DamageEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1825849480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825849479}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.72292, y: 0.37838006, z: -21.21545}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 751268098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1825849481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825849479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bdb57ffb84aa3b46b85a299c78b6815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::damageEffect
+  flashDuration: 0.5
+  fadeSpeed: 2
 --- !u!1 &1827580308
 GameObject:
   m_ObjectHideFlags: 0

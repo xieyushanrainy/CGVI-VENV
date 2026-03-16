@@ -10,9 +10,9 @@ public class Timer : MonoBehaviour
         
     // }
     [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float remainingTime;
     int lastDisplayedSecond = -1;
     bool startTimer = false;
+    float remainingTime;
 
     bool warning = false;
     // Update is called once per frame
@@ -22,6 +22,7 @@ public class Timer : MonoBehaviour
     }
     public void startGame()
     {
+        remainingTime = GameData.GameDuration;
         startTimer = true;
     }
     public void timerUpdate()
