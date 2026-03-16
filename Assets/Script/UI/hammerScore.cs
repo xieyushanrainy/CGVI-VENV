@@ -15,6 +15,7 @@ public class hammerScore : MonoBehaviour
     void Start()
     {
         scoreText.text = $"{score}";
+        score = 0;
     }
 
     public int hit()
