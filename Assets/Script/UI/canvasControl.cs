@@ -52,7 +52,7 @@ public class canvasControl : MonoBehaviour
     {        // Guard: if End() is somehow called twice (e.g. from a stale timer path)
         // don't show the end screen a second time.
         if (endGameUI.activeSelf) return;
-        string text = FindObjectOfType<ScoreManager>().GetWinner();
+        string text = scoreManager != null ? scoreManager.GetWinner() : "Draw";
         if (text == "Draw")
         {
             winner.text = text;

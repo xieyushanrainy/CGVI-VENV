@@ -41,12 +41,7 @@ public class TutorialReadyUI : MonoBehaviour
     [Tooltip("Text label showing both local and opponent ready states on two lines.")]
     public TextMeshProUGUI statusText;
 
-    [Tooltip("(Optional) Root panel GameObject. " +
-             "Hidden automatically after a short delay once both players are ready.")]
-    public GameObject tutorialPanel;
-
-    [Header("Behaviour")]
-    [Tooltip("Seconds to wait after both players are ready before hiding the panel.")]
+    [Tooltip("Seconds to show 'Go!' before hiding the status text.")]
     public float hideDelay = 1.5f;
 
     // -------------------------------------------------------------------------
@@ -65,11 +60,6 @@ public class TutorialReadyUI : MonoBehaviour
                              "is active before this UI initialises.");
             return;
         }
-
-        // Default the panel to this GameObject so you can skip wiring it
-        // in the Inspector when this component lives on the panel root.
-        if (tutorialPanel == null)
-            tutorialPanel = gameObject;
 
         // Subscribe
         readyManager.OnLocalReadyChanged    += HandleLocalReadyChanged;
@@ -124,14 +114,13 @@ public class TutorialReadyUI : MonoBehaviour
         if (statusText != null)
             statusText.text = "Go!";
 
-        // Hide the panel after a short delay so players can read "Go!"
-        if (tutorialPanel != null)
-            Invoke(nameof(HidePanel), hideDelay);
+        // Hide just the status text after the delay, not the entire panel
+        Invoke(nameof(HideStatusText), hideDelay);
     }
 
-    private void HidePanel()
+    private void HideStatusText()
     {
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(false);
+        if (statusText != null)
+            statusText.gameObject.SetActive(false);
     }
 }
