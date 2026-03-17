@@ -11,8 +11,9 @@ using System.Collections;
 /// </summary>
 public class damageEffect : MonoBehaviour
 {
-    [SerializeField] private float flashDuration = 0.5f; // seconds the red holds before fading
-    [SerializeField] private float fadeSpeed     = 2f;   // alpha units drained per second
+    [SerializeField] private float flashDuration  = 0.5f; // seconds the red holds before fading
+    [SerializeField] private float fadeSpeed      = 2f;   // alpha units drained per second
+    [SerializeField] [Range(0f, 1f)] private float maxAlpha = 0.7f; // peak opacity of the red overlay
 
     private Image               damageOverlay;
     private Coroutine           currentFlash;
@@ -174,7 +175,7 @@ public class damageEffect : MonoBehaviour
 
     private IEnumerator FlashCoroutine()
     {
-        damageOverlay.color = new Color(0.8f, 0f, 0f, 0.7f);
+        damageOverlay.color = new Color(0.8f, 0f, 0f, maxAlpha);
 
         float timer = 0f;
         while (timer < flashDuration)

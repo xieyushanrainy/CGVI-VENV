@@ -3176,6 +3176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   flashDuration: 0.5
   fadeSpeed: 2
+  maxAlpha: 0.7
 --- !u!114 &542244566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4407,6 +4408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
+  maxAlpha: 0.7
 --- !u!114 &734592901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4575,6 +4577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
+  maxAlpha: 0.7
 --- !u!114 &745240746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10503,6 +10506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   flashDuration: 0.5
   fadeSpeed: 2
+  maxAlpha: 0.7
 --- !u!222 &1626372801
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11574,6 +11578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
+  maxAlpha: 0.51
 --- !u!114 &1825849482
 MonoBehaviour:
   m_ObjectHideFlags: 0
