@@ -79,10 +79,15 @@ public class damageEffect : MonoBehaviour
         DontDestroyOnLoad(canvasGO);
 
         var canvas = canvasGO.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = cam;
-        canvas.planeDistance = cam.nearClipPlane + 0.01f;
-        canvas.pixelPerfect = false;
+        canvas.renderMode   = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera  = cam;
+        // Use a fixed plane distance large enough to survive nearClipPlane
+        // rounding and XR rig movement, but small enough to always be in front
+        // of scene geometry.  nearClipPlane + 0.01 is too tight for some XR
+        // cameras whose nearClipPlane is already 0.1 — bump to a safer value.
+        canvas.planeDistance = 0.31f;
+        canvas.sortingOrder  = 100; // render on top of all other canvases
+        canvas.pixelPerfect  = false;
 
         var scaler = canvasGO.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -150,6 +155,8 @@ public class damageEffect : MonoBehaviour
     public void FlashDamage()
     {
         if (damageOverlay == null) return;
+
+        if (!gameObject.activeInHierarchy) return;
 
         if (currentFlash != null)
             StopCoroutine(currentFlash);
