@@ -11870,6 +11870,7 @@ MonoBehaviour:
   hammerPlayUI: {fileID: 745240741}
   endGameUI: {fileID: 1505838533}
   winner: {fileID: 1108652589}
+  hammerMesh: {fileID: 1293532627}
 --- !u!4 &1944616316
 Transform:
   m_ObjectHideFlags: 0

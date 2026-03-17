@@ -9,6 +9,7 @@ public class canvasControl : MonoBehaviour
     public GameObject hammerPlayUI;
     public GameObject endGameUI;
     [SerializeField] TextMeshProUGUI winner;
+    [SerializeField] GameObject hammerMesh;
 
     void Start()
     {
@@ -65,6 +66,8 @@ public class canvasControl : MonoBehaviour
         molePlayUI.SetActive(false);
         hammerPlayUI.SetActive(false);
         endGameUI.SetActive(true);
+        if (hammerMesh != null && GameData.LocalRole == RoleManager.Role.Hammer)
+            hammerMesh.SetActive(false);
         FindObjectOfType<FireworkSpawner>().PlayMultipleFireworksWithDelay();
         // tab
     }
