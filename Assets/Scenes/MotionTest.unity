@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 11973827}
   - component: {fileID: 11973826}
   m_Layer: 5
-  m_Name: Image
+  m_Name: left control mole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -526,7 +526,7 @@ GameObject:
   - component: {fileID: 95313457}
   - component: {fileID: 95313456}
   m_Layer: 5
-  m_Name: Image
+  m_Name: left control hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -624,7 +624,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -25}
+  m_AnchoredPosition: {x: 100, y: -30}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &96019957
@@ -869,7 +869,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5874478, y: 0.80542, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1108652591}
+  - {fileID: 1386003750}
+  - {fileID: 806950199}
+  - {fileID: 1741220378}
+  - {fileID: 1012733183}
   m_Father: {fileID: 1505838534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -924,7 +929,7 @@ GameObject:
   - component: {fileID: 161052867}
   - component: {fileID: 161052866}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: right hammer joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1888,7 +1893,7 @@ GameObject:
   - component: {fileID: 351037946}
   - component: {fileID: 351037945}
   m_Layer: 5
-  m_Name: Change view Righ mole
+  m_Name: right mole joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3534,7 +3539,7 @@ GameObject:
   - component: {fileID: 577612997}
   - component: {fileID: 577612996}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: left hammer trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4967,17 +4972,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806950198}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000059985203}
+  m_LocalScale: {x: 1.7022787, y: 1.2415881, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1476085816}
-  m_Father: {fileID: 1505838534}
+  m_Father: {fileID: 149050061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -176, y: -213}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -299.60205, y: 158.54175}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &806950200
@@ -5289,7 +5294,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -25}
+  m_AnchoredPosition: {x: 100, y: -30}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &835802904
@@ -6147,7 +6152,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 112, y: 1}
+  m_AnchoredPosition: {x: 130, y: 1}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &961291274
@@ -6200,7 +6205,7 @@ GameObject:
   - component: {fileID: 963120136}
   - component: {fileID: 963120135}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: left mole trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6446,7 +6451,7 @@ GameObject:
   - component: {fileID: 992648829}
   - component: {fileID: 992648828}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: right control list hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6484,7 +6489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.52156866, b: 0, a: 1}
+  m_Color: {r: 0.9529412, g: 0.70980394, b: 0.36078432, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6521,7 +6526,7 @@ GameObject:
   - component: {fileID: 1005121518}
   - component: {fileID: 1005121517}
   m_Layer: 5
-  m_Name: teleport
+  m_Name: left mole grasp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6784,16 +6789,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012733182}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0016022, y: 1.0016022, z: 1.0016022}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000927044}
+  m_LocalScale: {x: 1.705006, y: 1.2435774, z: 1.0016022}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 373348850}
-  m_Father: {fileID: 1505838534}
+  m_Father: {fileID: 149050061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -213.00003}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 158.5416}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012733184
@@ -7176,7 +7181,7 @@ GameObject:
   - component: {fileID: 1063639057}
   - component: {fileID: 1063639056}
   m_Layer: 5
-  m_Name: Image
+  m_Name: right control hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7581,7 +7586,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -268.224, w: 0}
+  m_margin: {x: -140.32924, y: 0, z: -140.9552, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7602,16 +7607,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108652588}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7022787, y: 1.2415881, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1505838534}
+  m_Father: {fileID: 149050061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -135, y: -328}
+  m_AnchoredPosition: {x: 0, y: -150}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1116553010
@@ -7723,7 +7728,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 112, y: 1}
+  m_AnchoredPosition: {x: 120, y: 1}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1140085225
@@ -7934,7 +7939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -29}
+  m_AnchoredPosition: {x: 0, y: -40}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1180880143 stripped
@@ -8140,7 +8145,7 @@ GameObject:
   - component: {fileID: 1225396879}
   - component: {fileID: 1225396878}
   m_Layer: 5
-  m_Name: Teleport  right
+  m_Name: right mole grasp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8296,7 +8301,7 @@ GameObject:
   - component: {fileID: 1274738983}
   - component: {fileID: 1274738982}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: right control mole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9097,7 +9102,7 @@ RectTransform:
   m_GameObject: {fileID: 1386003749}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 2.5534182, y: 1.8623823, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2034465169}
@@ -9105,11 +9110,11 @@ RectTransform:
   - {fileID: 1337617829}
   - {fileID: 1116553011}
   - {fileID: 1647679824}
-  m_Father: {fileID: 1505838534}
+  m_Father: {fileID: 149050061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 53}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1430542528
@@ -9283,7 +9288,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -114, y: 1}
+  m_AnchoredPosition: {x: -130, y: 1}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1435820121
@@ -9336,7 +9341,7 @@ GameObject:
   - component: {fileID: 1438237782}
   - component: {fileID: 1438237781}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: lefthammer joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9892,11 +9897,6 @@ RectTransform:
   - {fileID: 149050061}
   - {fileID: 1787771381}
   - {fileID: 1322724768}
-  - {fileID: 1108652591}
-  - {fileID: 1386003750}
-  - {fileID: 806950199}
-  - {fileID: 1741220378}
-  - {fileID: 1012733183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10475,7 +10475,7 @@ GameObject:
   - component: {fileID: 1635435296}
   - component: {fileID: 1635435295}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: left control list mole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10513,7 +10513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5231452, b: 0, a: 1}
+  m_Color: {r: 0.9529412, g: 0.70980394, b: 0.36078432, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10787,7 +10787,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -114, y: 1}
+  m_AnchoredPosition: {x: -120, y: 1}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1701330345
@@ -10840,7 +10840,7 @@ GameObject:
   - component: {fileID: 1723292020}
   - component: {fileID: 1723292019}
   m_Layer: 5
-  m_Name: change view
+  m_Name: left mole joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10991,17 +10991,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741220377}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000059985203}
+  m_LocalScale: {x: 1.7022787, y: 1.2415881, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 584975375}
-  m_Father: {fileID: 1505838534}
+  m_Father: {fileID: 149050061}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 176, y: -213}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 299.60205, y: 158.54175}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1741220379
@@ -11303,7 +11303,7 @@ GameObject:
   - component: {fileID: 1780012124}
   - component: {fileID: 1780012123}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: left control list hammer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11341,7 +11341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.52156866, b: 0, a: 1}
+  m_Color: {r: 0.9529412, g: 0.70980394, b: 0.36078432, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12231,10 +12231,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 745240742}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 150}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -110}
+  m_SizeDelta: {x: 200, y: 49.999985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1978816036
 MonoBehaviour:
@@ -12510,7 +12510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -29}
+  m_AnchoredPosition: {x: 0, y: -30}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2002823536
@@ -13187,7 +13187,7 @@ GameObject:
   - component: {fileID: 2120176286}
   - component: {fileID: 2120176285}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: right control list mole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13225,7 +13225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5832002, b: 0, a: 1}
+  m_Color: {r: 0.9528302, g: 0.7062153, b: 0.35955858, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
