@@ -348,6 +348,7 @@ public class ScoreManager : MonoBehaviour
                           $"isVisible={msg.isVisible} holeId={msg.activeHoleId} seq={msg.exposureSequence}");
             return;
         }
+        if (gameOver) return;
 
         bool wasPreviouslyVisible = currentMoleState.isVisible;
         bool newExposureBegun     = msg.exposureSequence != currentMoleState.exposureSequence
@@ -402,6 +403,7 @@ public class ScoreManager : MonoBehaviour
             return;
         }
         if (!IsAuthority()) return;
+        if (gameOver)        return;
 
         // ── Validation 1: mole must currently be visible ──────────────────────
         if (!currentMoleState.isVisible)
