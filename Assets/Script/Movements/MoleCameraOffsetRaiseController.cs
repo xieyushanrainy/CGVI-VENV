@@ -125,6 +125,12 @@ public class MoleCameraOffsetRaiseController : MonoBehaviour
              "so the red screen flash and the mole re-emergence finish together.")]
     [SerializeField] private float recoverDuration = 2f;
 
+    [Tooltip("Normalised raise position [0\u20131] the mole's base height is reset to on a hit.\n\n" +
+             "0 = fully underground (yMin), 1 = fully raised (yMax).\n" +
+             "After recovery completes the mole rests here instead of returning to its\n" +
+             "pre-hit height.  The player can still raise above this by holding the trigger.")]
+    [SerializeField] [Range(0f, 1f)] private float postHitReturnRaiseAmount = 0f;
+
     // =========================================================================
     //  Inspector — Score Integration
     // =========================================================================
@@ -295,6 +301,13 @@ public class MoleCameraOffsetRaiseController : MonoBehaviour
         isRecovering     = true;
         recoverTimer     = 0f;
         hitPenaltyAmount = 1f;
+
+        // Reset the accumulated base position so the mole re-emerges at the
+        // configured lower height after recovery, not its pre-hit position.
+        if (raiser != null)
+            baseY = Mathf.Lerp(raiser.yMin, raiser.yMax, postHitReturnRaiseAmount);
+        BaseRaiseAmount = postHitReturnRaiseAmount;
+
         Debug.Log("[MoleCameraOffsetRaiseController] Hit reaction applied — mole sinking.", this);
     }
 

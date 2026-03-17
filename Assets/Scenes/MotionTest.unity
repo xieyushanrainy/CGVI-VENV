@@ -11397,6 +11397,7 @@ MonoBehaviour:
   useSmoothing: 1
   smoothSpeed: 8
   recoverDuration: 2
+  postHitReturnRaiseAmount: 0.753
   scoreManager: {fileID: 1564186632}
   isActive: 1
 --- !u!1 &1827580308
