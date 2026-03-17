@@ -21,34 +21,47 @@ public class Raiser : MonoBehaviour
         triggerAction.action.Enable();
     }
 
-    void Update()
+    /// <summary>
+    /// Computes the new camera-offset Y for this frame based on controller delta.
+    /// Manages its own trigger / delta state internally.
+    ///
+    /// Pass the caller's own tracked desired-Y (not the actual camera offset Y that
+    /// may have been modified by an external penalty) so delta tracking stays clean.
+    /// </summary>
+    /// <param name="currentCameraY">The current intended camera offset localPosition.y.</param>
+    /// <returns>The clamped Y after applying the controller delta this frame.</returns>
+    public float ComputeNewY(float currentCameraY)
     {
-        bool triggerPressed = triggerAction.action.IsPressed();
+        bool triggerPressed = triggerAction.action != null && triggerAction.action.IsPressed();
 
         if (triggerPressed)
         {
-            float currentY = controller.localPosition.y;
+            float currentControllerY = controller.localPosition.y;
 
             if (!controlling)
             {
-                lastY = currentY;
+                lastY       = currentControllerY;
                 controlling = true;
-                return;
+                return currentCameraY;
             }
 
-            float delta = currentY - lastY;
-
-            Vector3 pos = cameraOffset.localPosition;
-            pos.y += delta * sensitivity;
-            pos.y = Math.Clamp(pos.y, yMin, yMax);
-
-            cameraOffset.localPosition = pos;
-
-            lastY = currentY;
+            float delta = currentControllerY - lastY;
+            float newY  = Math.Clamp(currentCameraY + delta * sensitivity, yMin, yMax);
+            lastY = currentControllerY;
+            return newY;
         }
         else
         {
             controlling = false;
+            return currentCameraY;
         }
+    }
+
+    void Update()
+    {
+        if (cameraOffset == null) return;
+        Vector3 pos = cameraOffset.localPosition;
+        pos.y = ComputeNewY(pos.y);
+        cameraOffset.localPosition = pos;
     }
 }
