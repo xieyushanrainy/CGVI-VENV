@@ -543,23 +543,13 @@ public class ScoreManager : MonoBehaviour
     /// <summary>
     /// Returns true if this client is the designated score authority.
     ///
-    /// Authority is the peer with the lexicographically lowest UUID in the room.
-    /// This mirrors the deterministic pattern used in <see cref="RoleManager"/>
-    /// and requires no explicit negotiation message — both clients independently
-    /// arrive at the same answer.
-    ///
+    /// The Hammer player is always the authority — determined by <see cref="GameData.LocalRole"/>.
     /// <c>forceAuthority</c> overrides the check for offline / Editor testing.
     /// </summary>
     private bool IsAuthority()
     {
         if (forceAuthority) return true;
-        if (room == null)   return true; // No RoomClient → standalone mode.
-
-        var peers = room.Peers?.ToList();
-        if (peers == null || peers.Count == 0) return true; // Alone in room.
-
-        string lowestPeer = peers.Min(p => p.uuid);
-        return string.Compare(room.Me.uuid, lowestPeer, StringComparison.Ordinal) <= 0;
+        return GameData.LocalRole == RoleManager.Role.Hammer;
     }
 
     // -------------------------------------------------------------------------
