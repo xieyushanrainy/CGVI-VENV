@@ -155,7 +155,7 @@ public class MoleVisibilityTracker : MonoBehaviour
     private int  exposureSequence;
     private bool wasVisible;
 
-    private int activeHoleId = -1;
+    private int activeHoleId = 0;
 
     // -------------------------------------------------------------------------
     //  Unity lifecycle
