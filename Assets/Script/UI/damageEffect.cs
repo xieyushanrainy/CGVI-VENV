@@ -15,11 +15,19 @@ public class damageEffect : MonoBehaviour
     [SerializeField] private float fadeSpeed      = 2f;   // alpha units drained per second
     [SerializeField] [Range(0f, 1f)] private float maxAlpha = 0.7f; // peak opacity of the red overlay
 
+    [Header("Debug")]
+    [Tooltip("Tick this in the Inspector (or set from code) to force the damage flash after 2 frames, " +
+             "bypassing all normal guards (overlay-null check, active-hierarchy check, role check).\n" +
+             "The flag resets itself automatically after triggering.")]
+    [SerializeField] private bool forceFlash = false;
+
     private Image               damageOverlay;
     private Coroutine           currentFlash;
     private ScoreManager        scoreManager;
     private MoleVisibilityTracker moleTracker;
+    private MoleCameraOffsetRaiseController moleCameraController;
     private int                 lastHammerScore;
+    private bool                forceFlashPending;
 
     private void Start()
     {
@@ -48,6 +56,18 @@ public class damageEffect : MonoBehaviour
             scoreManager.OnScoreUpdated += HandleScoreUpdated;
         else
             Debug.LogWarning("[damageEffect] ScoreManager not found — hit flash disabled.", this);
+
+        moleCameraController = FindFirstObjectByType<MoleCameraOffsetRaiseController>();
+    }
+
+    private void Update()
+    {
+        if (forceFlash && !forceFlashPending)
+        {
+            forceFlash        = false;
+            forceFlashPending = true;
+            StartCoroutine(ForceFlashCoroutine());
+        }
     }
 
     private void OnDestroy()
@@ -131,8 +151,11 @@ public class damageEffect : MonoBehaviour
     /// </summary>
     private void HandleMoleState(MoleStateMessage msg)
     {
-        if (!msg.isVisible)
-            CancelFlash();   // mole hid — clear instantly
+        // Don't cancel the flash if the mole became hidden due to a hit reaction —
+        // the sink is caused by the same hit that triggered the flash, so cancelling
+        // it here would wipe the effect immediately after it starts.
+        if (!msg.isVisible && (moleCameraController == null || !moleCameraController.IsRecovering))
+            CancelFlash();   // mole voluntarily hid — clear instantly
     }
 
     /// <summary>
@@ -179,6 +202,27 @@ public class damageEffect : MonoBehaviour
     // -------------------------------------------------------------------------
     //  Coroutine
     // -------------------------------------------------------------------------
+
+    // Waits 2 frames so CreateOverlay() (called from Start) has time to finish,
+    // then fires the flash directly — bypassing all guards.
+    private IEnumerator ForceFlashCoroutine()
+    {
+        yield return null;
+        yield return null;
+
+        forceFlashPending = false;
+
+        if (damageOverlay == null)
+        {
+            Debug.LogWarning("[damageEffect] forceFlash: overlay is still null after 2 frames — flash skipped.", this);
+            yield break;
+        }
+
+        if (currentFlash != null)
+            StopCoroutine(currentFlash);
+
+        currentFlash = StartCoroutine(FlashCoroutine());
+    }
 
     private IEnumerator FlashCoroutine()
     {
