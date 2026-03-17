@@ -14,11 +14,6 @@ public class damageEffect : MonoBehaviour
     [SerializeField] private float flashDuration = 0.5f; // seconds the red holds before fading
     [SerializeField] private float fadeSpeed     = 2f;   // alpha units drained per second
 
-    [Header("Debug")]
-    [Tooltip("Force-enable the effect regardless of local role. " +
-             "Use in the Editor when GameData.LocalRole is not set via the lobby.")]
-    [SerializeField] private bool debugForceEnable = false;
-
     private Image               damageOverlay;
     private Coroutine           currentFlash;
     private ScoreManager        scoreManager;
@@ -28,8 +23,7 @@ public class damageEffect : MonoBehaviour
     private void Start()
     {
         // Only the Mole player sees the hit flash.
-        // debugForceEnable bypasses the check for Editor testing.
-        if (!debugForceEnable && GameData.LocalRole != RoleManager.Role.Mole)
+        if (GameData.LocalRole != RoleManager.Role.Mole)
         {
             enabled = false;
             return;
@@ -67,29 +61,58 @@ public class damageEffect : MonoBehaviour
 
     private void CreateOverlay()
     {
+        // ── Find the XR camera ────────────────────────────────────────────────
+        // We need to parent the canvas to the camera so it always sits in front
+        // of the player's view regardless of head rotation.
+        Camera cam = Camera.main;
+        if (cam == null)
+        {
+            Debug.LogWarning("[damageEffect] No Camera.main found — overlay will not appear.", this);
+            return;
+        }
+
+        // ── Canvas (Screen Space - Camera) ────────────────────────────────────
+        // ScreenSpaceOverlay is not visible in HMD. For XR, bind a Canvas to
+        // the XR camera so it renders into the headset eye buffers.
         var canvasGO = new GameObject("DamageFlashCanvas");
         DontDestroyOnLoad(canvasGO);
 
         var canvas = canvasGO.AddComponent<Canvas>();
-        canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 999;
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = cam;
+        canvas.planeDistance = cam.nearClipPlane + 0.01f;
+        canvas.pixelPerfect = false;
 
-        canvasGO.AddComponent<CanvasScaler>();
-        canvasGO.AddComponent<GraphicRaycaster>();
+        var scaler = canvasGO.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        scaler.matchWidthOrHeight = 0.5f;
 
+        // ── Image ─────────────────────────────────────────────────────────────
         var imageGO = new GameObject("RedOverlay");
         imageGO.transform.SetParent(canvasGO.transform, false);
 
         damageOverlay = imageGO.AddComponent<Image>();
-        damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
 
+        // Image with sprite = null does not render in many Unity versions.
+        // Create a minimal 1×1 white sprite so the color field is applied correctly.
+        var tex = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+        tex.SetPixel(0, 0, Color.white);
+        tex.Apply();
+        damageOverlay.sprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f);
+
+        damageOverlay.color = new Color(0.8f, 0f, 0f, 0f); // start fully transparent
+        damageOverlay.raycastTarget = false;
+
+        // Stretch the image to fill the canvas rect.
         var rt = damageOverlay.rectTransform;
         rt.anchorMin = Vector2.zero;
         rt.anchorMax = Vector2.one;
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;
 
-        damageOverlay.raycastTarget = false;
+        Debug.Log($"[damageEffect] Overlay created on camera '{cam.name}' (ScreenSpaceCamera)", this);
     }
 
     // -------------------------------------------------------------------------
@@ -102,9 +125,7 @@ public class damageEffect : MonoBehaviour
     /// </summary>
     private void HandleMoleState(MoleStateMessage msg)
     {
-        if (msg.isVisible)
-            FlashDamage();   // DEBUG: flash as soon as mole pops up
-        else
+        if (!msg.isVisible)
             CancelFlash();   // mole hid — clear instantly
     }
 
@@ -127,6 +148,8 @@ public class damageEffect : MonoBehaviour
 
     public void FlashDamage()
     {
+        if (damageOverlay == null) return;
+
         if (currentFlash != null)
             StopCoroutine(currentFlash);
 
@@ -171,4 +194,5 @@ public class damageEffect : MonoBehaviour
         damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
         currentFlash = null;
     }
+
 }

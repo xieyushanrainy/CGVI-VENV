@@ -3171,7 +3171,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   flashDuration: 0.5
   fadeSpeed: 2
-  debugForceEnable: 0
 --- !u!114 &542244566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3932,7 +3931,7 @@ PrefabInstance:
       objectReference: {fileID: 163818205}
     - target: {fileID: 1130512549507339621, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: forceAuthority
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1130512549507339621, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: verboseLogging
@@ -4403,7 +4402,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
-  debugForceEnable: 0
 --- !u!114 &734592901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4572,7 +4570,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
-  debugForceEnable: 0
 --- !u!114 &745240746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10302,7 +10299,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   flashDuration: 0.5
   fadeSpeed: 2
-  debugForceEnable: 0
 --- !u!222 &1626372801
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11566,7 +11562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
-  debugForceEnable: 0
 --- !u!1 &1827580308
 GameObject:
   m_ObjectHideFlags: 0
