@@ -60,6 +60,9 @@ public class TutorialReadyManager : MonoBehaviour
     /// <summary>Fires once when both players are ready. Start gameplay here.</summary>
     public event Action OnBothReady;
 
+    /// <summary>Fires immediately when the countdown begins (before the first tick).</summary>
+    public event Action OnCountdownStarted;
+
     /// <summary>Fires each second during the pre-game countdown with seconds remaining (5 down to 1).</summary>
     public event Action<int> OnCountdownTick;
 
@@ -243,6 +246,7 @@ public class TutorialReadyManager : MonoBehaviour
 
     private IEnumerator StartCountdown()
     {
+        OnCountdownStarted?.Invoke();
         for (int i = countdownSeconds; i > 0; i--)
         {
             OnCountdownTick?.Invoke(i);
