@@ -143,6 +143,13 @@ public class damageEffect : MonoBehaviour
         rt.offsetMin = Vector2.zero;
         rt.offsetMax = Vector2.zero;
 
+        // Ensure no GraphicRaycaster is present — it would intercept UI pointer events.
+        var raycaster = canvasGO.GetComponent<GraphicRaycaster>();
+        if (raycaster != null) Destroy(raycaster);
+
+        // Disabled by default; enabled only while the flash is playing.
+        canvasGO.SetActive(false);
+
         Debug.Log($"[damageEffect] Overlay created on camera '{cam.name}' (ScreenSpaceCamera)", this);
     }
 
@@ -189,6 +196,7 @@ public class damageEffect : MonoBehaviour
         if (currentFlash != null)
             StopCoroutine(currentFlash);
 
+        overlayCanvasGO.SetActive(true);
         currentFlash = StartCoroutine(FlashCoroutine());
     }
 
@@ -202,6 +210,9 @@ public class damageEffect : MonoBehaviour
 
         if (damageOverlay != null)
             damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
+
+        if (overlayCanvasGO != null)
+            overlayCanvasGO.SetActive(false);
     }
 
     // -------------------------------------------------------------------------
@@ -226,6 +237,7 @@ public class damageEffect : MonoBehaviour
         if (currentFlash != null)
             StopCoroutine(currentFlash);
 
+        overlayCanvasGO.SetActive(true);
         currentFlash = StartCoroutine(FlashCoroutine());
     }
 
@@ -250,6 +262,9 @@ public class damageEffect : MonoBehaviour
 
         damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
         currentFlash = null;
+
+        if (overlayCanvasGO != null)
+            overlayCanvasGO.SetActive(false);
     }
 
 }
