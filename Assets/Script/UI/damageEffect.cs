@@ -22,6 +22,7 @@ public class damageEffect : MonoBehaviour
     [SerializeField] private bool forceFlash = false;
 
     private Image               damageOverlay;
+    private GameObject          overlayCanvasGO;
     private Coroutine           currentFlash;
     private ScoreManager        scoreManager;
     private MoleVisibilityTracker moleTracker;
@@ -74,6 +75,9 @@ public class damageEffect : MonoBehaviour
     {
         if (moleTracker  != null) moleTracker.OnMoleStateUpdate  -= HandleMoleState;
         if (scoreManager != null) scoreManager.OnScoreUpdated    -= HandleScoreUpdated;
+
+        if (overlayCanvasGO != null)
+            Destroy(overlayCanvasGO);
     }
 
     // -------------------------------------------------------------------------
@@ -95,7 +99,8 @@ public class damageEffect : MonoBehaviour
         // ── Canvas (Screen Space - Camera) ────────────────────────────────────
         // ScreenSpaceOverlay is not visible in HMD. For XR, bind a Canvas to
         // the XR camera so it renders into the headset eye buffers.
-        var canvasGO = new GameObject("DamageFlashCanvas");
+        overlayCanvasGO = new GameObject("DamageFlashCanvas");
+        var canvasGO = overlayCanvasGO;
         DontDestroyOnLoad(canvasGO);
 
         var canvas = canvasGO.AddComponent<Canvas>();
