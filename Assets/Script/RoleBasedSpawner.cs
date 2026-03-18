@@ -30,11 +30,6 @@ public class RoleBasedSpawner : MonoBehaviour
     /// </summary>
     public RoleManager.Role playerRole;
 
-    [Header("Tutorial Integration")]
-    [Tooltip("Assign the TutorialReadyManager from the scene. When both players are ready, " +
-             "the player is returned to their role spawn point.")]
-    [SerializeField] private TutorialReadyManager tutorialReadyManager;
-
     private void Start()
     {
         // Read the role that was set before the scene was loaded.
@@ -42,18 +37,6 @@ public class RoleBasedSpawner : MonoBehaviour
 
         ApplySpawnPoint();
         ApplyRoleObjects();
-
-        if (tutorialReadyManager != null)
-            tutorialReadyManager.OnBothReady += ApplySpawnPoint;
-        else
-            Debug.LogWarning("[RoleBasedSpawner] tutorialReadyManager is not assigned — " +
-                             "spawn-on-ready will not fire. Assign it in the Inspector.", this);
-    }
-
-    private void OnDestroy()
-    {
-        if (tutorialReadyManager != null)
-            tutorialReadyManager.OnBothReady -= ApplySpawnPoint;
     }
 
     /// <summary>
@@ -61,7 +44,6 @@ public class RoleBasedSpawner : MonoBehaviour
     /// </summary>
     private void ApplySpawnPoint()
     {
-        Debug.LogWarning($"[RoleBasedSpawner] apply spawning.", this);
         if (xrOrigin == null)
         {
             Debug.LogWarning("[RoleBasedSpawner] xrOrigin is not assigned.", this);
