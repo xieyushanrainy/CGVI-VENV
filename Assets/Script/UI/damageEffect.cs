@@ -54,7 +54,10 @@ public class damageEffect : MonoBehaviour
         // ── Hit events — fires when the authority validates a hit ──────────────
         scoreManager = FindFirstObjectByType<ScoreManager>();
         if (scoreManager != null)
+        {
             scoreManager.OnScoreUpdated += HandleScoreUpdated;
+            scoreManager.OnGameOver     += HandleGameOver;
+        }
         else
             Debug.LogWarning("[damageEffect] ScoreManager not found — hit flash disabled.", this);
 
@@ -74,7 +77,11 @@ public class damageEffect : MonoBehaviour
     private void OnDestroy()
     {
         if (moleTracker  != null) moleTracker.OnMoleStateUpdate  -= HandleMoleState;
-        if (scoreManager != null) scoreManager.OnScoreUpdated    -= HandleScoreUpdated;
+        if (scoreManager != null)
+        {
+            scoreManager.OnScoreUpdated -= HandleScoreUpdated;
+            scoreManager.OnGameOver     -= HandleGameOver;
+        }
 
         if (overlayCanvasGO != null)
             Destroy(overlayCanvasGO);
@@ -147,6 +154,12 @@ public class damageEffect : MonoBehaviour
         var raycaster = canvasGO.GetComponent<GraphicRaycaster>();
         if (raycaster != null) Destroy(raycaster);
 
+        // CanvasGroup: extra guarantee that this canvas never blocks pointer events,
+        // even if a GraphicRaycaster is somehow added later.
+        var cg = canvasGO.AddComponent<CanvasGroup>();
+        cg.blocksRaycasts = false;
+        cg.interactable   = false;
+
         // Disabled by default; enabled only while the flash is playing.
         canvasGO.SetActive(false);
 
@@ -175,6 +188,11 @@ public class damageEffect : MonoBehaviour
     /// Kept separate from visibility so it can trigger an additional flash
     /// (or a different effect) specifically on a validated hit.
     /// </summary>
+    private void HandleGameOver(ScoreUpdateMessage msg)
+    {
+        CancelFlash();
+    }
+
     private void HandleScoreUpdated(ScoreUpdateMessage msg)
     {
         if (msg.hammerScore > lastHammerScore)
