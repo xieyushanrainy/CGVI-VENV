@@ -24,8 +24,9 @@ public class RoleManager : MonoBehaviour
     public bool IsLocalReady    { get; private set; } = false;
     public bool IsOpponentReady { get; private set; } = false;
 
-    private bool rolesAssigned = false;
-    private bool gameStarted   = false;
+    private bool rolesAssigned   = false;
+    private bool gameStarted     = false;
+    private int  switchGeneration = 0;   // incremented on each switch to invalidate in-flight ready messages
 
     /// <summary>Fires whenever the local role changes.</summary>
     public event Action<Role> OnRoleChanged;
@@ -43,9 +44,9 @@ public class RoleManager : MonoBehaviour
     public event Action OnGameStart;
 
     // type: "role"    -> hammerId / moleId populated
-    // type: "switch"  -> requesterUuid populated
-    // type: "ready"   -> requesterUuid populated
-    // type: "unready" -> requesterUuid populated
+    // type: "switch"  -> requesterUuid, generation populated
+    // type: "ready"   -> requesterUuid, generation populated
+    // type: "unready" -> requesterUuid, generation populated
     [Serializable]
     struct NetworkMessage
     {
@@ -53,6 +54,7 @@ public class RoleManager : MonoBehaviour
         public string hammerId;
         public string moleId;
         public string requesterUuid;
+        public int    generation;   // incremented on every switch; used to discard stale ready/unready messages
     }
 
     // ------------------------------------------------------------------ //
@@ -161,10 +163,14 @@ public class RoleManager : MonoBehaviour
         SwitchesRemaining--;
         OnSwitchesChanged?.Invoke(SwitchesRemaining);
 
+        // Increment generation BEFORE resetting — any "ready" already in flight
+        // will carry the old generation and be discarded when it arrives.
+        switchGeneration++;
+
         // Switching always resets both ready states
         ResetBothReadyStates();
 
-        var msg = new NetworkMessage { type = "switch", requesterUuid = room.Me.uuid };
+        var msg = new NetworkMessage { type = "switch", requesterUuid = room.Me.uuid, generation = switchGeneration };
         context.SendJson(msg);
         ApplySwitch();
     }
@@ -187,7 +193,7 @@ public class RoleManager : MonoBehaviour
         OnReadyChanged?.Invoke(IsLocalReady);
         Debug.Log("[RoleManager] Local player ready.");
 
-        try { context.SendJson(new NetworkMessage { type = "ready", requesterUuid = room.Me.uuid }); }
+        try { context.SendJson(new NetworkMessage { type = "ready", requesterUuid = room.Me.uuid, generation = switchGeneration }); }
         catch (Exception e) { Debug.LogWarning($"[RoleManager] SendJson failed (debug mode?): {e.Message}"); }
 
         CheckGameStart();
@@ -202,7 +208,7 @@ public class RoleManager : MonoBehaviour
         OnReadyChanged?.Invoke(IsLocalReady);
         Debug.Log("[RoleManager] Local player un-readied.");
 
-        try { context.SendJson(new NetworkMessage { type = "unready", requesterUuid = room.Me.uuid }); }
+        try { context.SendJson(new NetworkMessage { type = "unready", requesterUuid = room.Me.uuid, generation = switchGeneration }); }
         catch (Exception e) { Debug.LogWarning($"[RoleManager] SendJson failed (debug mode?): {e.Message}"); }
     }
 
@@ -223,6 +229,8 @@ public class RoleManager : MonoBehaviour
             case "switch":
                 if (netMsg.requesterUuid != room.Me.uuid)
                 {
+                    // Sync generation so both sides reject the same stale messages.
+                    switchGeneration = netMsg.generation;
                     // Opponent switched: reset both ready states, then swap our role
                     ResetBothReadyStates();
                     ApplySwitch();
@@ -230,7 +238,8 @@ public class RoleManager : MonoBehaviour
                 break;
 
             case "ready":
-                if (netMsg.requesterUuid != room.Me.uuid)
+                // Discard if this "ready" was sent before the latest switch was processed.
+                if (netMsg.requesterUuid != room.Me.uuid && netMsg.generation == switchGeneration)
                 {
                     IsOpponentReady = true;
                     OnOpponentReadyChanged?.Invoke(IsOpponentReady);
@@ -240,7 +249,8 @@ public class RoleManager : MonoBehaviour
                 break;
 
             case "unready":
-                if (netMsg.requesterUuid != room.Me.uuid)
+                // Same generation guard — avoids un-readying due to a stale message.
+                if (netMsg.requesterUuid != room.Me.uuid && netMsg.generation == switchGeneration)
                 {
                     IsOpponentReady = false;
                     OnOpponentReadyChanged?.Invoke(IsOpponentReady);

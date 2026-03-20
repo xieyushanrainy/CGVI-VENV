@@ -1,4 +1,4 @@
-Library: G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
+Library: /Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/BurstOutput/tempburstlibs/arm64-v8a/lib_burst_generated
 --platform=Android
 --minimum-os-version=
 --backend=burst-llvm-19
@@ -8,11 +8,11 @@ Library: G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst
 --dump=Function
 --float-precision=Standard
 --target-framework=NetFramework
---generate-link-xml=Temp\burst.link.xml
---temp-folder=G:\CGVI\VE\CGVI-VENV\Temp\Burst
---key-folder=G:/Program Files/Unity/Hub/Editor/6000.3.5f2/Editor/Data/PlaybackEngines/AndroidPlayer
---decode-folder=G:\CGVI\VE\CGVI-VENV\Library\Burst
---output=G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
+--generate-link-xml=Temp/burst.link.xml
+--temp-folder=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/Burst
+--key-folder=/Applications/Unity/Hub/Editor/6000.3.5f2/PlaybackEngines/AndroidPlayer
+--decode-folder=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Library/Burst
+--output=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/BurstOutput/tempburstlibs/arm64-v8a/lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=UnityEngine.XR.Hands.Gestures.XRHandOrientationUtility, Unity.XR.Hands, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::GetHandAxisDirection(Unity.Mathematics.float3&, Unity.Mathematics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|UnityEngine.XR.Hands.Gestures.XRHandAxis, Unity.XR.Hands, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|Unity.Mathematics.quaternion&, Unity.Mathematics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--0ef4d50576f0f00022da4f79ae773f01
@@ -105,11 +105,11 @@ Library: G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst
 --dump=Function
 --float-precision=Standard
 --target-framework=NetFramework
---generate-link-xml=Temp\burst.link.xml
---temp-folder=G:\CGVI\VE\CGVI-VENV\Temp\Burst
---key-folder=G:/Program Files/Unity/Hub/Editor/6000.3.5f2/Editor/Data/PlaybackEngines/AndroidPlayer
---decode-folder=G:\CGVI\VE\CGVI-VENV\Library\Burst
---output=G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
+--generate-link-xml=Temp/burst.link.xml
+--temp-folder=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/Burst
+--key-folder=/Applications/Unity/Hub/Editor/6000.3.5f2/PlaybackEngines/AndroidPlayer
+--decode-folder=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Library/Burst
+--output=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/BurstOutput/tempburstlibs/arm64-v8a/lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Burst.BurstCompiler+BurstCompilerHelper, Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::IsBurstEnabled()--8c2be93e18276203cbd918daa2748a10
@@ -223,11 +223,11 @@ Library: G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst
 --float-precision=Standard
 --target-framework=NetFramework
 --float-mode=Fast
---generate-link-xml=Temp\burst.link.xml
---temp-folder=G:\CGVI\VE\CGVI-VENV\Temp\Burst
---key-folder=G:/Program Files/Unity/Hub/Editor/6000.3.5f2/Editor/Data/PlaybackEngines/AndroidPlayer
---decode-folder=G:\CGVI\VE\CGVI-VENV\Library\Burst
---output=G:\CGVI\VE\CGVI-VENV\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
+--generate-link-xml=Temp/burst.link.xml
+--temp-folder=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/Burst
+--key-folder=/Applications/Unity/Hub/Editor/6000.3.5f2/PlaybackEngines/AndroidPlayer
+--decode-folder=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Library/Burst
+--output=/Users/yushanxie/workspace/cgvi/term2/virtualenvironment/CGVI-VENV/Temp/BurstOutput/tempburstlibs/arm64-v8a/lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
 
 --method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.ZBinningJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.ZBinningJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--77fc393cb521ac129b1392d4eb94d29a

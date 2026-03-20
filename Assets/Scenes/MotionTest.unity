@@ -7204,7 +7204,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 158.5416}
+  m_AnchoredPosition: {x: 0, y: 158.54163}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012733184
@@ -10788,7 +10788,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 1180880146}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 1.2
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -12471,6 +12471,20 @@ MonoBehaviour:
   headSensitivity: 10
   yMin: 0
   yMax: 4.8
+--- !u!114 &1825079675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI RightHand Interaction/A button
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: b2beaecf-6417-4727-bd42-b4606b12bf4d
 --- !u!1 &1825849479
 GameObject:
   m_ObjectHideFlags: 0
@@ -12839,7 +12853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d91af4145b04d94bfd73d539719f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialReadyManager
-  rightHandActivate: {fileID: 1948626925}
+  rightHandActivate: {fileID: 1825079675}
   countdownSeconds: 5
   showDebugPanel: 1
 --- !u!1001 &1924842486
@@ -13102,6 +13116,11 @@ MonoBehaviour:
   endGameUI: {fileID: 1505838533}
   winner: {fileID: 1108652589}
   hammerMesh: {fileID: 1293532627}
+  bButtonAction: {fileID: 2091530003}
+  itemsToHideOnPauseMenu:
+  - {fileID: 1108652588}
+  - {fileID: 1386003749}
+  - {fileID: 1322724767}
 --- !u!4 &1944616316
 Transform:
   m_ObjectHideFlags: 0
@@ -13117,20 +13136,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1948626925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: XRI Right Interaction/Activate
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 5ef0ada88d17780448f0b4b4b7a1ea3e, type: 3}
-  m_ActionId: 41976d89-60de-4deb-bff9-16b4af96b290
 --- !u!1 &1969696739
 GameObject:
   m_ObjectHideFlags: 0
@@ -14551,6 +14556,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6955148571248344367, guid: 83f1c0ece9b37bf4b9984a0a210359e1, type: 3}
   m_PrefabInstance: {fileID: 2063788387}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2091530003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI RightHand Interaction/B button
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: 66404520-48ec-4b02-917b-c41a1d5cd81b
 --- !u!1001 &2100239135
 PrefabInstance:
   m_ObjectHideFlags: 0
