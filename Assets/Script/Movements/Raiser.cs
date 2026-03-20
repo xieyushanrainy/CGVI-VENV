@@ -4,21 +4,41 @@ using System;
 
 public class Raiser : MonoBehaviour
 {
-    public Transform controller;
+    public enum MoleMovementMode
+    {
+        Drag,
+        Stand
+    }
+    public Transform hand;
+    public Transform headset;
     public Transform cameraOffset;
 
     public InputActionProperty triggerAction;
 
-    public float sensitivity = 2f;
+    public float handSensitivity = 6f;
+    public float headSensitivity = 10f;
     public float yMin = 0.07f;
     public float yMax = 4.5f;
 
     float lastY;
     bool controlling = false;
+    MoleMovementMode moleMovementMode = MoleMovementMode.Stand;
+    Transform controller;
+    float sensitivity = 1.0f;
 
     void Start()
     {
         triggerAction.action.Enable();
+        if (moleMovementMode == MoleMovementMode.Drag)
+        {
+            controller = hand;
+            sensitivity = handSensitivity;
+        }
+        else if (moleMovementMode == MoleMovementMode.Stand)
+        {
+            controller = headset;
+            sensitivity = headSensitivity;
+        }
     }
 
     /// <summary>
@@ -32,6 +52,7 @@ public class Raiser : MonoBehaviour
     /// <returns>The clamped Y after applying the controller delta this frame.</returns>
     public float ComputeNewY(float currentCameraY)
     {
+        float newY;
         bool triggerPressed = triggerAction.action != null && triggerAction.action.IsPressed();
 
         if (triggerPressed)
@@ -46,15 +67,27 @@ public class Raiser : MonoBehaviour
             }
 
             float delta = currentControllerY - lastY;
-            float newY  = Math.Clamp(currentCameraY + delta * sensitivity, yMin, yMax);
+            if (moleMovementMode == MoleMovementMode.Drag)
+            {
+                newY  = Math.Clamp(currentCameraY - delta * sensitivity, yMin, yMax);
+            }
+            else if (moleMovementMode == MoleMovementMode.Stand)
+            {
+                newY  = Math.Clamp(currentCameraY + delta * sensitivity, yMin, yMax);
+            }
+            else
+            {
+                newY = lastY;
+            }
+                
             lastY = currentControllerY;
-            return newY;
         }
         else
         {
             controlling = false;
-            return currentCameraY;
+            newY = currentCameraY;
         }
+        return newY;
     }
 
     void Update()

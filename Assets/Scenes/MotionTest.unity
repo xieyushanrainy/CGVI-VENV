@@ -4174,7 +4174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 846928769868638102, guid: e1a5254dad4a799499e3e7396d57c4bf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.92
       objectReference: {fileID: 0}
     - target: {fileID: 846928769868638102, guid: e1a5254dad4a799499e3e7396d57c4bf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5543,7 +5543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4778211696441940833, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_SmoothTurnEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4778211696441940833, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_SmoothMotionEnabled
@@ -5551,7 +5551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5663893676086941514, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_SmoothTurnEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5663893676086941514, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_SmoothMotionEnabled
@@ -12421,7 +12421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db66c94594e82c34fa19f7774813c335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Raiser
-  controller: {fileID: 1225432517}
+  hand: {fileID: 1225432517}
+  headset: {fileID: 828917924}
   cameraOffset: {fileID: 1815351273}
   triggerAction:
     m_UseReference: 1
@@ -12435,8 +12436,9 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 269494383}
-  sensitivity: 6
-  yMin: 0.07
+  handSensitivity: 6
+  headSensitivity: 10
+  yMin: 0
   yMax: 4.8
 --- !u!1 &1825849479
 GameObject:
