@@ -101,6 +101,19 @@ public class Raiser : MonoBehaviour
         return newY;
     }
 
+    /// <summary>
+    /// Called by a UI Toggle's OnValueChanged event.
+    /// isDrag == true  → Drag mode (hand controller drives height).
+    /// isDrag == false → Stand mode (headset drives height).
+    /// </summary>
+    public void SetMovementMode(bool isDrag)
+    {
+        moleMovementMode = isDrag ? MoleMovementMode.Drag : MoleMovementMode.Stand;
+        controller  = isDrag ? hand    : headset;
+        sensitivity = isDrag ? handSensitivity : headSensitivity;
+        controlling = false; // reset delta tracking when mode changes
+    }
+
     void Update()
     {
         if (cameraOffset == null) return;
