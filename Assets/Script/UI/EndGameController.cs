@@ -122,7 +122,10 @@ public class EndGameController : MonoBehaviour
     /// </summary>
     public void OnRestartClicked()
     {
-        if (actionHandled) return;
+        if (actionHandled)  {
+            Debug.Log("[EndGameController] Restart handled");
+            return;
+        }
 
         Debug.Log("[EndGameController] Restart (same role) requested.");
         SendRestartMessage("restart");
@@ -135,7 +138,10 @@ public class EndGameController : MonoBehaviour
     /// </summary>
     public void OnRestartSwitchedClicked()
     {
-        if (actionHandled) return;
+        if (actionHandled)  {
+            Debug.Log("[EndGameController] Switch handled");
+            return;
+        }
 
         Debug.Log("[EndGameController] Restart (switched role) requested.");
         SendRestartMessage("restart_switch");
@@ -148,7 +154,10 @@ public class EndGameController : MonoBehaviour
     /// </summary>
     public void OnExitClicked()
     {
-        if (actionHandled) return;
+        if (actionHandled)  {
+            Debug.Log("[EndGameController] Quit handled");
+            return;
+        }
 
         Debug.Log("[EndGameController] Exit to lobby requested.");
         SendRestartMessage("exit");
