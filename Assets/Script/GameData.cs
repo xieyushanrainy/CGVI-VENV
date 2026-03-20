@@ -11,6 +11,14 @@ public static class GameData
 
     /// <summary>Total round duration in seconds. Change this to adjust game length.</summary>
     public static float GameDuration = 60f;
+
+    /// <summary>
+    /// The AvatarManager's original prefab, saved by RolePanelController before
+    /// it is nulled on game-scene entry. Restored by EndGameController on Exit
+    /// so lobby avatars reappear when the player returns to the entry scene.
+    /// </summary>
+    public static UnityEngine.GameObject LobbyAvatarPrefab;
+
     public static string GetWinner()
     {
         if (HammerScore > MoleScore) return "Hammer";

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Ubiq.Messaging;
 using Ubiq.Rooms;
+using Ubiq.Avatars;
 
 // =============================================================================
 //  EndGameController.cs
@@ -244,6 +245,20 @@ public class EndGameController : MonoBehaviour
     {
         actionHandled = true;
         Debug.Log("[EndGameController] Loading lobby scene.");
+
+        // ── Restore DontDestroyOnLoad objects hidden by RolePanelController ──────
+        // The social menu was hidden and the avatar prefab was nulled before the
+        // game scene was loaded.  Both objects survive across scenes, so we must
+        // undo that here before returning to the lobby.
+
+        var socialMenu = FindFirstObjectByType<Ubiq.Samples.SocialMenu>(FindObjectsInactive.Include);
+        if (socialMenu != null)
+            socialMenu.gameObject.SetActive(true);
+
+        var avatarManager = FindFirstObjectByType<AvatarManager>();
+        if (avatarManager != null && GameData.LobbyAvatarPrefab != null)
+            avatarManager.avatarPrefab = GameData.LobbyAvatarPrefab;
+
         StartCoroutine(LoadSceneDeferred(menuSceneName));
     }
 

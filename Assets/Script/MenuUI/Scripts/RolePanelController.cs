@@ -157,7 +157,11 @@ public class RolePanelController : MonoBehaviour
         // when avatarPrefab is null, preventing them from appearing in the arena.
         var avatarManager = FindFirstObjectByType<Ubiq.Avatars.AvatarManager>();
         if (avatarManager != null)
+        {
+            // Save the prefab reference so EndGameController can restore it on Exit.
+            GameData.LobbyAvatarPrefab     = avatarManager.avatarPrefab;
             avatarManager.avatarPrefab = null;
+        }
 
         // Hide the lobby menu so it doesn't carry over into the arena scene.
         var socialMenu = FindFirstObjectByType<Ubiq.Samples.SocialMenu>();
