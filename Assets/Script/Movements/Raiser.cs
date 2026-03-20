@@ -30,7 +30,7 @@ public class Raiser : MonoBehaviour
     {
         if (GameData.LocalRole != RoleManager.Role.Mole)
         {
-            Debug.Log("[MoleCameraOffsetRaiseController] Local role is not Mole — disabling.", this);
+            Debug.Log("[Raiser] Local role is not Mole — disabling.", this);
             return;
         }
 
@@ -44,6 +44,11 @@ public class Raiser : MonoBehaviour
         {
             controller = headset;
             sensitivity = headSensitivity;
+        }
+        else
+        {
+            Debug.Log("[Raiser] Mole move mode not set");
+            return;
         }
     }
 
