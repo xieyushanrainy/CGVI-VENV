@@ -28,6 +28,12 @@ public class Raiser : MonoBehaviour
 
     void Start()
     {
+        if (GameData.LocalRole != RoleManager.Role.Mole)
+        {
+            Debug.Log("[MoleCameraOffsetRaiseController] Local role is not Mole — disabling.", this);
+            return;
+        }
+
         triggerAction.action.Enable();
         if (moleMovementMode == MoleMovementMode.Drag)
         {

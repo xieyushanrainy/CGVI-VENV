@@ -7,9 +7,9 @@ public class ScaledHandMovement : MonoBehaviour
     public float movementScale = 3f;
     public InputActionProperty recallAction;
 
-    // [Tooltip("Euler angle offset applied on top of the controller rotation to preserve " +
-    //          "the mesh's baked-in initial rotation (e.g. 90° around X).")]
-    // public Vector3 modelRotationOffset = new Vector3(90f, 0f, 0f);
+    [Tooltip("Euler angle offset applied on top of the controller rotation to preserve " +
+             "the mesh's baked-in initial rotation (e.g. 90° around X).")]
+    public Vector3 startOffsetRotation = new Vector3(30f, 0f, 0f);
 
     public InputActionProperty joystick;   // XR joystick
     public float distance = 0.3f;
@@ -19,22 +19,21 @@ public class ScaledHandMovement : MonoBehaviour
 
     Vector3 startControllerPos;
     Vector3 startAnchorPos;
-    Vector3 startOffset;
+    Vector3 startOffsetPosition;
 
     bool initialized = false;
+    // Rigidbody rb;
 
     void Start()
     {
-        startControllerPos = trackedController.position;
-        startAnchorPos = transform.position;
-        startOffset = transform.position - startControllerPos;
+        // rb = GetComponent<Rigidbody>();
     }
 
     void Init()
     {
         startControllerPos = trackedController.position;
         startAnchorPos = transform.position;
-        startOffset = transform.position - startControllerPos;
+        startOffsetPosition = transform.position - startControllerPos;
     }
 
     void Update()
@@ -66,16 +65,18 @@ public class ScaledHandMovement : MonoBehaviour
         Vector3 forwardOffset = trackedController.forward * distance;
 
         transform.position = basePos + forwardOffset;
-        transform.rotation = trackedController.rotation; // * Quaternion.Euler(modelRotationOffset);
+        transform.rotation = trackedController.rotation * Quaternion.Euler(startOffsetRotation);
+        // rb.MovePosition(basePos + forwardOffset);
+        // rb.MoveRotation(trackedController.rotation);
     }
 
     void Recall()
     {
         startControllerPos = trackedController.position;
-        startAnchorPos = trackedController.position + startOffset;
+        startAnchorPos = trackedController.position + startOffsetPosition;
 
         transform.position = startAnchorPos;
-        transform.rotation = trackedController.rotation;
+        transform.rotation = trackedController.rotation * Quaternion.Euler(startOffsetRotation);
     }
 }
 

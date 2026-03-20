@@ -4,7 +4,7 @@
 /// </summary>
 public static class GameData
 {
-    public static RoleManager.Role LocalRole = RoleManager.Role.Mole; // { get; set; }
+    public static RoleManager.Role LocalRole = RoleManager.Role.Hammer; // { get; set; }
     // public static Raiser.MoleMovementMode moleMovementMode { get; set; }
     public static int MoleScore = 0;
     public static int HammerScore = 0;
