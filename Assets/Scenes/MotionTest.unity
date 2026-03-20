@@ -2444,8 +2444,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::soundManager
   audioSource: {fileID: 290334661}
-  hitClip: {fileID: 8300000, guid: bb63261f5c244e44e8138f61b320c638, type: 3}
-  missClip: {fileID: 8300000, guid: 3219026026ac00746b7c06c8fb5e5cc2, type: 3}
+  hitClip: {fileID: 8300000, guid: 3219026026ac00746b7c06c8fb5e5cc2, type: 3}
+  missClip: {fileID: 8300000, guid: bb63261f5c244e44e8138f61b320c638, type: 3}
 --- !u!1 &416995320
 GameObject:
   m_ObjectHideFlags: 0
