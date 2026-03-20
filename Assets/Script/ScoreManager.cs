@@ -75,6 +75,10 @@ public class ScoreManager : MonoBehaviour
              "Used to look up authoritative hole-centre positions for hit validation.")]
     [SerializeField] private HoleManager holeManager;
 
+    [Tooltip("Drag the soundManager component here.\n" +
+             "PlaySound(true) on confirmed hits, PlaySound(false) on misses.")]
+    [SerializeField] private soundManager soundManagerRef;
+
     [Header("Scoring")]
     [Tooltip("Points awarded to the Hammer player for each validated hit.")]
     [SerializeField] private int hammerPointsPerHit = 1;
@@ -208,6 +212,14 @@ public class ScoreManager : MonoBehaviour
             if (holeManager == null)
                 Debug.LogWarning("[ScoreManager] HoleManager not found. " +
                                  "Drag it into the Inspector slot.", this);
+        }
+
+        if (soundManagerRef == null)
+        {
+            soundManagerRef = FindFirstObjectByType<soundManager>();
+            if (soundManagerRef == null)
+                Debug.LogWarning("[ScoreManager] soundManager not found. " +
+                                 "Drag it into the Inspector slot for audio effects.", this);
         }
 
         // ── Cache UI score components ─────────────────────────────────────────
@@ -412,6 +424,8 @@ public class ScoreManager : MonoBehaviour
                 Debug.Log($"[ScoreManager][VERBOSE] Rejected hit — mole not visible | holeId={msg.holeId}");
             else
                 Debug.Log($"[ScoreManager] Rejected — mole not visible | holeId={msg.holeId}");
+
+            soundManagerRef?.PlaySound(false);
             return;
         }
 
@@ -420,6 +434,8 @@ public class ScoreManager : MonoBehaviour
         {
             Debug.Log($"[ScoreManager] Rejected — wrong hole | " +
                       $"attempted={msg.holeId} active={currentMoleState.activeHoleId}");
+
+            soundManagerRef?.PlaySound(false);
             return;
         }
 
@@ -429,6 +445,8 @@ public class ScoreManager : MonoBehaviour
         {
             Debug.Log($"[ScoreManager] Rejected — exposure already scored | " +
                       $"seq={currentMoleState.exposureSequence}");
+
+            soundManagerRef?.PlaySound(false);
             return;
         }
 
@@ -445,6 +463,8 @@ public class ScoreManager : MonoBehaviour
                 {
                     Debug.Log($"[ScoreManager] Rejected — hammer out of radius | " +
                               $"dist={dist:F2} m max={hitRadius:F2} m holeId={msg.holeId}");
+
+                    soundManagerRef?.PlaySound(false);
                     return;
                 }
             }
@@ -464,6 +484,8 @@ public class ScoreManager : MonoBehaviour
 
         Debug.Log($"[ScoreManager] *** HIT SCORED *** hammerScore={HammerScore} | " +
                   $"holeId={msg.holeId} seq={currentMoleState.exposureSequence}");
+
+        soundManagerRef?.PlaySound(true);
 
         BroadcastScore();
     }
@@ -517,6 +539,7 @@ public class ScoreManager : MonoBehaviour
         if (IsAuthority()) return;
 
         var update = message.FromJson<ScoreUpdateMessage>();
+        bool hitScored = update.hammerScore > HammerScore;
         HammerScore = update.hammerScore;
         MoleScore   = update.moleScore;
 
@@ -535,6 +558,7 @@ public class ScoreManager : MonoBehaviour
         Debug.Log($"[ScoreManager] Score synced from authority | " +
                   $"hammer={HammerScore} mole={MoleScore}");
 
+        if (hitScored) soundManagerRef?.PlaySound(true);
         OnScoreUpdated?.Invoke(update);
     }
 
