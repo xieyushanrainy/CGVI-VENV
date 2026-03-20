@@ -2444,8 +2444,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::soundManager
   audioSource: {fileID: 290334661}
-  hitClip: {fileID: 8300000, guid: bb63261f5c244e44e8138f61b320c638, type: 3}
-  missClip: {fileID: 8300000, guid: 3219026026ac00746b7c06c8fb5e5cc2, type: 3}
+  hitClip: {fileID: 8300000, guid: 3219026026ac00746b7c06c8fb5e5cc2, type: 3}
+  missClip: {fileID: 8300000, guid: bb63261f5c244e44e8138f61b320c638, type: 3}
 --- !u!1 &416995320
 GameObject:
   m_ObjectHideFlags: 0
@@ -4371,6 +4371,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 163818205}
     - target: {fileID: 1130512549507339621, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      propertyPath: hapticManager
+      value: 
+      objectReference: {fileID: 1440428269}
+    - target: {fileID: 1130512549507339621, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       propertyPath: forceAuthority
       value: 0
       objectReference: {fileID: 0}
@@ -4519,6 +4523,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 454640276783855465, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 415054316}
+    - targetCorrespondingSourceObject: {fileID: 454640276783855465, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1440428268}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 754fdf94c114345a5afbaef9cbff514b, type: 3}
 --- !u!1001 &607234539
@@ -9215,6 +9222,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 202364688, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 828917923}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1225432518 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5967689310316253315, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 828917923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b734f2bd29eeddd4d85afb0c266228c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1241247668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10483,6 +10501,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1438237779}
   m_CullTransparentMesh: 1
+--- !u!1 &1440428267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1440428268}
+  - component: {fileID: 1440428269}
+  m_Layer: 0
+  m_Name: HapticManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1440428268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440428267}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.6900597, y: -3.69169, z: -10.38377}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 751268098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1440428269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440428267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e8aa930a7ce41318e90390cb2efea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HapticManager
+  rightHaptics: {fileID: 1792308519}
+  leftHaptics: {fileID: 1225432518}
+  hitAmplitude: 1
+  hitDuration: 0.15
+  missAmplitude: 0.25
+  missDuration: 0.06
+  moleHitAmplitude: 0.9
+  moleHitDuration: 0.4
 --- !u!1 &1476085815
 GameObject:
   m_ObjectHideFlags: 0
@@ -12612,6 +12682,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1670256625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
   m_PrefabInstance: {fileID: 828917923}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1792308519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4238984354899526239, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 828917923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b734f2bd29eeddd4d85afb0c266228c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1815351272 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1680501586, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}

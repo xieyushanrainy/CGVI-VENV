@@ -10,7 +10,7 @@ public static class GameData
     public static int HammerScore = 0;
 
     /// <summary>Total round duration in seconds. Change this to adjust game length.</summary>
-    public static float GameDuration = 10f;
+    public static float GameDuration = 60f;
     public static string GetWinner()
     {
         if (HammerScore > MoleScore) return "Hammer";

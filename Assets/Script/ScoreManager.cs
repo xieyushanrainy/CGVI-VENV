@@ -79,6 +79,11 @@ public class ScoreManager : MonoBehaviour
              "PlaySound(true) on confirmed hits, PlaySound(false) on misses.")]
     [SerializeField] private soundManager soundManagerRef;
 
+    [Tooltip("Drag the HapticManager component here.\n" +
+             "PlayHammerHaptic() on the authority machine for hit/miss,\n" +
+             "PlayMoleHitHaptic() on the Mole machine when a hit is confirmed.")]
+    [SerializeField] private HapticManager hapticManager;
+
     [Header("Scoring")]
     [Tooltip("Points awarded to the Hammer player for each validated hit.")]
     [SerializeField] private int hammerPointsPerHit = 1;
@@ -220,6 +225,14 @@ public class ScoreManager : MonoBehaviour
             if (soundManagerRef == null)
                 Debug.LogWarning("[ScoreManager] soundManager not found. " +
                                  "Drag it into the Inspector slot for audio effects.", this);
+        }
+
+        if (hapticManager == null)
+        {
+            hapticManager = FindFirstObjectByType<HapticManager>();
+            if (hapticManager == null)
+                Debug.LogWarning("[ScoreManager] HapticManager not found. " +
+                                 "Drag it into the Inspector slot for controller haptics.", this);
         }
 
         // ── Cache UI score components ─────────────────────────────────────────
@@ -426,6 +439,7 @@ public class ScoreManager : MonoBehaviour
                 Debug.Log($"[ScoreManager] Rejected — mole not visible | holeId={msg.holeId}");
 
             soundManagerRef?.PlaySound(false);
+            hapticManager?.PlayHammerHaptic(false);
             return;
         }
 
@@ -436,6 +450,7 @@ public class ScoreManager : MonoBehaviour
                       $"attempted={msg.holeId} active={currentMoleState.activeHoleId}");
 
             soundManagerRef?.PlaySound(false);
+            hapticManager?.PlayHammerHaptic(false);
             return;
         }
 
@@ -447,6 +462,7 @@ public class ScoreManager : MonoBehaviour
                       $"seq={currentMoleState.exposureSequence}");
 
             soundManagerRef?.PlaySound(false);
+            hapticManager?.PlayHammerHaptic(false);
             return;
         }
 
@@ -465,6 +481,7 @@ public class ScoreManager : MonoBehaviour
                               $"dist={dist:F2} m max={hitRadius:F2} m holeId={msg.holeId}");
 
                     soundManagerRef?.PlaySound(false);
+                    hapticManager?.PlayHammerHaptic(false);
                     return;
                 }
             }
@@ -486,6 +503,7 @@ public class ScoreManager : MonoBehaviour
                   $"holeId={msg.holeId} seq={currentMoleState.exposureSequence}");
 
         soundManagerRef?.PlaySound(true);
+        hapticManager?.PlayHammerHaptic(true);
 
         BroadcastScore();
     }
@@ -559,6 +577,7 @@ public class ScoreManager : MonoBehaviour
                   $"hammer={HammerScore} mole={MoleScore}");
 
         if (hitScored) soundManagerRef?.PlaySound(true);
+        if (hitScored) hapticManager?.PlayMoleHitHaptic();
         OnScoreUpdated?.Invoke(update);
     }
 
