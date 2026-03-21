@@ -108,9 +108,9 @@ public class Raiser : MonoBehaviour
     /// </summary>
     public void SetMovementMode(bool isDrag)
     {
-        moleMovementMode = isDrag ? MoleMovementMode.Drag : MoleMovementMode.Stand;
-        controller  = isDrag ? hand    : headset;
-        sensitivity = isDrag ? handSensitivity : headSensitivity;
+        moleMovementMode = isDrag ? MoleMovementMode.Stand : MoleMovementMode.Drag;
+        controller  = isDrag ? headset    : hand;
+        sensitivity = isDrag ? headSensitivity : handSensitivity;
         controlling = false; // reset delta tracking when mode changes
     }
 
