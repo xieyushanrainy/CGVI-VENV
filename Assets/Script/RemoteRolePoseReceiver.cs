@@ -41,6 +41,12 @@ using UnityEngine;
 //      • OpponentMole enabled only when isVisible = true.
 //        When isVisible flips from false → true the object is snapped
 //        instantly to the received position to avoid a lerp-in pop.
+//      • When isVisible flips from true → false (e.g. mole hit reaction),
+//        OpponentMole is NOT hidden immediately.  Instead it stays active
+//        for sinkOutDuration seconds so the existing position lerp can
+//        carry it from camera-height down to the box-top Y that the
+//        publisher pins the position to when hidden.  Only after that
+//        window expires is the object actually disabled.
 //      • OpponentMole  disabled when isVisible = false (mole is hiding).
 // =============================================================================
 
@@ -76,6 +82,11 @@ public class RemoteRolePoseReceiver : MonoBehaviour
              "Must match the modelRotationOffset set on MoleFollow.")]
     [SerializeField] private Vector3 moleModelRotationOffset = new Vector3(0f, 0f, 90f);
 
+    [Tooltip("Seconds to keep OpponentMole active after isVisible flips false,\n" +
+             "allowing the position lerp to smoothly sink the mole to box-top\n" +
+             "before the object is disabled.  0 = instant hide (old behaviour).")]
+    [SerializeField] private float sinkOutDuration = 0.5f;
+
     // -------------------------------------------------------------------------
     //  Private state
     // -------------------------------------------------------------------------
@@ -86,6 +97,10 @@ public class RemoteRolePoseReceiver : MonoBehaviour
 
     private bool           hasReceivedFirstMessage = false;
     private bool           moleWasHidden           = true;  // tracks previous frame visibility
+
+    // Sink-out state: mole stays active and lerps to boxTopY after going hidden.
+    private bool  isSinkingOut  = false;
+    private float sinkOutTimer  = 0f;
 
     // -------------------------------------------------------------------------
     //  Unity lifecycle
@@ -110,10 +125,20 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 break;
 
             case RemoteRoleType.Mole:
-                // Only interpolate while the mole is actually visible on screen.
-                if (remoteVisible)
+                // Interpolate while visible OR while sinking out after a hit.
+                if (remoteVisible || isSinkingOut)
                 {
                     LerpToTarget(opponentMole, isMole: true);
+
+                    if (isSinkingOut)
+                    {
+                        sinkOutTimer -= Time.deltaTime;
+                        if (sinkOutTimer <= 0f)
+                        {
+                            isSinkingOut = false;
+                            SetActive(opponentMole, false, nameof(opponentMole));
+                        }
+                    }
                 }
                 break;
         }
@@ -152,20 +177,38 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 break;
 
             case RemoteRoleType.Mole:
-                SetActive(opponentHammer, false,         nameof(opponentHammer));
-                SetActive(opponentMole,   remoteVisible, nameof(opponentMole));
+                SetActive(opponentHammer, false, nameof(opponentHammer));
 
-                // When the mole transitions from hidden → visible, snap it
-                // instantly to the current target position so it doesn't lerp
-                // in visibly from its last known location.
-                if (remoteVisible && moleWasHidden && opponentMole != null)
+                if (remoteVisible)
                 {
-                    opponentMole.transform.position = targetPosition;
-                    opponentMole.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
+                    // Cancel any in-progress sink-out — mole is popping up again.
+                    isSinkingOut = false;
+
+                    SetActive(opponentMole, true, nameof(opponentMole));
+
+                    // Snap to position on hidden → visible transition to avoid
+                    // lerping in from a stale underground location.
+                    if (moleWasHidden && opponentMole != null)
+                    {
+                        opponentMole.transform.position = targetPosition;
+                        opponentMole.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
+                    }
                 }
+                else if (!moleWasHidden && !isSinkingOut)
+                {
+                    // Mole just went hidden (visible → false).
+                    // Start a sink-out window instead of hiding immediately.
+                    // targetPosition.y is already pinned to boxTopY by the publisher,
+                    // so LerpToTarget will naturally carry the mole downward.
+                    isSinkingOut = true;
+                    sinkOutTimer = sinkOutDuration;
+                    // opponentMole stays active — Update() will disable it when the timer expires.
+                }
+                // else: already hidden and not sinking — no state change needed.
 
                 if (remoteVisible != !moleWasHidden)
-                    Debug.Log($"[RemoteRolePoseReceiver] OpponentMole visibility → {remoteVisible}");
+                    Debug.Log($"[RemoteRolePoseReceiver] OpponentMole visibility → {remoteVisible}" +
+                              ((!remoteVisible && sinkOutDuration > 0f) ? " (sink-out started)" : ""));
 
                 moleWasHidden = !remoteVisible;
                 break;
