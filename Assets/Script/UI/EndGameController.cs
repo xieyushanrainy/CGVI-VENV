@@ -70,6 +70,11 @@ public class EndGameController : MonoBehaviour
              "to flush the outgoing packet before the scene is torn down.")]
     [SerializeField] private int delayFrames = 2;
 
+    [Header("World-Space Canvas")]
+    [Tooltip("Optional. When assigned, the end-game canvas is hidden before\n" +
+             "any scene transition so it does not linger during the load.")]
+    [SerializeField] private WorldSpaceCanvasSpawner endGameCanvasSpawner;
+
     // -------------------------------------------------------------------------
     //  Ubiq message type
     // -------------------------------------------------------------------------
@@ -218,6 +223,9 @@ public class EndGameController : MonoBehaviour
     {
         actionHandled = true;
 
+        // Hide the world-space canvas before the scene tears down.
+        endGameCanvasSpawner?.HideCanvas();
+
         if (swapRole)
         {
             // Flip role before the scene reload so RoleBasedSpawner, canvasControl,
@@ -245,6 +253,9 @@ public class EndGameController : MonoBehaviour
     {
         actionHandled = true;
         Debug.Log("[EndGameController] Loading lobby scene.");
+
+        // Hide the world-space canvas before the scene tears down.
+        endGameCanvasSpawner?.HideCanvas();
 
         // ── Restore DontDestroyOnLoad objects hidden by RolePanelController ──────
         // The social menu was hidden and the avatar prefab was nulled before the

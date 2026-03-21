@@ -13,6 +13,16 @@ public class canvasControl : MonoBehaviour
     [SerializeField] TextMeshProUGUI winner;
     [SerializeField] GameObject hammerMesh;
 
+    [Header("World-Space Canvas Spawner")]
+    [Tooltip("Optional. When assigned, the end-game panel is repositioned in\n" +
+             "front of the player whenever it is shown.")]
+    [SerializeField] private WorldSpaceCanvasSpawner endGameCanvasSpawner;
+
+    [Tooltip("Optional. When assigned, XR-interactable proxy buttons are spawned\n" +
+             "over the end-game canvas buttons so they can be activated with\n" +
+             "XR controllers.")]
+    [SerializeField] private XRMenuProxySpawner endGameProxySpawner;
+
     // -------------------------------------------------------------------------
     //  B Button – Show / Dismiss End-Game Panel at any time
     // -------------------------------------------------------------------------
@@ -123,6 +133,8 @@ public class canvasControl : MonoBehaviour
         }
 
         endGameUI.SetActive(true);
+        endGameCanvasSpawner?.ShowInFrontOfUser();
+        endGameProxySpawner?.RespawnProxies();
         _manuallyOpened = true;
     }
 
@@ -138,6 +150,7 @@ public class canvasControl : MonoBehaviour
 
         endGameUI.SetActive(false);
         _manuallyOpened = false;
+        endGameProxySpawner?.ClearProxies();
 
         // Restore the HUD items to their saved states.
         if (itemsToHideOnPauseMenu != null && _savedItemStates != null)
@@ -200,6 +213,8 @@ public class canvasControl : MonoBehaviour
         if (hammerMesh != null && GameData.LocalRole == RoleManager.Role.Hammer)
             hammerMesh.SetActive(false);
 
+        endGameCanvasSpawner?.ShowInFrontOfUser();
+        endGameProxySpawner?.RespawnProxies();
         FindObjectOfType<FireworkSpawner>().PlayMultipleFireworksWithDelay();
     }
 }
