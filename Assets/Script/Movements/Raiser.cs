@@ -116,7 +116,7 @@ public class Raiser : MonoBehaviour
 
     void Update()
     {
-        if (cameraOffset == null) return;
+        if (cameraOffset == null || controller == null) return;
         Vector3 pos = cameraOffset.localPosition;
         pos.y = ComputeNewY(pos.y);
         cameraOffset.localPosition = pos;
