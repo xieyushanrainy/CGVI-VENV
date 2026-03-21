@@ -140,7 +140,7 @@ public class damageEffect : MonoBehaviour
         tex.Apply();
         damageOverlay.sprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), Vector2.one * 0.5f);
 
-        damageOverlay.color = new Color(0.8f, 0f, 0f, 0f); // start fully transparent
+        damageOverlay.color = new Color(0.54f, 0.01f, 0.01f, 0f); // start fully transparent
         damageOverlay.raycastTarget = false;
 
         // Stretch the image to fill the canvas rect.
@@ -227,7 +227,7 @@ public class damageEffect : MonoBehaviour
         }
 
         if (damageOverlay != null)
-            damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
+            damageOverlay.color = new Color(0.54f, 0.01f, 0.01f, 0f);
 
         if (overlayCanvasGO != null)
             overlayCanvasGO.SetActive(false);
@@ -261,7 +261,7 @@ public class damageEffect : MonoBehaviour
 
     private IEnumerator FlashCoroutine()
     {
-        damageOverlay.color = new Color(0.8f, 0f, 0f, maxAlpha);
+        damageOverlay.color = new Color(0.54f, 0.01f, 0.01f, maxAlpha);
 
         float timer = 0f;
         while (timer < flashDuration)
@@ -278,7 +278,7 @@ public class damageEffect : MonoBehaviour
             yield return null;
         }
 
-        damageOverlay.color = new Color(0.8f, 0f, 0f, 0f);
+        damageOverlay.color = new Color(0.54f, 0.01f, 0.01f, 0f);
         currentFlash = null;
 
         if (overlayCanvasGO != null)

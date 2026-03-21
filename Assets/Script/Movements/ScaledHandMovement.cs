@@ -40,7 +40,7 @@ public class ScaledHandMovement : MonoBehaviour
     {
         if (!initialized)
         {
-            if (trackedController.position.y > 0.5f)
+            if (trackedController.position.y > 2.5f)
             {
                 Init();
                 initialized = true;
