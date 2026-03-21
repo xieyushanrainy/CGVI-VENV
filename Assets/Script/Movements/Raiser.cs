@@ -22,7 +22,7 @@ public class Raiser : MonoBehaviour
 
     float lastY;
     bool controlling = false;
-    MoleMovementMode moleMovementMode = MoleMovementMode.Stand;
+    MoleMovementMode moleMovementMode = MoleMovementMode.Drag;
     Transform controller;
     float sensitivity = 1.0f;
 
