@@ -37,6 +37,7 @@ public class RolePanelController : MonoBehaviour
     public RoleManager roleManager;
 
     private Text _readyButtonLabel;
+    private IntroLoader _introLoader;
 
     // ------------------------------------------------------------------ //
     //  Unity lifecycle
@@ -46,6 +47,13 @@ public class RolePanelController : MonoBehaviour
     {
         if (!roleManager)
             roleManager = FindFirstObjectByType<RoleManager>();
+
+        // Cache now, before anything gets deactivated later (e.g. SocialMenu hiding
+        // GameFlowController would make FindFirstObjectByType miss it at game start).
+        _introLoader = FindFirstObjectByType<IntroLoader>();
+        Debug.Log(_introLoader != null
+            ? $"[RolePanelController] Cached IntroLoader on '{_introLoader.gameObject.name}'."
+            : "[RolePanelController] WARNING: IntroLoader not found at Start — scene transition will fall back to synchronous load.");
 
         if (roleManager == null)
         {
@@ -145,6 +153,8 @@ public class RolePanelController : MonoBehaviour
 
     private void HandleGameStart()
     {
+        Debug.Log("[RolePanelController] HandleGameStart fired.");
+
         // Lock lobby UI when the game begins
         if (switchButton != null) switchButton.interactable = false;
         if (readyButton  != null) readyButton.interactable  = false;
@@ -168,7 +178,16 @@ public class RolePanelController : MonoBehaviour
         if (socialMenu != null)
             socialMenu.gameObject.SetActive(false);
 
-        SceneManager.LoadScene(gameSceneName);
+        if (_introLoader != null)
+        {
+            Debug.Log($"[RolePanelController] Handing off to IntroLoader on '{_introLoader.gameObject.name}'.");
+            _introLoader.StartIntroAndLoad(roleManager.LocalRole);
+        }
+        else
+        {
+            Debug.LogWarning("[RolePanelController] No IntroLoader cached — falling back to synchronous load.");
+            SceneManager.LoadScene(gameSceneName);
+        }
     }
 
     // ------------------------------------------------------------------ //
