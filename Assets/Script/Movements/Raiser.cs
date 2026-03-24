@@ -50,6 +50,27 @@ public class Raiser : MonoBehaviour
             Debug.Log("[Raiser] Mole move mode not set");
             return;
         }
+
+        var tutorialReadyManager = FindFirstObjectByType<TutorialReadyManager>();
+        if (tutorialReadyManager != null)
+            tutorialReadyManager.OnBothReady += ResetHeight;
+    }
+
+    private void OnDestroy()
+    {
+        var tutorialReadyManager = FindFirstObjectByType<TutorialReadyManager>();
+        if (tutorialReadyManager != null)
+            tutorialReadyManager.OnBothReady -= ResetHeight;
+    }
+
+    /// <summary>Resets the mole's camera-offset Y back to yMin when the game starts.</summary>
+    private void ResetHeight()
+    {
+        if (cameraOffset == null) return;
+        Vector3 pos = cameraOffset.localPosition;
+        pos.y = yMin;
+        cameraOffset.localPosition = pos;
+        controlling = false;
     }
 
     /// <summary>
