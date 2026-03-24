@@ -83,9 +83,16 @@ public class RemoteRolePoseReceiver : MonoBehaviour
     [SerializeField] private Vector3 moleModelRotationOffset = new Vector3(0f, 0f, 90f);
 
     [Tooltip("Seconds to keep OpponentMole active after isVisible flips false,\n" +
-             "allowing the position lerp to smoothly sink the mole to box-top\n" +
-             "before the object is disabled.  0 = instant hide (old behaviour).")]
+             "allowing the position lerp to smoothly carry the mole below the\n" +
+             "box rim before the object is disabled.  0 = instant hide.")]
     [SerializeField] private float sinkOutDuration = 0.5f;
+
+    [Tooltip("How far below the box-top rim the mole sinks after going hidden\n" +
+             "(e.g. after a hit).  The LerpToTarget animation drives the mole\n" +
+             "from camera-height down to boxTopY - this value, so it visually\n" +
+             "drops into the box rather than freezing at the rim.\n" +
+             "0 = old behaviour (lerps to the rim and lingers).")]
+    [SerializeField] private float sinkBelowBoxDepth = 0.4f;
 
     // -------------------------------------------------------------------------
     //  Private state
@@ -98,9 +105,10 @@ public class RemoteRolePoseReceiver : MonoBehaviour
     private bool           hasReceivedFirstMessage = false;
     private bool           moleWasHidden           = true;  // tracks previous frame visibility
 
-    // Sink-out state: mole stays active and lerps to boxTopY after going hidden.
-    private bool  isSinkingOut  = false;
-    private float sinkOutTimer  = 0f;
+    // Sink-out state: mole stays active and lerps below the rim after going hidden.
+    private bool    isSinkingOut  = false;
+    private float   sinkOutTimer  = 0f;
+    private Vector3 sinkTarget;  // frozen below-rim target set when sink-out starts
 
     // -------------------------------------------------------------------------
     //  Unity lifecycle
@@ -128,7 +136,9 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 // Interpolate while visible OR while sinking out after a hit.
                 if (remoteVisible || isSinkingOut)
                 {
-                    LerpToTarget(opponentMole, isMole: true);
+                    // While sinking out, lerp to the frozen below-rim target so the
+                    // mole visually drops into the box instead of hovering at the rim.
+                    LerpToTarget(opponentMole, isSinkingOut ? sinkTarget : targetPosition, isMole: true);
 
                     if (isSinkingOut)
                     {
@@ -197,11 +207,16 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 else if (!moleWasHidden && !isSinkingOut)
                 {
                     // Mole just went hidden (visible → false).
-                    // Start a sink-out window instead of hiding immediately.
-                    // targetPosition.y is already pinned to boxTopY by the publisher,
-                    // so LerpToTarget will naturally carry the mole downward.
+                    // Freeze a sink target *below* the box rim so the lerp carries
+                    // the mole downward into the box.  targetPosition.y is boxTopY
+                    // here (pinned by the publisher), so subtracting sinkBelowBoxDepth
+                    // gives a point clearly underground.
                     isSinkingOut = true;
                     sinkOutTimer = sinkOutDuration;
+                    sinkTarget   = new Vector3(
+                        targetPosition.x,
+                        targetPosition.y - sinkBelowBoxDepth,
+                        targetPosition.z);
                     // opponentMole stays active — Update() will disable it when the timer expires.
                 }
                 // else: already hidden and not sinking — no state change needed.
@@ -219,16 +234,20 @@ public class RemoteRolePoseReceiver : MonoBehaviour
     //  Helpers
     // -------------------------------------------------------------------------
 
-    private void LerpToTarget(GameObject obj, bool isMole = false)
+    private void LerpToTarget(GameObject obj, Vector3 target, bool isMole = false)
     {
         if (obj == null) return;
         obj.transform.position = Vector3.Lerp(
             obj.transform.position,
-            targetPosition,
+            target,
             positionLerpSpeed * Time.deltaTime);
         if (isMole)
             obj.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
     }
+
+    // Convenience overload — lerps to the latest network targetPosition.
+    private void LerpToTarget(GameObject obj, bool isMole = false)
+        => LerpToTarget(obj, targetPosition, isMole);
 
     private void SetActive(GameObject obj, bool active, string label)
     {
