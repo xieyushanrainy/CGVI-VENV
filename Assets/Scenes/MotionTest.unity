@@ -4299,6 +4299,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129725871}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &130724559 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 458455604168746562, guid: 639e05e7b957c4bda8f69c3b8d8492d2, type: 3}
+  m_PrefabInstance: {fileID: 778773671}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &141630713
 GameObject:
   m_ObjectHideFlags: 0
@@ -10962,6 +10973,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319486996}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &323836685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1639736784624955436, guid: 639e05e7b957c4bda8f69c3b8d8492d2, type: 3}
+  m_PrefabInstance: {fileID: 778773671}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &332140725
 GameObject:
   m_ObjectHideFlags: 0
@@ -10990,7 +11012,7 @@ Transform:
   m_GameObject: {fileID: 332140725}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: -5, z: -5}
+  m_LocalPosition: {x: -5, y: -2.4, z: -5}
   m_LocalScale: {x: 10, y: 0.1, z: 10}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -19187,6 +19209,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559634603}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &560747141 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4399181173526050110, guid: f7767e9b88bcb47a7b337c7683e2615c, type: 3}
+  m_PrefabInstance: {fileID: 1091256493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &560853435
 GameObject:
   m_ObjectHideFlags: 0
@@ -22651,8 +22684,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::hammerScore
   updateScore: 3
   scoreTexts:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 560747141}
+  - {fileID: 323836685}
   - {fileID: 2034465170}
 --- !u!114 &675436082
 MonoBehaviour:
@@ -22668,8 +22701,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::moleScore
   baseScore: 1
   scoreTexts:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2011178997}
+  - {fileID: 130724559}
   - {fileID: 938635714}
 --- !u!1 &676879189
 GameObject:
@@ -25757,6 +25790,20 @@ Transform:
   - {fileID: 354349653}
   m_Father: {fileID: 1101982675}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &742558659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Right Locomotion/Move
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_ActionId: 00a4dc9f-1ee6-4349-b0e9-72d5dccaadd6
 --- !u!1 &743056116
 GameObject:
   m_ObjectHideFlags: 0
@@ -28739,6 +28786,10 @@ PrefabInstance:
       propertyPath: m_LeftHandMoveInput.m_InputSourceMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 153982007679157697, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_RightHandMoveInput.m_InputActionReference
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1178791450436251564, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_RequestedTrackingOriginMode
       value: 0
@@ -29427,20 +29478,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850590643}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &852242324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: XRI Left Locomotion/Move
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_ActionId: 9693e25f-8a4f-4aed-842f-3961243c69a1
 --- !u!1 &862923792
 GameObject:
   m_ObjectHideFlags: 0
@@ -43683,7 +43720,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 852242324}
+    m_Reference: {fileID: 742558659}
   xrCamera: {fileID: 828917924}
   xrOrigin: {fileID: 828917925}
   spawnPoint: {fileID: 1011141791}
@@ -65855,6 +65892,17 @@ Transform:
   - {fileID: 1474732359}
   m_Father: {fileID: 523607134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2011178997 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6686140084443596667, guid: f7767e9b88bcb47a7b337c7683e2615c, type: 3}
+  m_PrefabInstance: {fileID: 1091256493}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &2021161636
 GameObject:
   m_ObjectHideFlags: 0
