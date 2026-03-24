@@ -67,6 +67,11 @@ public class RoleManager : MonoBehaviour
         context = NetworkScene.Register(this);
         room = FindFirstObjectByType<RoomClient>();
 
+        // Remove old listeners in case this object survived scene loads
+        room.OnPeerAdded.RemoveListener(OnPeerChanged);
+        room.OnPeerRemoved.RemoveListener(OnPeerChanged);
+        room.OnJoinedRoom.RemoveListener(OnJoinedRoom);
+
         room.OnPeerAdded.AddListener(OnPeerChanged);
         room.OnPeerRemoved.AddListener(OnPeerChanged);
         room.OnJoinedRoom.AddListener(OnJoinedRoom);
@@ -257,6 +262,27 @@ public class RoleManager : MonoBehaviour
                     Debug.Log("[RoleManager] Opponent un-readied.");
                 }
                 break;
+        }
+    }
+
+    // ------------------------------------------------------------------ //
+    //  Reset for returning to lobby
+    // ------------------------------------------------------------------ //
+
+    /// <summary>
+    /// Resets the game-start flag and ready states when returning from a match.
+    /// Call this from EndGameController when loading the lobby scene.
+    /// </summary>
+    public void ResetSession()
+    {
+        gameStarted = false;
+        ResetBothReadyStates();
+        
+        // Sync role back from GameData in case it was swapped via Restart Switched
+        if (GameData.LocalRole == Role.Hammer || GameData.LocalRole == Role.Mole)
+        {
+            LocalRole = GameData.LocalRole;
+            OnRoleChanged?.Invoke(LocalRole);
         }
     }
 
