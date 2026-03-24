@@ -13284,7 +13284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::damageEffect
   flashDuration: 0.5
   fadeSpeed: 2
-  maxAlpha: 0.963
+  maxAlpha: 0.686
   forceFlash: 0
 --- !u!114 &1825849482
 MonoBehaviour:
@@ -13846,7 +13846,6 @@ GameObject:
   - component: {fileID: 1944616315}
   - component: {fileID: 1944616318}
   - component: {fileID: 1944616317}
-  - component: {fileID: 1944616319}
   m_Layer: 0
   m_Name: Canvas Controller
   m_TagString: Untagged
@@ -13872,7 +13871,7 @@ MonoBehaviour:
   winner: {fileID: 1108652589}
   hammerMesh: {fileID: 1293532627}
   endGameCanvasSpawner: {fileID: 1944616317}
-  endGameProxySpawner: {fileID: 1944616319}
+  endGameProxySpawner: {fileID: 0}
   bButtonAction: {fileID: 2091530003}
   itemsToHideOnPauseMenu:
   - {fileID: 1108652588}
@@ -13939,28 +13938,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1944616319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1944616314}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 571dcd5d6a6be42b7be3c80cb96cfe67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::XRMenuProxySpawner
-  canvasSpawner: {fileID: 1944616317}
-  targetCanvas: {fileID: 1505838537}
-  restartAnchor: {fileID: 866813674}
-  restartSwitchedAnchor: {fileID: 723413684}
-  exitAnchor: {fileID: 251112000}
-  proxyButtonPrefab: {fileID: 5551959769878870295, guid: 0015d05fa79324cc2b5804acb9ec801f, type: 3}
-  proxyScale: {x: 0.18, y: 0.08, z: 0.02}
-  proxyLocalOffset: {x: 0, y: 0, z: 0}
-  parentToCanvas: 1
-  endGameController: {fileID: 1658576214}
 --- !u!1 &1969696739
 GameObject:
   m_ObjectHideFlags: 0

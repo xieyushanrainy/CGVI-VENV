@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class FireworkSpawner : MonoBehaviour
@@ -24,6 +25,15 @@ public class FireworkSpawner : MonoBehaviour
 
             // Instantiate Firework prefab
             GameObject fw = Instantiate(fireworkPrefab, canvasRect);
+
+            // Prevent firework graphics from blocking UI input.
+            foreach (Graphic graphic in fw.GetComponentsInChildren<Graphic>(true))
+                graphic.raycastTarget = false;
+
+            CanvasGroup cg = fw.GetComponent<CanvasGroup>();
+            if (cg != null)
+                cg.blocksRaycasts = false;
+
             fw.GetComponent<RectTransform>().anchoredPosition = spawnPos;
 
             // Play the firework
