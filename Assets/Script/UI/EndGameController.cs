@@ -270,6 +270,10 @@ public class EndGameController : MonoBehaviour
         if (avatarManager != null && GameData.LobbyAvatarPrefab != null)
             avatarManager.avatarPrefab = GameData.LobbyAvatarPrefab;
 
+        var roleManager = FindFirstObjectByType<RoleManager>();
+        if (roleManager != null)
+            roleManager.ResetSession();
+
         StartCoroutine(LoadSceneDeferred(menuSceneName));
     }
 
