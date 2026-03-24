@@ -45,15 +45,63 @@ public class RolePanelController : MonoBehaviour
 
     private void Start()
     {
-        if (!roleManager)
-            roleManager = FindFirstObjectByType<RoleManager>();
-
         // Cache now, before anything gets deactivated later (e.g. SocialMenu hiding
         // GameFlowController would make FindFirstObjectByType miss it at game start).
         _introLoader = FindFirstObjectByType<IntroLoader>();
         Debug.Log(_introLoader != null
             ? $"[RolePanelController] Cached IntroLoader on '{_introLoader.gameObject.name}'."
             : "[RolePanelController] WARNING: IntroLoader not found at Start — scene transition will fall back to synchronous load.");
+
+        // Wire button click listeners once — they survive across scene reloads.
+        if (switchButton != null)
+            switchButton.onClick.AddListener(OnSwitchClicked);
+
+        if (readyButton != null)
+        {
+            readyButton.onClick.AddListener(OnReadyClicked);
+            _readyButtonLabel = readyButton.GetComponentInChildren<Text>();
+        }
+
+        InitializeRoleManager();
+    }
+
+    // Subscribe to sceneLoaded while this object is active so we can
+    // re-bind to a fresh RoleManager when the lobby scene reloads after a game.
+    // OnDisable fires when SocialMenu is hidden during the game session, which
+    // safely drops the subscription so the game-scene load is ignored.
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnsubscribeRoleManager();
+    }
+
+    // Called when any scene finishes loading while this panel is active.
+    // The lobby scene re-enables the SocialMenu (and thus this panel) just
+    // before triggering the load, so OnEnable re-subscribes in time to catch it.
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitializeRoleManager();
+    }
+
+    // ------------------------------------------------------------------ //
+    //  RoleManager bind / unbind
+    // ------------------------------------------------------------------ //
+
+    private void InitializeRoleManager()
+    {
+        UnsubscribeRoleManager();
+
+        roleManager = FindFirstObjectByType<RoleManager>();
 
         if (roleManager == null)
         {
@@ -67,32 +115,23 @@ public class RolePanelController : MonoBehaviour
         roleManager.OnOpponentReadyChanged += HandleOpponentReadyChanged;
         roleManager.OnGameStart            += HandleGameStart;
 
-        if (switchButton != null)
-            switchButton.onClick.AddListener(OnSwitchClicked);
-
-        if (readyButton != null)
-        {
-            readyButton.onClick.AddListener(OnReadyClicked);
-            _readyButtonLabel = readyButton.GetComponentInChildren<Text>();
-        }
-
-        // Reflect current states immediately
+        // Reflect current states immediately (resets any stale UI from a prior session).
         HandleRoleChanged(roleManager.LocalRole);
         HandleSwitchesChanged(roleManager.SwitchesRemaining);
         HandleReadyChanged(roleManager.IsLocalReady);
         HandleOpponentReadyChanged(roleManager.IsOpponentReady);
     }
 
-    private void OnDestroy()
+    private void UnsubscribeRoleManager()
     {
-        if (roleManager != null)
-        {
-            roleManager.OnRoleChanged          -= HandleRoleChanged;
-            roleManager.OnSwitchesChanged      -= HandleSwitchesChanged;
-            roleManager.OnReadyChanged         -= HandleReadyChanged;
-            roleManager.OnOpponentReadyChanged -= HandleOpponentReadyChanged;
-            roleManager.OnGameStart            -= HandleGameStart;
-        }
+        if (roleManager == null) return;
+
+        roleManager.OnRoleChanged          -= HandleRoleChanged;
+        roleManager.OnSwitchesChanged      -= HandleSwitchesChanged;
+        roleManager.OnReadyChanged         -= HandleReadyChanged;
+        roleManager.OnOpponentReadyChanged -= HandleOpponentReadyChanged;
+        roleManager.OnGameStart            -= HandleGameStart;
+        roleManager = null;
     }
 
     // ------------------------------------------------------------------ //
