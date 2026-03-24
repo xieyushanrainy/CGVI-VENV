@@ -12352,6 +12352,10 @@ PrefabInstance:
       propertyPath: opponentHammer
       value: 
       objectReference: {fileID: 1868115033}
+    - target: {fileID: 4325733682990644496, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
+      propertyPath: sinkOutDuration
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4579180173848180515, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
       propertyPath: m_Name
       value: OpponentSimulator
