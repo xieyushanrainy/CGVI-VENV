@@ -59,7 +59,10 @@ namespace Ubiq.Samples
             {
                 notInRoomPanel.SetActive(false);
                 inRoomPanel.SetActive(true);
-                control.Bind(mainMenu.roomClient);
+                if (control != null)
+                {
+                    control.Bind(mainMenu.roomClient);
+                }
 
                 if (isActiveAndEnabled && onJoinedRoom)
                 {

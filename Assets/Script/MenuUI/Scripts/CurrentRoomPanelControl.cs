@@ -17,10 +17,13 @@ namespace Ubiq.Samples
 
         public void Bind(RoomClient client)
         {
-            Joincode.text = client.Room.JoinCode.ToUpperInvariant();
+            if (Joincode != null)
+            {
+                Joincode.text = client.Room.JoinCode.ToUpperInvariant();
+            }
 
             var sceneInfo = FindObjectOfType<SceneInfo>();
-            if (sceneInfo)
+            if (sceneInfo && ScenePreview != null)
             {
                 ScenePreview.texture = sceneInfo.screenshot;
             }
