@@ -12291,7 +12291,7 @@ MonoBehaviour:
   gameSceneName: MotionTest
   menuSceneName: EnterRoomScene
   delayFrames: 2
-  endGameCanvasSpawner: {fileID: 1944616317}
+  endGameCanvasSpawner: {fileID: 0}
 --- !u!1001 &1692333542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13849,7 +13849,6 @@ GameObject:
   - component: {fileID: 1944616316}
   - component: {fileID: 1944616315}
   - component: {fileID: 1944616318}
-  - component: {fileID: 1944616317}
   m_Layer: 0
   m_Name: Canvas Controller
   m_TagString: Untagged
@@ -13874,7 +13873,7 @@ MonoBehaviour:
   endGameUI: {fileID: 1505838533}
   winner: {fileID: 1108652589}
   hammerMesh: {fileID: 1293532627}
-  endGameCanvasSpawner: {fileID: 1944616317}
+  endGameCanvasSpawner: {fileID: 0}
   endGameProxySpawner: {fileID: 0}
   bButtonAction: {fileID: 2091530003}
   itemsToHideOnPauseMenu:
@@ -13900,25 +13899,6 @@ RectTransform:
   m_AnchoredPosition: {x: 3, y: 17}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1944616317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1944616314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2b406e93d65046009971e17082e4b1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldSpaceCanvasSpawner
-  xrCamera: {fileID: 828917924}
-  targetCanvas: {fileID: 1505838537}
-  distanceFromCamera: 1.5
-  verticalOffset: -0.1
-  keepUpright: 0
-  matchCameraForwardIgnoringPitch: 1
-  useWorldAlignedRotation: 1
 --- !u!223 &1944616318
 Canvas:
   m_ObjectHideFlags: 0
