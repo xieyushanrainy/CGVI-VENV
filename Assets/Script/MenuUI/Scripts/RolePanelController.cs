@@ -36,8 +36,20 @@ public class RolePanelController : MonoBehaviour
     [Tooltip("(Optional) RoleManager in the scene. Auto-found if left empty.")]
     public RoleManager roleManager;
 
+    [Header("Role Images")]
+    [Tooltip("Image component to display the role sprite.")]
+    public Image roleImage;
+    
+    [Tooltip("Sprite shown when waiting for another player.")]
+    public Sprite pendingSprite;
+    
+    [Tooltip("Sprite shown when local role is Mole.")]
+    public Sprite moleSprite;
+    
+    [Tooltip("Sprite shown when local role is Hammer.")]
+    public Sprite hammerSprite;
+
     private Text _readyButtonLabel;
-    private IntroLoader _introLoader;
 
     // ------------------------------------------------------------------ //
     //  Unity lifecycle
@@ -45,13 +57,6 @@ public class RolePanelController : MonoBehaviour
 
     private void Start()
     {
-        // Cache now, before anything gets deactivated later (e.g. SocialMenu hiding
-        // GameFlowController would make FindFirstObjectByType miss it at game start).
-        _introLoader = FindFirstObjectByType<IntroLoader>();
-        Debug.Log(_introLoader != null
-            ? $"[RolePanelController] Cached IntroLoader on '{_introLoader.gameObject.name}'."
-            : "[RolePanelController] WARNING: IntroLoader not found at Start — scene transition will fall back to synchronous load.");
-
         // Wire button click listeners once — they survive across scene reloads.
         if (switchButton != null)
             switchButton.onClick.AddListener(OnSwitchClicked);
@@ -165,6 +170,23 @@ public class RolePanelController : MonoBehaviour
                 break;
         }
 
+        // Set the role image
+        if (roleImage != null)
+        {
+            switch (role)
+            {
+                case RoleManager.Role.Hammer:
+                    roleImage.sprite = hammerSprite;
+                    break;
+                case RoleManager.Role.Mole:
+                    roleImage.sprite = moleSprite;
+                    break;
+                default:
+                    roleImage.sprite = pendingSprite;
+                    break;
+            }
+        }
+
         RefreshButtons();
     }
 
@@ -217,16 +239,7 @@ public class RolePanelController : MonoBehaviour
         if (socialMenu != null)
             socialMenu.gameObject.SetActive(false);
 
-        if (_introLoader != null)
-        {
-            Debug.Log($"[RolePanelController] Handing off to IntroLoader on '{_introLoader.gameObject.name}'.");
-            _introLoader.StartIntroAndLoad(roleManager.LocalRole);
-        }
-        else
-        {
-            Debug.LogWarning("[RolePanelController] No IntroLoader cached — falling back to synchronous load.");
-            SceneManager.LoadScene(gameSceneName);
-        }
+        SceneManager.LoadScene(gameSceneName);
     }
 
     // ------------------------------------------------------------------ //
