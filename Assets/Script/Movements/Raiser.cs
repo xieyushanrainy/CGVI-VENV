@@ -53,7 +53,10 @@ public class Raiser : MonoBehaviour
 
         var tutorialReadyManager = FindFirstObjectByType<TutorialReadyManager>();
         if (tutorialReadyManager != null)
+        {
             tutorialReadyManager.OnBothReady += ResetHeight;
+            Debug.Log("[Raiser] Reset height enabled OnBothReady.");
+        }
     }
 
     private void OnDestroy()
@@ -71,6 +74,7 @@ public class Raiser : MonoBehaviour
         pos.y = yMin;
         cameraOffset.localPosition = pos;
         controlling = false;
+        Debug.Log("[Raiser] Mole height reset.");
     }
 
     /// <summary>
