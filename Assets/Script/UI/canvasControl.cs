@@ -215,6 +215,10 @@ public class canvasControl : MonoBehaviour
 
         endGameCanvasSpawner?.ShowInFrontOfUser();
         endGameProxySpawner?.RespawnProxies();
-        FindObjectOfType<FireworkSpawner>().PlayMultipleFireworksWithDelay();
+
+        bool localPlayerWon = (text == "Hammer" && GameData.LocalRole == RoleManager.Role.Hammer) ||
+                              (text == "Mole"    && GameData.LocalRole == RoleManager.Role.Mole);
+        if (localPlayerWon)
+            FindObjectOfType<FireworkSpawner>().PlayMultipleFireworksWithDelay();
     }
 }
