@@ -9,6 +9,17 @@ public class FireworkSpawner : MonoBehaviour
     public RectTransform canvasRect;  // Reference to your Canvas RectTransform
     public float delayBetween = 0.3f; // Delay in seconds between fireworks
 
+    private void Awake()
+    {
+        if (canvasRect != null)
+        {
+            CanvasGroup cg = canvasRect.GetComponent<CanvasGroup>();
+            if (cg == null)
+                cg = canvasRect.gameObject.AddComponent<CanvasGroup>();
+            cg.blocksRaycasts = false;
+        }
+    }
+
     public void PlayMultipleFireworksWithDelay()
     {
         StartCoroutine(SpawnFireworksCoroutine());
