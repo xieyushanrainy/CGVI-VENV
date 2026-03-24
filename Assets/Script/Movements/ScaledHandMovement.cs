@@ -12,6 +12,11 @@ public class ScaledHandMovement : MonoBehaviour
     public Vector3 startOffsetRotation = new Vector3(30f, 0f, 0f);
 
     public InputActionProperty joystick;   // XR joystick
+    public Transform xrCamera;
+
+    public Transform xrOrigin;
+    public Transform spawnPoint;
+
     public float distance = 0.3f;
     public float distanceSpeed = 1.0f;
     public float minDistance = 0.1f;
@@ -77,6 +82,19 @@ public class ScaledHandMovement : MonoBehaviour
 
         transform.position = startAnchorPos;
         transform.rotation = trackedController.rotation * Quaternion.Euler(startOffsetRotation);
+        ResetXROrigin(spawnPoint);
+    }
+
+    void ResetXROrigin(Transform target)
+    {
+        xrOrigin.position = target.position;
+
+        float cameraYaw = xrCamera.eulerAngles.y;
+        float targetYaw = target.eulerAngles.y;
+
+        float deltaYaw = targetYaw - cameraYaw;
+
+        xrOrigin.Rotate(0, deltaYaw, 0);
     }
 }
 
