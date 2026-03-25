@@ -162,8 +162,6 @@ public class damageEffect : MonoBehaviour
 
         // Disabled by default; enabled only while the flash is playing.
         canvasGO.SetActive(false);
-
-        Debug.Log($"[damageEffect] Overlay created on camera '{cam.name}' (ScreenSpaceCamera)", this);
     }
 
     // -------------------------------------------------------------------------

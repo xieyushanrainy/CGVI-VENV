@@ -1,17 +1,6 @@
 using System;
 using UnityEngine;
 
-// =============================================================================
-//  MoleStateMessage.cs
-//
-//  Ubiq-compatible message type for broadcasting mole visibility state.
-//  Sent by MoleVisibilityTracker and consumed by ScoreManager via C# event.
-//
-//  All fields are Unity-serializable primitives or built-in types so
-//  JsonUtility handles them without custom converters.
-//  Approximate JSON payload: ~90–110 bytes.  At 15 Hz ≈ 1.5 KB/s.
-// =============================================================================
-
 /// <summary>
 /// Snapshot of the mole player's current visibility and active hole state.
 /// Sent over Ubiq by <see cref="MoleVisibilityTracker"/> whenever the state

@@ -1,22 +1,5 @@
 using UnityEngine;
 
-// =============================================================================
-//  HoleIdMarker.cs
-//
-//  Tags a hole or hit-zone collider with its logical hole index (0–4).
-//  Read by HammerHitAttemptSender via GetComponent when a trigger collision
-//  fires, so the correct holeId is included in the HitAttemptMessage.
-//
-//  SETUP
-//  -----
-//  1. Add this component to Hole_0, Hole_1, Hole_2, Hole_3, and Hole_4
-//     (or to their HitZone children, depending on which object owns the
-//     trigger collider).
-//  2. Set holeId = 0, 1, 2, 3, 4 respectively in the Inspector.
-//     IDs must be unique and within the range [0, 4].
-//  3. The value is validated automatically by OnValidate in the Unity Editor.
-// =============================================================================
-
 /// <summary>
 /// Tags a hole object or hit-zone collider with its logical index (0–4).
 /// Read by <see cref="HammerHitAttemptSender"/> during trigger events

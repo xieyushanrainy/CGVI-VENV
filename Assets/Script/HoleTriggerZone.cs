@@ -1,29 +1,5 @@
 using UnityEngine;
 
-// =============================================================================
-//  HoleTriggerZone.cs
-//
-//  Detects when the local hammer enters or exits the trigger collider on a
-//  hole and exposes the current state to the scoring system.
-//
-//  SETUP
-//  -----
-//  1. Attach this component to each hole GameObject (Hole_0 … Hole_4).
-//  2. The same hole GameObject must also have:
-//       - A Collider with isTrigger = true
-//       - A HoleIdMarker component with the matching holeId (0–4)
-//       HoleIdMarker is fetched automatically at runtime via GetComponent.
-//  3. Assign normalMaterial and highlightMaterial in the Inspector.
-//  4. Assign holeRenderer (the cylinder MeshRenderer) in the Inspector, or
-//     let Reset() auto-discover it.
-//  5. The hammer must be tagged "Hammer" and carry a Rigidbody.
-//
-//  READING STATE (from scoring system)
-//  ------------------------------------
-//      bool inside = holeTriggerZone.IsHammerInside;
-//      int  id     = holeTriggerZone.HoleId;
-// =============================================================================
-
 /// <summary>
 /// Tracks whether the hammer is currently inside this hole's trigger volume
 /// and highlights the hole material accordingly.
@@ -98,14 +74,10 @@ public class HoleTriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[HoleTriggerZone] Trigger entered by: {other.name}, tag={other.tag}, rb={(other.attachedRigidbody ? other.attachedRigidbody.name : "none")}");
-
         if (!IsHammer(other))
             return;
 
         IsHammerInside = true;
-
-        Debug.Log($"[HoleTriggerZone] Hammer ENTERED hole {HoleId} ('{name}').");
 
         ApplyMaterial(highlightMaterial);
     }
@@ -116,8 +88,6 @@ public class HoleTriggerZone : MonoBehaviour
             return;
 
         IsHammerInside = false;
-
-        Debug.Log($"[HoleTriggerZone] Hammer EXITED hole {HoleId} ('{name}').");
 
         ApplyMaterial(normalMaterial);
     }

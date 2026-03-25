@@ -1,24 +1,5 @@
 using UnityEngine;
 
-// =============================================================================
-//  WorldSpaceCanvasSpawner.cs
-//
-//  Converts / manages a Canvas as a world-space UI panel that appears
-//  comfortably in front of the player's eyes in VR.
-//
-//  USAGE
-//  -----
-//  1. Attach this component to a manager GameObject or directly to the Canvas.
-//  2. Assign xrCamera (auto-falls-back to Camera.main) and targetCanvas.
-//  3. Call ShowCanvas()  to enable + reposition the panel.
-//     Call HideCanvas()  to disable it.
-//
-//  Integration with EndGameController / canvasControl:
-//    • Call ShowCanvas() from canvasControl.End() or EndGameController when
-//      opening the end-game menu so it snaps in front of the player.
-//    • Call HideCanvas() when restarting / exiting the round.
-// =============================================================================
-
 /// <summary>
 /// Manages a world-space Canvas, placing it comfortably in front of the
 /// user's XR camera whenever <see cref="ShowCanvas"/> or

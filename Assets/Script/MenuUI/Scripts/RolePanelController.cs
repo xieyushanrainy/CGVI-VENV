@@ -214,8 +214,6 @@ public class RolePanelController : MonoBehaviour
 
     private void HandleGameStart()
     {
-        Debug.Log("[RolePanelController] HandleGameStart fired.");
-
         // Lock lobby UI when the game begins
         if (switchButton != null) switchButton.interactable = false;
         if (readyButton  != null) readyButton.interactable  = false;

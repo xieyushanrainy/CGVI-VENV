@@ -107,8 +107,6 @@ public class XRMenuProxyButton : MonoBehaviour
 
     private void OnSelectEntered(SelectEnterEventArgs args)
     {
-        Debug.Log($"[XRMenuProxyButton] '{name}' selected — type: {buttonType}");
-
         // Fire optional Unity event first (audio cues, haptics, etc.).
         onActivated?.Invoke();
 

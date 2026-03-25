@@ -1,16 +1,5 @@
 using System;
 
-// =============================================================================
-//  ScoreUpdateMessage.cs
-//
-//  Ubiq-compatible message broadcast by the authority ScoreManager to keep
-//  all peers synchronised with the current score state.
-//
-//  This message flows: authority ScoreManager --> all peers.
-//  Non-authority peers must only read this message and update their display;
-//  they must NOT independently modify or recalculate any score values.
-// =============================================================================
-
 /// <summary>
 /// Full score-state snapshot broadcast by the authority <see cref="ScoreManager"/>
 /// after every scoring event and periodically thereafter.

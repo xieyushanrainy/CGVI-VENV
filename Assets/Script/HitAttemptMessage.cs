@@ -1,20 +1,6 @@
 using System;
 using UnityEngine;
 
-// =============================================================================
-//  HitAttemptMessage.cs
-//
-//  Ubiq-compatible message type for hammer hit attempts.
-//  Sent by HammerHitAttemptSender and validated by ScoreManager (authority only).
-//
-//  The authority NEVER trusts this message blindly.  It cross-checks:
-//    1. Is the mole currently visible?
-//    2. Does holeId match the authoritative activeHoleId?
-//    3. Is hammerPosition within hitRadius of the authoritative hole centre?
-//    4. Has this exposure already been scored?
-//  All four conditions must pass before any score is awarded.
-// =============================================================================
-
 /// <summary>
 /// Represents a hammer swing that entered a hole hit zone with sufficient speed.
 /// Sent by <see cref="HammerHitAttemptSender"/> over Ubiq for authority-side

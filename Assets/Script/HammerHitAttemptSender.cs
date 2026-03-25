@@ -2,57 +2,6 @@ using System;
 using UnityEngine;
 using Ubiq.Messaging;
 
-// =============================================================================
-//  HammerHitAttemptSender.cs
-//
-//  Detects when the local hammer enters a hole hit zone with sufficient swing
-//  speed and broadcasts a HitAttemptMessage over Ubiq for authority-side
-//  validation by ScoreManager.
-//
-//  This component NEVER awards score.  It only reports that an attempt
-//  occurred.  ScoreManager (the authority) validates and decides.
-//
-//  WHY NOT OpponentMole COLLISION?
-//  --------------------------------
-//  OpponentMole is a visual replica driven by remote pose messages.  It may
-//  lag behind the true mole position due to network latency and interpolation.
-//  Using it as a hit target would produce misleading results.  Instead, the
-//  physical HitZone trigger colliders on the actual Mole box geometry are used
-//  — these are always at their true world positions.
-//
-//  COLLISION MODEL
-//  ---------------
-//  The five HitZone children (Hole_0/HitZone ... Hole_4/HitZone) must have:
-//    - A Collider with isTrigger = true
-//    - A HoleIdMarker component with the correct holeId (0–4)
-//  PlayerHammer must have:
-//    - A Rigidbody (isKinematic = true is fine) — required by Unity for
-//      OnTriggerEnter to fire on moving kinematic objects
-//    - A regular (non-trigger) Collider representing the hammer head
-//
-//  MESSAGE ROUTING
-//  ---------------
-//  On the Hammer player's machine:
-//    - OnTriggerEnter detects entry, sends HitAttemptMessage over Ubiq.
-//    - OnHitAttemptEvent is also fired locally so ScoreManager on the Hammer
-//      player's machine is immediately notified (relevant when Hammer is the
-//      authority).
-//  On the Mole player's machine:
-//    - ProcessMessage() receives the remote Hammer player's hit attempts.
-//    - OnHitAttemptEvent is fired so ScoreManager (if Mole is the authority)
-//      can evaluate the attempt.
-//
-//  SETUP
-//  -----
-//  1. Attach this component to PlayerHammer
-//     (XR Origin / Right Controller / PlayerHammer).
-//  2. Ensure PlayerHammer has a Rigidbody (isKinematic = true).
-//  3. Ensure each HitZone child of the 5 holes has:
-//       - isTrigger = true on its Collider
-//       - A HoleIdMarker component with the matching holeId
-//  4. Tune minSwingSpeed and hitCooldown for the desired feel.
-// =============================================================================
-
 /// <summary>
 /// Detects local hammer–hole hit-zone trigger events and sends
 /// <see cref="HitAttemptMessage"/> over Ubiq for authority-side validation.
@@ -159,14 +108,6 @@ public class HammerHitAttemptSender : MonoBehaviour
                   ?? other.GetComponentInParent<HoleIdMarker>();
         if (marker == null) return; // Not a hole hit zone — ignore.
 
-        // ── Swing speed threshold ─────────────────────────────────────────────
-        // if (currentSwingSpeed < minSwingSpeed)
-        // {
-        //     Debug.Log($"[HammerHitAttemptSender] Swing too slow ({currentSwingSpeed:F2} m/s < " +
-        //               $"{minSwingSpeed:F2} m/s) — hit not sent.");
-        //     return;
-        // }
-
         SendHitAttempt(marker.HoleId);
     }
 
@@ -192,9 +133,6 @@ public class HammerHitAttemptSender : MonoBehaviour
             try
             {
                 context.SendJson(msg);
-                Debug.Log($"[HammerHitAttemptSender] Sent HitAttempt | " +
-                          $"holeId={msg.holeId} pos={msg.hammerPosition:F2} " +
-                          $"speed={currentSwingSpeed:F2} m/s seq={msg.hitSequence}");
             }
             catch (Exception e)
             {
@@ -218,8 +156,6 @@ public class HammerHitAttemptSender : MonoBehaviour
     public void ProcessMessage(ReferenceCountedSceneGraphMessage message)
     {
         var msg = message.FromJson<HitAttemptMessage>();
-        Debug.Log($"[HammerHitAttemptSender] Received remote HitAttempt | " +
-                  $"holeId={msg.holeId} pos={msg.hammerPosition:F2} seq={msg.hitSequence}");
         OnHitAttemptEvent?.Invoke(msg);
     }
 }

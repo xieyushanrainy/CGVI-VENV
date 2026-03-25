@@ -3,31 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// =============================================================================
-//  IntroLoader.cs
-//
-//  Dynamically creates a world-space Canvas in front of the XR camera, fills
-//  it with a role-appropriate intro image, then loads the target scene
-//  asynchronously.  The canvas stays visible for at least `minimumDisplayTime`
-//  seconds regardless of how quickly the scene loads.
-//
-//  No prefab is required — the Canvas, CanvasScaler, and Image are all built
-//  entirely at runtime.
-//
-//  USAGE
-//  -----
-//  1. Attach to a persistent GameObject in the lobby scene.
-//  2. Assign hammerSprite / moleSprite in the Inspector.
-//  3. In RolePanelController.HandleGameStart(), replace:
-//         SceneManager.LoadScene(gameSceneName);
-//     with:
-//         var loader = FindFirstObjectByType<IntroLoader>();
-//         if (loader != null)
-//             loader.StartIntroAndLoad(roleManager.LocalRole);
-//         else
-//             SceneManager.LoadScene(gameSceneName);    // fallback
-// =============================================================================
-
 /// <summary>
 /// Dynamically creates a world-space Canvas intro panel, shows a role-appropriate
 /// image, and manages the async scene transition with a minimum display time.
@@ -39,9 +14,6 @@ public class IntroLoader : MonoBehaviour
     // -------------------------------------------------------------------------
 
     [Header("Role Sprites")]
-    // WHY TWO SPRITES — showing their specific role image (Hammer / Mole) right
-    // before entering the arena gives each player an immediate visual reminder of
-    // their objective, without requiring any extra UI text or prefab variants.
     [Tooltip("Sprite displayed when the local player's role is Hammer.")]
     [SerializeField] private Sprite hammerSprite;
 
@@ -58,11 +30,6 @@ public class IntroLoader : MonoBehaviour
     [Tooltip("Conversion factor from canvas pixels to world-space metres.\n" +
              "Default 0.002 → 1 px = 2 mm, so a 1536×1024 canvas becomes\n" +
              "3.072 m × 2.048 m in the scene — comfortably readable in VR at 2 m.\n\n" +
-             // WHY WORLD-SPACE CANVAS — Screen Space canvases render flat on the
-             // display surface and ignore stereoscopic depth, breaking VR immersion
-             // and causing eye-strain.  A World Space canvas is a real object in the
-             // 3D scene, so both eyes see it at the correct depth, making it feel
-             // natural and reducing discomfort.
              "Increase this value to make the panel larger; decrease to shrink it.")]
     [SerializeField] private float pixelsToMetres = 0.002f;
 
@@ -78,10 +45,6 @@ public class IntroLoader : MonoBehaviour
     [Tooltip("Exact name of the scene to load (must be in Build Settings).")]
     [SerializeField] private string sceneName = "GameScene";
 
-    // WHY MINIMUM DISPLAY TIME — without a floor, a fast device could flash the
-    // intro for only a few frames, making it feel like a glitch.  A guaranteed
-    // minimum (e.g. 3 s) gives the player time to absorb the role image and
-    // mentally transition before the arena appears, reducing VR disorientation.
     [Tooltip("Minimum seconds the intro canvas stays visible, even if the scene\n" +
              "finishes loading sooner.")]
     [SerializeField] private float minimumDisplayTime = 3f;
@@ -92,21 +55,6 @@ public class IntroLoader : MonoBehaviour
 
     private GameObject _spawnedCanvas;
     private bool       _isLoading;
-
-    // -------------------------------------------------------------------------
-    //  Unity lifecycle
-    // -------------------------------------------------------------------------
-
-    private void Start()
-    {
-        // This log confirms the component is present, active, and initialized.
-        // If you never see it, IntroLoader is not in the scene or its GameObject is inactive.
-        Debug.Log($"[IntroLoader] Initialized on '{gameObject.name}'. " +
-                  $"sceneName='{sceneName}', panelDistance={panelDistance}, " +
-                  $"minimumDisplayTime={minimumDisplayTime}s, " +
-                  $"hammerSprite={(hammerSprite != null ? hammerSprite.name : "NOT ASSIGNED")}, " +
-                  $"moleSprite={(moleSprite != null ? moleSprite.name : "NOT ASSIGNED")}");
-    }
 
     // -------------------------------------------------------------------------
     //  Public API
@@ -126,8 +74,6 @@ public class IntroLoader : MonoBehaviour
             return;
         }
 
-        Debug.Log($"[IntroLoader] StartIntroAndLoad called — role={role}, sceneName='{sceneName}', " +
-                  $"panelDistance={panelDistance}, minimumDisplayTime={minimumDisplayTime}s");
         _isLoading = true;
         StartCoroutine(IntroLoadCoroutine(role));
     }
@@ -141,19 +87,12 @@ public class IntroLoader : MonoBehaviour
         // ── Step 1: Build the intro canvas and display the role image ─────────
         _spawnedCanvas = BuildCanvas(role);
 
-        // ── Step 2: Start async load, but hold scene activation ───────────────
-        //    WHY allowSceneActivation = false — LoadSceneAsync normally flips to
-        //    the new scene the moment progress hits 90 %, discarding the current
-        //    scene immediately.  Disabling activation freezes the switch at 90 %
-        //    so the intro canvas stays visible.  We re-enable it only once BOTH
-        //    the load is ready AND the minimum display time has elapsed.
         if (string.IsNullOrEmpty(sceneName))
         {
             Debug.LogError("[IntroLoader] sceneName is empty — cannot load scene.");
             yield break;
         }
 
-        Debug.Log($"[IntroLoader] Starting async load of '{sceneName}'.");
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
 
         if (asyncLoad == null)
@@ -182,8 +121,6 @@ public class IntroLoader : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"[IntroLoader] Conditions met (elapsed={elapsed:F2}s). Activating scene.");
-
         // ── Step 4: Hand control to Unity to finalise the scene switch ────────
         asyncLoad.allowSceneActivation = true;
 
@@ -195,7 +132,6 @@ public class IntroLoader : MonoBehaviour
         {
             Destroy(_spawnedCanvas);
             _spawnedCanvas = null;
-            Debug.Log("[IntroLoader] Intro canvas destroyed.");
         }
 
         _isLoading = false;
@@ -218,20 +154,12 @@ public class IntroLoader : MonoBehaviour
         if (cam == null && Camera.main != null)
         {
             cam = Camera.main.transform;
-            Debug.Log($"[IntroLoader] xrCameraTransform not set — fell back to Camera.main ('{cam.name}').");
-        }
-        else if (cam != null)
-        {
-            Debug.Log($"[IntroLoader] Using xrCameraTransform: '{cam.name}'.");
         }
         else
         {
             Debug.LogError("[IntroLoader] No camera found (xrCameraTransform is null AND Camera.main is null). " +
                            "Canvas will be placed at world origin — it may not be visible!");
         }
-
-        if (cam != null)
-            Debug.Log($"[IntroLoader] Camera world pos={cam.position}, forward={cam.forward}, up={cam.up}");
 
         // ── Compute world position and rotation ───────────────────────────────
         // Flatten the camera forward onto the horizontal plane so the canvas is
@@ -259,8 +187,6 @@ public class IntroLoader : MonoBehaviour
         // vertical canvas regardless of head pitch.
         Quaternion spawnRot = Quaternion.LookRotation(flatForward, Vector3.up);
 
-        Debug.Log($"[IntroLoader] Canvas spawn pos={spawnPos}, rot={spawnRot.eulerAngles}, flatForward={flatForward}");
-
         // ── Root canvas GameObject ────────────────────────────────────────────
         var canvasGO = new GameObject("IntroCanvas_Runtime");
         canvasGO.transform.SetPositionAndRotation(spawnPos, spawnRot);
@@ -272,15 +198,10 @@ public class IntroLoader : MonoBehaviour
         // ── Canvas component (World Space render mode) ─────────────────────────
         var canvas = canvasGO.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.WorldSpace;
-        Debug.Log($"[IntroLoader] Canvas renderMode={canvas.renderMode}, " +
-                  $"worldCamera={(canvas.worldCamera != null ? canvas.worldCamera.name : "null (no worldCamera set — UI may not render in VR)")} ");
 
         // Size the RectTransform to match the source image resolution.
         var canvasRT = canvasGO.GetComponent<RectTransform>();
         canvasRT.sizeDelta = new Vector2(canvasWidth, canvasHeight);
-        Debug.Log($"[IntroLoader] Canvas RectTransform sizeDelta={canvasRT.sizeDelta}, " +
-                  $"localScale={canvasGO.transform.localScale} → " +
-                  $"world size ~{canvasWidth * pixelsToMetres:F3}m × {canvasHeight * pixelsToMetres:F3}m");
 
         // CanvasScaler prevents Unity from applying automatic DPI/reference-
         // resolution scaling that would fight our manual pixelsToMetres scaling.
@@ -293,16 +214,11 @@ public class IntroLoader : MonoBehaviour
 
         var img = imageGO.AddComponent<Image>();
 
-        // Select role sprite.  Two separate sprites let designers tailor the
-        // intro to each role without duplicating any GameObject hierarchy.
         Sprite selected = role == RoleManager.Role.Hammer ? hammerSprite : moleSprite;
-        Debug.Log($"[IntroLoader] Role={role} → hammerSprite={(hammerSprite != null ? hammerSprite.name : "NULL")}, " +
-                  $"moleSprite={(moleSprite != null ? moleSprite.name : "NULL")}, selected={(selected != null ? selected.name : "NULL")}");
         if (selected != null)
         {
             img.sprite = selected;
             img.color  = Color.white;   // ensure alpha=1 if the prefab/default tinted it
-            Debug.Log($"[IntroLoader] Assigned sprite '{selected.name}' for role '{role}'.");
         }
         else
         {
@@ -315,15 +231,6 @@ public class IntroLoader : MonoBehaviour
         imgRT.anchorMax = Vector2.one;
         imgRT.offsetMin = Vector2.zero;
         imgRT.offsetMax = Vector2.zero;
-        Debug.Log($"[IntroLoader] Image RectTransform — anchorMin={imgRT.anchorMin}, anchorMax={imgRT.anchorMax}, " +
-                  $"offsetMin={imgRT.offsetMin}, offsetMax={imgRT.offsetMax}, " +
-                  $"rect={imgRT.rect}, color={img.color}");
-
-        float worldW = canvasWidth  * pixelsToMetres;
-        float worldH = canvasHeight * pixelsToMetres;
-        Debug.Log($"[IntroLoader] Canvas fully built — pos={spawnPos}, " +
-                  $"worldSize={worldW:F3}m × {worldH:F3}m, role={role}, " +
-                  $"canvasGO.activeSelf={canvasGO.activeSelf}, canvasEnabled={canvas.enabled}, imgEnabled={img.enabled}");
 
         return canvasGO;
     }

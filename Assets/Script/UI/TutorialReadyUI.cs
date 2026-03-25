@@ -1,26 +1,6 @@
 using UnityEngine;
 using TMPro;
 
-// =============================================================================
-//  TutorialReadyUI.cs
-//
-//  Drives the Tutorial Ready panel UI:
-//    • Local and opponent ready state text (no button — ready is triggered via
-//      the XR right-hand activate action wired in TutorialReadyManager)
-//    • Hides the panel once both players are ready
-//
-//  SETUP
-//  -----
-//  1. Attach this component to any GameObject in the arena scene
-//     (e.g. the root of your Tutorial Ready canvas panel).
-//  2. Wire the Inspector fields:
-//       readyManager       → TutorialReadyManager in the scene (auto-found if empty)
-//       localStatusText    → Text showing the local player's ready state
-//       opponentStatusText → Text showing the opponent's ready state (optional)
-//       tutorialPanel      → Root GameObject of the whole panel (optional — hides on both ready)
-//  3. No further code changes needed.
-// =============================================================================
-
 /// <summary>
 /// UI controller for the tutorial exploration ready-check.
 /// Subscribes to <see cref="TutorialReadyManager"/> events and updates

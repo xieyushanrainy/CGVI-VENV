@@ -1,14 +1,6 @@
 using System;
 using UnityEngine;
 
-// =============================================================================
-//  OpponentPoseMessage.cs
-//  Shared message types for lightweight opponent pose syncing over Ubiq.
-//
-//  Both LocalRolePosePublisher and RemoteRolePoseReceiver depend on these types.
-//  Keep this file in the same assembly (Assets/Script) as the other two.
-// =============================================================================
-
 /// <summary>
 /// Identifies which role the remote player is playing.
 /// Kept independent of RoleManager.Role so the networking layer has no
@@ -22,19 +14,6 @@ public enum RemoteRoleType
 
 /// <summary>
 /// Minimal pose snapshot sent over the Ubiq network once per send tick.
-///
-/// Serialized by Unity's JsonUtility — all fields are primitive or built-in
-/// Unity types, so serialization is automatic and allocation-free.
-///
-/// Payload breakdown (approximate JSON bytes):
-///   role       →  1 byte  (int enum)
-///   position   → ~45 bytes (three floats as text)
-///   isVisible  →  4–5 bytes
-///   sequence   →  1–5 bytes
-///   timestamp  → ~18 bytes (double as text)
-///   JSON delimiters ~= 30 bytes overhead
-/// Total ≈ ~100–120 bytes per message.  At 15 Hz that is under 2 KB/s —
-/// well within the budget of any shared multiplayer session.
 /// </summary>
 [Serializable]
 public struct OpponentPoseMessage

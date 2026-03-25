@@ -6,43 +6,6 @@ using Ubiq.Messaging;
 using Ubiq.Rooms;
 using Ubiq.Avatars;
 
-// =============================================================================
-//  EndGameController.cs
-//
-//  Handles the three end-game screen buttons:
-//    • Restart              — same roles, reset scores, reload game scene
-//    • Restart Switched     — swap Hammer ↔ Mole roles, reset scores, reload
-//    • Exit                 — return both players to the lobby/entry scene
-//
-//  HOW IT WORKS
-//  ------------
-//  This component registers with Ubiq (NetworkScene.Register) so it can send
-//  a single message to the remote peer whenever the local player makes a
-//  choice.  Each client acts on the message it receives (or sends itself) so
-//  both players transition at the same time.
-//
-//  The Ubiq NetworkScene / RoomClient are DontDestroyOnLoad — they survive
-//  the scene reload and keep both players in the same room, so the next round
-//  starts with the same network session.
-//
-//  All per-round state (ScoreManager, Timer, TutorialReadyManager, etc.) is
-//  reset automatically because those components live in the game scene and are
-//  recreated on each load.  Only GameData (static) needs manual adjustment
-//  before the load call; all game-scene scripts read GameData.LocalRole in
-//  their own Start() methods.
-//
-//  SETUP
-//  -----
-//  1. Attach this component to a persistent GameObject in the game scene
-//     (e.g. the same object that holds canvasControl).
-//  2. Configure gameSceneName and menuSceneName in the Inspector to match
-//     the exact scene names in your Build Settings.
-//  3. Wire the three UI buttons:
-//       Restart button              → OnRestartClicked()
-//       Restart Switched button     → OnRestartSwitchedClicked()
-//       Exit button                 → OnExitClicked()
-// =============================================================================
-
 /// <summary>
 /// End-game screen controller. Sends an Ubiq message so the remote peer
 /// performs the same scene transition, then changes scene locally.
@@ -129,11 +92,9 @@ public class EndGameController : MonoBehaviour
     public void OnRestartClicked()
     {
         if (actionHandled)  {
-            Debug.Log("[EndGameController] Restart handled");
             return;
         }
 
-        Debug.Log("[EndGameController] Restart (same role) requested.");
         SendRestartMessage("restart");
         HandleRestart(swapRole: false);
     }
@@ -145,11 +106,9 @@ public class EndGameController : MonoBehaviour
     public void OnRestartSwitchedClicked()
     {
         if (actionHandled)  {
-            Debug.Log("[EndGameController] Switch handled");
             return;
         }
 
-        Debug.Log("[EndGameController] Restart (switched role) requested.");
         SendRestartMessage("restart_switch");
         HandleRestart(swapRole: true);
     }
@@ -161,11 +120,9 @@ public class EndGameController : MonoBehaviour
     public void OnExitClicked()
     {
         if (actionHandled)  {
-            Debug.Log("[EndGameController] Quit handled");
             return;
         }
 
-        Debug.Log("[EndGameController] Exit to lobby requested.");
         SendRestartMessage("exit");
         HandleExit();
     }
@@ -183,8 +140,6 @@ public class EndGameController : MonoBehaviour
 
         // If the local player already made a choice, ignore the peer's message.
         if (actionHandled) return;
-
-        Debug.Log($"[EndGameController] Received peer message: type={msg.type}");
 
         switch (msg.type)
         {
@@ -233,12 +188,6 @@ public class EndGameController : MonoBehaviour
             GameData.LocalRole = GameData.LocalRole == RoleManager.Role.Hammer
                 ? RoleManager.Role.Mole
                 : RoleManager.Role.Hammer;
-
-            Debug.Log($"[EndGameController] Role switched to {GameData.LocalRole}.");
-        }
-        else
-        {
-            Debug.Log($"[EndGameController] Keeping role {GameData.LocalRole}.");
         }
 
         // Reset static score fields so they don't carry stale data into the
@@ -252,7 +201,6 @@ public class EndGameController : MonoBehaviour
     private void HandleExit()
     {
         actionHandled = true;
-        Debug.Log("[EndGameController] Loading lobby scene.");
 
         // Hide the world-space canvas before the scene tears down.
         endGameCanvasSpawner?.HideCanvas();

@@ -61,7 +61,6 @@ public class RoleBasedSpawner : MonoBehaviour
     /// </summary>
     private void ApplySpawnPoint()
     {
-        Debug.LogWarning($"[RoleBasedSpawner] apply spawning.", this);
         if (xrOrigin == null)
         {
             Debug.LogWarning("[RoleBasedSpawner] xrOrigin is not assigned.", this);

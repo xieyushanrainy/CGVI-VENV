@@ -3,34 +3,6 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-// =============================================================================
-//  XRMenuProxySpawner.cs
-//
-//  Spawns three 3D XR-interactable proxy objects aligned with the positions
-//  of the three end-game canvas buttons (Restart, Restart Switched, Exit).
-//
-//  WHY PROXIES?
-//  ------------
-//  A world-space Unity UI canvas rendered in a VR headset is often impossible
-//  to interact with via XR controller ray or poke interactors because the
-//  GraphicRaycaster and EventSystem pipeline may not be wired for XRI.
-//  Instead, we place invisible (or styled) 3D objects with BoxColliders and
-//  XRSimpleInteractable components directly over each button and route their
-//  selectEntered events to the same EndGameController methods.
-//
-//  SETUP
-//  -----
-//  1. Attach this component to any persistent GameObject in the game scene.
-//  2. In the Canvas hierarchy, place an empty child Transform at the centre of
-//     each button and assign it to restartAnchor / restartSwitchedAnchor / exitAnchor.
-//  3. Create a proxy prefab — a plain cube or invisible quad works well.
-//     The prefab does not need a Collider or XRSimpleInteractable; they will
-//     be added automatically at spawn time with a runtime warning if absent.
-//  4. Assign all Inspector references.
-//  5. Call ShowMenuAndSpawnProxies() when you want to open the end-game panel.
-//     Call HideMenuAndClearProxies() when leaving the end-game state.
-// =============================================================================
-
 /// <summary>
 /// Manages the lifecycle of three world-space proxy interactables that mirror
 /// the end-game canvas buttons so they are usable with XR controllers.
@@ -229,7 +201,6 @@ public class XRMenuProxySpawner : MonoBehaviour
         btn.Init(interactable);   // Passes the resolved interactable and re-subscribes.
 
         _spawnedProxies.Add(proxy);
-        Debug.Log($"[XRMenuProxySpawner] Spawned '{proxyName}' at {proxy.transform.position}.");
     }
 
     /// <summary>

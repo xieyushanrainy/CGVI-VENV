@@ -1,55 +1,5 @@
 using UnityEngine;
 
-// =============================================================================
-//  RemoteRolePoseReceiver.cs
-//
-//  Visualises the remote player's position on the local machine by driving
-//  the OpponentSimulator child objects:
-//      OpponentSimulator / OpponentHammer
-//      OpponentSimulator / OpponentMole
-//
-//  This component does NOT register with Ubiq directly.
-//  Instead, LocalRolePosePublisher.ProcessMessage() receives incoming network
-//  messages and calls OnRemotePoseReceived() here.  This design keeps the
-//  networking concern in one place (the publisher) while isolating the
-//  visualisation concern here.
-//
-//  SETUP
-//  -----
-//  1. Attach this script to the OpponentSimulator GameObject.
-//  2. Fill in the Inspector fields (listed below).
-//  3. Drag this component into the LocalRolePosePublisher's "remoteReceiver"
-//     slot on GameManager so the publisher can forward messages here.
-//
-//  Inspector fields
-//  ----------------
-//  opponentHammer     → OpponentSimulator / OpponentHammer
-//  opponentMole       → OpponentSimulator / OpponentMole
-//  positionLerpSpeed  → Lerp speed toward received position (default 15)
-//
-//  BEHAVIOUR SUMMARY
-//  -----------------
-//  Both OpponentHammer and OpponentMole start disabled at runtime.
-//  After the first message arrives:
-//
-//    Remote role = Hammer
-//      • OpponentHammer enabled, lerped to received position each frame.
-//      • OpponentMole  disabled.
-//
-//    Remote role = Mole
-//      • OpponentHammer disabled.
-//      • OpponentMole enabled only when isVisible = true.
-//        When isVisible flips from false → true the object is snapped
-//        instantly to the received position to avoid a lerp-in pop.
-//      • When isVisible flips from true → false (e.g. mole hit reaction),
-//        OpponentMole is NOT hidden immediately.  Instead it stays active
-//        for sinkOutDuration seconds so the existing position lerp can
-//        carry it from camera-height down to the box-top Y that the
-//        publisher pins the position to when hidden.  Only after that
-//        window expires is the object actually disabled.
-//      • OpponentMole  disabled when isVisible = false (mole is hiding).
-// =============================================================================
-
 /// <summary>
 /// Visualises the remote player's position by driving OpponentHammer and
 /// OpponentMole.  Receives data via <see cref="OnRemotePoseReceived"/>, which
@@ -220,10 +170,6 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                     // opponentMole stays active — Update() will disable it when the timer expires.
                 }
                 // else: already hidden and not sinking — no state change needed.
-
-                if (remoteVisible != !moleWasHidden)
-                    Debug.Log($"[RemoteRolePoseReceiver] OpponentMole visibility → {remoteVisible}" +
-                              ((!remoteVisible && sinkOutDuration > 0f) ? " (sink-out started)" : ""));
 
                 moleWasHidden = !remoteVisible;
                 break;
