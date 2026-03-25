@@ -231,15 +231,4 @@ public class TutorialReadyManager : MonoBehaviour
     // -------------------------------------------------------------------------
     //  Debug helpers  (Editor + Development builds only)
     // -------------------------------------------------------------------------
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-
-    [ContextMenu("DEBUG – Simulate Opponent Ready")]
-    public void Debug_SimulateOpponentReady()
-    {
-        IsOpponentReady = true;
-        OnOpponentReadyChanged?.Invoke(IsOpponentReady);
-        Debug.Log("[TutorialReadyManager][DEBUG] Simulated opponent ready.");
-        CheckBothReady();
-
-    [ContextMenu("DEBUG – Simulate Opponent Un-ready")]
-    }
+}
