@@ -13,13 +13,14 @@ public class MoleInstructionBoard : MonoBehaviour
 
     private const string LegDayInstructions =
         "\u2022 Grip to aim and teleport\n" +
-        "\u2022 hold Grip + stand to emerge, \n" +
-        "\u2022 hold Grip + sit to hide\n\n" +
+        "\u2022 hold Trigger + stand to emerge, \n" +
+        "\u2022 hold Trigger + sit to hide\n\n" +
         "*  Make sure your chair is stable, and use your free hand on the table for balance";
 
     private const string DragInstructions =
-        "\u2022  Raise your hand, then hold Grip and pull down to emerge \n" +
-        "\u2022  Hold Grip and straighten your arm to hide";
+        "\u2022 Grip to aim and teleport\n" +
+        "\u2022 Raise your hand, then hold Trigger and pull down to emerge \n" +
+        "\u2022 Hold Trigger and straighten your arm to hide";
 
     private void Start()
     {

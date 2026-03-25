@@ -78,7 +78,7 @@ public class TutorialReadyUI : MonoBehaviour
     private void UpdateStatusText(bool localReady, bool opponentReady)
     {
         if (statusText == null) return;
-        string localLine    = localReady    ? "You: Ready \u2713"       : "You: Not Ready — press trigger to ready up";
+        string localLine    = localReady    ? "You: Ready \u2713"       : "You: Not Ready — press A to ready up";
         string opponentLine = opponentReady ? "Opponent: Ready \u2713" : "Opponent: Not Ready";
         statusText.text = localLine + "\n" + opponentLine;
     }
