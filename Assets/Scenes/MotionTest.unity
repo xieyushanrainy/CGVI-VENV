@@ -60922,7 +60922,7 @@ MonoBehaviour:
   useSmoothing: 1
   smoothSpeed: 8
   recoverDuration: 2
-  postHitReturnRaiseAmount: 0.2
+  postHitReturnRaiseAmount: 0.753
   scoreManager: {fileID: 1564186632}
   isActive: 1
 --- !u!1 &1827931898
@@ -62498,6 +62498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TutorialReadyManager
   rightHandActivate: {fileID: 1825079675}
   countdownSeconds: 5
+  showDebugPanel: 1
 --- !u!1 &1890775871
 GameObject:
   m_ObjectHideFlags: 0
