@@ -20,6 +20,10 @@ The hammer player uses the controller to aim and swing at the mole. The hammer c
 
 The mole player moves between the five holes by teleporting to the anchor points below them. To appear above the box, the player can either rise using a squat-like motion or use the controller-based pull-up interaction, depending on which feels more comfortable.
 
+## Pre-built APK
+
+A ready-to-run Android build is available for download via Google Drive: [whack-a-mole.apk](https://drive.google.com/file/d/1yVKZuZoH9vfnqFE7UHioMcZfJ-KTpVAm/view?usp=sharing). Sideload it onto a Meta Quest headset to play without building from source.
+
 ## Compiling and running the project
 
 This project is built and run in Unity.
@@ -44,3 +48,10 @@ In the entry scene, both players must:
 * mark themselves as ready
 
 Once both players have confirmed their role and are ready, the project redirects to the `MotionTest` scene (arena scene) for actual game play.
+
+## Third-party assets
+
+The following free assets from the Unity Asset Store are used in this project:
+
+- [Stylized Dungeon Props Pack](https://assetstore.unity.com/packages/3d/environments/dungeons/stylized-dungeon-props-pack-310137) — 3D environment props used for scene dressing.
+- [Rope Generator](https://assetstore.unity.com/packages/tools/physics/rope-generator-316945) — Physics-based rope tool used for rope simulation.
