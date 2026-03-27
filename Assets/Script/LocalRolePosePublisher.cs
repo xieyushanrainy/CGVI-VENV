@@ -223,13 +223,12 @@ public class LocalRolePosePublisher : MonoBehaviour
             : false;
 
         // ── Body position (published to remote) ──────────────────────────────
-        // When visible (popped up), use the actual camera Y so the opponent
-        // sees the mole at the correct height.
-        // When hidden (inside the box), pin Y to the box top so the opponent
-        // simulator sits flush at the rim rather than floating at head height.
-        float   boxTopY = moleVisibilityTracker != null ? moleVisibilityTracker.BoxTopY : 0f;
-        float   posY    = isVisible ? xrCameraTransform.position.y : boxTopY;
-        Vector3 bodyPos = new Vector3(xrCameraTransform.position.x, posY, xrCameraTransform.position.z);
+        // Always publish the actual camera position, even when hidden.
+        // Pinning to boxTopY when hidden caused the receiver to receive a single
+        // static target and change-detection to suppress all further sends,
+        // making the opponent mole freeze at a fixed depth before disappearing.
+        // With real camera Y the receiver tracks the actual descent path.
+        Vector3 bodyPos = xrCameraTransform.position;
 
         // In mock mode always send so the receiver stays live in the Editor.
         if (!offlineMockMode && !firstSend && !PositionChanged(bodyPos) && lastSentVisibility == isVisible)

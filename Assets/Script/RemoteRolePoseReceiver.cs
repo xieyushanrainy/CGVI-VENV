@@ -55,10 +55,9 @@ public class RemoteRolePoseReceiver : MonoBehaviour
     private bool           hasReceivedFirstMessage = false;
     private bool           moleWasHidden           = true;  // tracks previous frame visibility
 
-    // Sink-out state: mole stays active and lerps below the rim after going hidden.
+    // Sink-out state: mole stays active and lerps to target after going hidden.
     private bool    isSinkingOut  = false;
     private float   sinkOutTimer  = 0f;
-    private Vector3 sinkTarget;  // frozen below-rim target set when sink-out starts
 
     // -------------------------------------------------------------------------
     //  Unity lifecycle
@@ -86,9 +85,10 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                 // Interpolate while visible OR while sinking out after a hit.
                 if (remoteVisible || isSinkingOut)
                 {
-                    // While sinking out, lerp to the frozen below-rim target so the
-                    // mole visually drops into the box instead of hovering at the rim.
-                    LerpToTarget(opponentMole, isSinkingOut ? sinkTarget : targetPosition, isMole: true);
+                    // Track the published position throughout — the publisher now sends
+                    // real camera Y even when hidden, so targetPosition naturally
+                    // animates the descent without needing a frozen sinkTarget.
+                    LerpToTarget(opponentMole, targetPosition, isMole: true);
 
                     if (isSinkingOut)
                     {
@@ -146,11 +146,15 @@ public class RemoteRolePoseReceiver : MonoBehaviour
 
                     SetActive(opponentMole, true, nameof(opponentMole));
 
-                    // Snap to position on hidden → visible transition to avoid
-                    // lerping in from a stale underground location.
+                    // On hidden → visible transition, place the mole just below the
+                    // box rim so it smoothly lerps upward rather than snapping to
+                    // full head-height in a single frame.
                     if (moleWasHidden && opponentMole != null)
                     {
-                        opponentMole.transform.position = targetPosition;
+                        opponentMole.transform.position = new Vector3(
+                            targetPosition.x,
+                            targetPosition.y - sinkBelowBoxDepth,
+                            targetPosition.z);
                         opponentMole.transform.rotation = Quaternion.Euler(moleModelRotationOffset);
                     }
                 }
@@ -163,10 +167,6 @@ public class RemoteRolePoseReceiver : MonoBehaviour
                     // gives a point clearly underground.
                     isSinkingOut = true;
                     sinkOutTimer = sinkOutDuration;
-                    sinkTarget   = new Vector3(
-                        targetPosition.x,
-                        targetPosition.y - sinkBelowBoxDepth,
-                        targetPosition.z);
                     // opponentMole stays active — Update() will disable it when the timer expires.
                 }
                 // else: already hidden and not sinking — no state change needed.
