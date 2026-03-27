@@ -22682,7 +22682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd33c5407ab24f49aa78451733aae1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::hammerScore
-  updateScore: 3
+  updateScore: 2
   scoreTexts:
   - {fileID: 560747141}
   - {fileID: 323836685}
@@ -55694,6 +55694,10 @@ PrefabInstance:
     - target: {fileID: 4325733682990644496, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
       propertyPath: sinkOutDuration
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4325733682990644496, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
+      propertyPath: positionLerpSpeed
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4579180173848180515, guid: 48e9edd9d7e10450389f5154c50fb1e4, type: 3}
       propertyPath: m_Name
